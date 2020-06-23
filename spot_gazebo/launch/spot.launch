@@ -1,20 +1,23 @@
 <launch>
-  <arg name="use_sim_time" default="true" />
-  <arg name="gui" default="true" />
-  <arg name="world" default="gazebo" />
+  
+  <!--Gazebo empty world launch file-->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    	<arg name="debug" value="false" />
+    	<arg name="gui" value="true" />
+    	<arg name="paused" value="false"/>
+    	<arg name="use_sim_time" value="false"/>
+    	<arg name="headless" value="false"/>
+    	<arg name="verbose" value="true"/>
+  </include>
+  
+  <!--Robot Description from URDF-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_description)/urdf/spot.xacro"/>
+  <!-- <param name="use_gui" value="true"/> -->
 
-  <!-- set use_sim_time flag -->
-  <group if="$(arg use_sim_time)">
-    <param name="/use_sim_time" value="true" />
-  </group>
+  <!--Nodes-->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot -verbose" output="screen"/>
+  <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
-  <!-- start world -->
-  <node name="$(arg world)" pkg="gazebo_ros" type="gzserver" args="$(find spot_gazebo)/worlds/spot_test.world" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" />
-
-  <!-- start gui -->
-  <group if="$(arg gui)">
-    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" />
-  </group>
-
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find spot_description)/urdf/spot.urdf -urdf -z 2 -model spot" />
 </launch>
