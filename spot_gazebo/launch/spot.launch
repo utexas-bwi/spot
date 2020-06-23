@@ -16,5 +16,4 @@
     <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen" launch-prefix="$(optenv OPTIRUN_LAUNCH_PREFIX)" />
   </group>
 
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find spot_description)/urdf/spot.urdf -urdf -z 2 -model spot" />
 </launch>
