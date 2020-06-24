@@ -2,7 +2,7 @@
 <robot>
   <!--Gazebo Differential Drive Plugin-->
   <gazebo>
-    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <alwaysOn>true</alwaysOn>
       <legacyMode>false</legacyMode>
       <updateRate>40</updateRate>
@@ -17,5 +17,4 @@
       <robotBaseFrame>base_footprint</robotBaseFrame>
     </plugin>
   </gazebo>
-
 </robot>

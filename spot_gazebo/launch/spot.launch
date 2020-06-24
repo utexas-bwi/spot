@@ -11,13 +11,13 @@
   </include>
   
   <!--Robot Description from URDF-->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_description)/urdf/spot.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_description)/urdf/spot.urdf.xacro"/>
   <!-- <param name="use_gui" value="true"/> -->
 
   <!--Nodes-->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
-  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot -verbose" output="screen"/>
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot" output="screen"/>
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
 </launch>
