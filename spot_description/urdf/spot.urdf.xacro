@@ -94,8 +94,8 @@
     </joint>
   </xacro:macro>
 
-  <xacro:caster prefix="front_left" reflectH="1" reflectV="1"/>
-  <xacro:caster prefix="front_right" reflectH="-1" reflectV="1"/>
+  <!-- <xacro:caster prefix="front_left" reflectH="1" reflectV="1"/>
+  <xacro:caster prefix="front_right" reflectH="-1" reflectV="1"/> -->
   <xacro:caster prefix="back_left" reflectH="1" reflectV="-1"/>
   <xacro:caster prefix="back_right" reflectH="-1" reflectV="-1"/>
 
