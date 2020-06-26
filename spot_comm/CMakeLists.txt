@@ -21,4 +21,10 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-#generate_proto(<proto_target> <proto_path>/<proto_name>.proto)
+#Note : auth.proto imports header.proto, so need to include
+#here as well to generate the auth proto
+generate_proto(auth GRPC SRC_BASE "." FILES 
+	api/auth.proto
+	api/header.proto
+)
+
