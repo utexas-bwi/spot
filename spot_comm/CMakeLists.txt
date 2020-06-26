@@ -23,8 +23,11 @@ include_directories(
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
-generate_proto(auth GRPC SRC_BASE "." FILES 
-	api/auth.proto
-	api/header.proto
+generate_proto(auth_proto GRPC SRC_BASE "." FILES 
+	bosdyn/api/auth_service.proto
+	bosdyn/api/auth.proto
+	bosdyn/api/header.proto
 )
 
+add_executable(auth_client_example src/examples/auth.cpp)
+target_link_libraries(auth_client_example ${catkin_LIBRARIES} auth_proto)
