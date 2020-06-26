@@ -4,14 +4,13 @@
   <version>0.0.1</version>
   <description>The spot_comm package</description>
 
-  <maintainer email="max@todo.todo">max</maintainer>
-
+  <maintainer email="maxwell@cs.utexas.edu">Max Svetlik</maintainer>
 
   <license>BSD</license>
 
-
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
-
+  <author email="dakshdua@utexas.edu">Daksh Dua</author>
+  <author email="marikamurphy@utexas.edu">Marika Murphy</author>
+  <author email="maxwell@cs.utexas.edu">Max Svetlik</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>gprc</build_depend>
@@ -26,9 +25,7 @@
   <exec_depend>std_msgs</exec_depend>
 
 
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- Other tools can request additional information be placed here -->
 
   </export>
 </package>
