@@ -1,0 +1,3 @@
+[submodule "catkin_grpc"]
+	path = catkin_grpc
+	url = https://github.com/CogRob/catkin_grpc.git
