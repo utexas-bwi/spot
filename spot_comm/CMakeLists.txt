@@ -29,5 +29,7 @@ generate_proto(auth_proto GRPC SRC_BASE "." FILES
 	bosdyn/api/header.proto
 )
 
-add_executable(auth_client_example src/examples/auth.cpp)
-target_link_libraries(auth_client_example ${catkin_LIBRARIES} auth_proto)
+add_executable(auth_client src/examples/auth_client.cpp)
+add_executable(auth_server src/examples/auth_server.cpp)
+target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
+target_link_libraries(auth_server ${catkin_LIBRARIES} auth_proto)

@@ -1,6 +1,6 @@
 # The SPOT Repository, as part of the SMADS Project
 
-This repository hosts Gazebo simulation files for the Boston Dynamics Spot, as well as the software interfaces that allow communication with Spot, via gRPC, ove ROS.
+This repository hosts Gazebo simulation files for the Boston Dynamics Spot, as well as the software interfaces that allow communication with Spot, via gRPC, over ROS.
 
 ## Installation
 Clone this repository into a catkinized workspace:
