@@ -54,7 +54,8 @@
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
-
+  <exec_depend>velodyne_description</exec_depend>
+  
   <export>
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
     <gazebo_ros gazebo_media_path="${prefix}/models"/>
