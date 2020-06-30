@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(find spot_gazebo)/launch/spot.launch">
+     <arg name="ahg_sim" value="true"/>
+  </include>
+
+  <include file="$(find spot_gazebo)/launch/gmapping.launch"/>
+
+</launch>

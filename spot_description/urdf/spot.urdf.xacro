@@ -42,13 +42,13 @@
     <visual name="visual">
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find spot_description)/meshes/spot_whole_body.dae" />     
+	      <mesh filename="package://spot_description/meshes/spot_whole_body.dae" />     
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find spot_description)/meshes/spot_whole_body.dae" />
+	      <mesh filename="package://spot_description/meshes/spot_whole_body.dae" />
       </geometry>
     </collision>
   </link>
