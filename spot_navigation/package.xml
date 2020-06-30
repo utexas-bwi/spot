@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>spot_navigation</name>
+  <version>0.0.1</version>
+  <description>The spot_navigation package</description>
+
+  <maintainer email="maxsvetlik@cs.utexas.edu">Max Svetlik</maintainer>
+
+  <license>BSD</license>
+  
+  <author email="dakshdua@utexas.edu">Daksh Dua</author>
+  <author email="marikamurphy@utexas.edu">Marika Murphy</author>
+  <author email="maxwell@cs.utexas.edu">Max Svetlik</author>
+
+  <exec_depend>amcl</exec_depend>
+  <exec_depend>movebase</exec_depend>
+  <exec_depend>movebase-msgs</exec_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <export>
+  </export>
+</package>
