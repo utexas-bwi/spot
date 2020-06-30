@@ -53,32 +53,32 @@ class AuthClient {
 
 
   // Overloaded service call using existing token that needs reminting
-  // std::string GetAuthToken(const std::string& token, const std::string& appToken) {
+  std::string GetAuthToken(const std::string& token, const std::string& appToken) {
 
-  //   // Data we are sending to the server.
-  //   GetAuthTokenRequest request;
-  //   request.set_token(token);
-  //   request.set_application_token(appToken);
+    // Data we are sending to the server.
+    GetAuthTokenRequest request;
+    request.set_token(token);
+    request.set_application_token(appToken);
 
-  //   // Container for the data we expect from the server.
-  //   GetAuthTokenResponse reply;
+    // Container for the data we expect from the server.
+    GetAuthTokenResponse reply;
 
-  //   // Context for the client. It could be used to convey extra information to
-  //   // the server and/or tweak certain RPC behaviors.
-  //   ClientContext context;
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
 
-  //   // The actual RPC.
-  //   Status status = stub_->GetAuthToken(&context, request, &reply);
+    // The actual RPC.
+    Status status = stub_->GetAuthToken(&context, request, &reply);
 
-  //   // Act upon its status.
-  //   if (status.ok()) {
-  //     std::cout << "Token Status: " << reply.status() << ", Token: " << reply.token() << std::endl;
-  //     return reply.token();
-  //   } else {
-  //     std::cout << status.error_code() << ": " << status.error_message() << std::endl;
-  //     return "RPC failed";
-  //   }
-  // }
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Token Status: " << reply.status() << ", Token: " << reply.token() << std::endl;
+      return reply.token();
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+      return "RPC failed";
+    }
+  }
 
  private:
   std::unique_ptr<AuthService::Stub> stub_;
