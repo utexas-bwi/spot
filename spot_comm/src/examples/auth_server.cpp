@@ -15,7 +15,6 @@ using grpc::ServerContext;
 using grpc::Status;
 using bosdyn::api::GetAuthTokenRequest;
 using bosdyn::api::GetAuthTokenResponse;
-using bosdyn::api::GetAuthTokenResponse_Status;
 using bosdyn::api::AuthService;
 
 class AuthServiceImpl final : public AuthService::Service {
@@ -23,8 +22,7 @@ class AuthServiceImpl final : public AuthService::Service {
                   GetAuthTokenResponse* response) override {
     std::string token("testToken");
     std::cout << "Username: " << request->username() << std::endl << "Pasword: " << request->password() << std::endl;
-    GetAuthTokenResponse_Status tokenStatusOK = GetAuthTokenResponse_Status::GetAuthTokenResponse_Status_STATUS_OK;
-    response->set_status(tokenStatusOK);
+    response->set_status(GetAuthTokenResponse::STATUS_OK);
     response->set_token(token);
     return Status::OK;
   }
