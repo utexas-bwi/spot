@@ -1,0 +1,9 @@
+<launch>
+
+  <param name="use_sim_time" value="true" />
+  <node pkg="gmapping" type="slam_gmapping" name="gmapping_thing" output="screen" >
+	  <param name="odom_frame" value="odom" />
+	  <param name="base_frame" value="base_footprint" />   
+  </node>
+
+</launch>
