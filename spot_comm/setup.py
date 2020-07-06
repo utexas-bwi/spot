@@ -4,7 +4,7 @@ from distutils.core import setup
 from catkin_pkg.python_setup import generate_distutils_setup
 
 d = generate_distutils_setup(
-    packages=['spot_comm.client'],
+    packages=['spot_comm.client', 'spot_comm.interface'],
     package_dir={'': 'src'},
     )
 

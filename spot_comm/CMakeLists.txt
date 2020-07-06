@@ -10,12 +10,19 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nav_msgs
   grpc
+  message_generation
 )
 
 message("-- Searching for grpc C++")
 find_package(grpc QUIET)
 
+
 catkin_python_setup()
+
+# Message generation
+add_action_files(DIRECTORY action FILES Waypoint.action)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs actionlib_msgs)
+
 
 catkin_package()
 
