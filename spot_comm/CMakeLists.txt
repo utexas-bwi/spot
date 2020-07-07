@@ -17,7 +17,7 @@ catkin_package()
 ###########
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -26,7 +26,11 @@ include_directories(
 generate_proto(auth_proto GRPC SRC_BASE "." FILES 
 	bosdyn/api/auth_service.proto
 	bosdyn/api/auth.proto
-	bosdyn/api/header.proto
+  bosdyn/api/header.proto
+  bosdyn/api/geometry.proto
+  bosdyn/api/image.proto
+  bosdyn/api/image_service.proto
+
 )
 
 add_executable(auth_client src/examples/auth_client.cpp)
