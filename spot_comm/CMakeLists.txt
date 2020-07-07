@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   grpc
   message_generation
+  grpc
 )
 
 message("-- Searching for grpc C++")
@@ -53,7 +54,6 @@ if(grpc_FOUND)
 	target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
 	target_link_libraries(auth_server ${catkin_LIBRARIES} auth_proto)
 endif()
-
 
 add_executable(gps_translator_node src/gps_translator.cc)
 target_link_libraries(gps_translator_node ${catkin_LIBRARIES})
