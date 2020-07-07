@@ -32,8 +32,6 @@ class SMADSROS:
     def start(self):
         x = threading.Thread(target=self.sensor_interface.start)
         y = threading.Thread(target=self.navigation_interface.start)
-        #self.sensor_interface.start()
-        #self.navigation_interface.start()
         x.start()
         y.start()
         rospy.spin()
@@ -44,7 +42,10 @@ if __name__ == '__main__':
         platform = RobotType.JACKAL
         client = RobotType.platform_map[platform]
 
-        smadsros = SMADSROS(client, 10, "smads_platform")
+        platorm = rospy.get_param("~platform", 1)
+        platform_prefix = rospy.get_param("~platform_prefix", "smads_platform")
+        poll_rate = rospy.get_param("~sensor_poll_rate", 10)
+        smadsros = SMADSROS(client, poll_rate, platform_prefix)
         smadsros.start()
 
     except rospy.ROSInterruptException:

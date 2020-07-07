@@ -48,19 +48,20 @@ std::string maps_dir;
 std::string gps_topic;
 
 string GetMapFileFromName(const string& map) {
-  return maps_dir + "/" + map + "/" + map + ".gpsmap.txt";
+  return maps_dir + "/" + map + "/" + map + ".vectormap.txt";
 }
 
 struct GPSToMetric {
   bool Load(const std::string& map) {
     const string file = GetMapFileFromName(map);
+    ROS_INFO("Opening file: %s", file.c_str());
     ScopedFile fid(file, "r", true);
     if (fid() == nullptr) return false;
     if (fscanf(fid(), "%lf, %lf, %lf", &gps_origin_latitude, 
         &gps_origin_longitude, &map_orientation) != 3) {
       return false;
     }
-    printf("Map origin: %12.8lf, %12.8lf\n", gps_origin_latitude, gps_origin_longitude);
+    ROS_INFO("Map origin: %12.8lf, %12.8lf\n", gps_origin_latitude, gps_origin_longitude);
     return true;
   }
 
@@ -114,10 +115,10 @@ void GpsCallback(const NavSatFix& msg) {
 
 int main(int argc, char* argv[]) {
   ros::init(argc, argv, "smads_gps_translator");
-  ros::NodeHandle n;
-  n.getParam("/map_name", map);
-  n.getParam("/maps_dir", maps_dir);
-  n.getParam("/gps_topic", gps_topic);
+  ros::NodeHandle n("~");
+  n.getParam("map_name", map);
+  n.getParam("maps_dir", maps_dir);
+  n.getParam("gps_topic", gps_topic);
   ros::Subscriber gps_sub = n.subscribe(gps_topic, 1, &GpsCallback);
   localization_msg_.header.frame_id = "map";
   localization_msg_.header.seq = 0;
@@ -125,7 +126,7 @@ int main(int argc, char* argv[]) {
   
   localization_pub_ = 
       n.advertise<geometry_msgs::PointStamped>("gps_localization", 1);
-  //CHECK(map_.Load(map_));
+  map_.Load(map);
   ros::spin();
   return 0;
 }
