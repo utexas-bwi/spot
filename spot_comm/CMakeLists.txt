@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 message("-- Searching for grpc C++")
 find_package(grpc QUIET)
-
+find_package(Eigen3 REQUIRED)
 
 catkin_python_setup()
 
@@ -32,8 +32,9 @@ catkin_package()
 
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
+  ${Eigen_INCLUDE_DIRS}
 )
 
 if(grpc_FOUND)
@@ -52,3 +53,8 @@ if(grpc_FOUND)
 	target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
 	target_link_libraries(auth_server ${catkin_LIBRARIES} auth_proto)
 endif()
+
+
+add_executable(gps_translator_node src/gps_translator.cc)
+target_link_libraries(gps_translator_node ${catkin_LIBRARIES})
+add_dependencies(gps_translator_node spot_comm_generate_messages_cpp)
