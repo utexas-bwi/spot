@@ -14,8 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   grpc
 )
 
-catkin_package(INCLUDE_DIRS include)
-
 message("-- Searching for grpc C++")
 find_package(grpc QUIET)
 find_package(Eigen3 REQUIRED)
@@ -26,8 +24,7 @@ catkin_python_setup()
 add_action_files(DIRECTORY action FILES Waypoint.action)
 generate_messages(DEPENDENCIES std_msgs geometry_msgs actionlib_msgs)
 
-
-catkin_package()
+catkin_package(INCLUDE_DIRS include)
 
 ###########
 ## Build ##

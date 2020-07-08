@@ -30,17 +30,17 @@ void read(const std::string& filename, std::string& data) {
 }
 
 void RunServer() {
-  std::string server_address("localhost:443");
+  std::string server_address("localhost:50051");
   AuthServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
   ServerBuilder builder;
 
-  std::shared_ptr<ServerCredentials> creds;
+  /* std::shared_ptr<ServerCredentials> creds;
 
   std::string key, cert;
-  /* read("key.pem", key);
+  read("key.pem", key);
   read("cert.pem", cert);
 
   grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp ={key, cert};
