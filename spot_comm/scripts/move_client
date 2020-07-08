@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+import rospy
+import sys
+import math
+import time
+import bosdyn.client
+import bosdyn.client.util
+from bosdyn.client.robot_state import RobotStateClient
+from bosdyn.client.robot_command import RobotCommandClient, RobotCommandBuilder, blocking_stand
+from bosdyn.api import estop_pb2
+from bosdyn.api import geometry_pb2 as geo
+from bosdyn.client import math_helpers
+from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
+from bosdyn.client.frame_helpers import ODOM_FRAME_NAME, VISION_FRAME_NAME, get_odom_tform_body, get_vision_tform_body
+from bosdyn.client.lease import LeaseClient, LeaseKeepAlive
+
+from geometry_msgs.msg import PoseStamped
+
+def sdkCall(data):
+    rospy.loginfo(rospy.get_caller_id() + "Pose recieved")
+    #spot-sdk call goes here (covert pose to SE3 Vector and send to spot
+    
+def listener():
+    rospy.init_node('moveClient', anonymous=True)
+    rospy.Subscriber("move_base_simple/goal", PoseStamped, sdkCall)
+    rospy.spin()
+
+if __name__ == '__main__':
+    listener()

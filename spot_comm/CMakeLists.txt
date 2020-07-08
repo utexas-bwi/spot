@@ -10,16 +10,17 @@ find_package(catkin REQUIRED COMPONENTS
   grpc
 )
 
-catkin_package()
+catkin_package(INCLUDE_DIRS include)
 
 ###########
 ## Build ##
 ###########
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
+
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
@@ -29,7 +30,20 @@ generate_proto(auth_proto GRPC SRC_BASE "." FILES
 	bosdyn/api/header.proto
 )
 
-add_executable(auth_client src/examples/auth_client.cpp)
-add_executable(auth_server src/examples/auth_server.cpp)
+generate_proto(estop_proto GRPC SRC_BASE "." FILES 
+	bosdyn/api/estop_service.proto
+	bosdyn/api/estop.proto
+)
+
+add_executable(auth_client src/auth_client.cpp)
+add_executable(spotServer
+  src/server.cpp
+  src/AuthServiceImpl.cpp
+)
+
 target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
-target_link_libraries(auth_server ${catkin_LIBRARIES} auth_proto)
+target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto)
+
+catkin_install_python(PROGRAMS scripts/move_client
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

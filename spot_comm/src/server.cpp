@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include <memory>
 #include <string>
 
@@ -7,34 +9,46 @@
 #include <grpc++/health_check_service_interface.h>
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
-#include "bosdyn/api/auth_service.grpc.pb.h"
+#include <spot_comm/AuthServiceImpl.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using bosdyn::api::GetAuthTokenRequest;
-using bosdyn::api::GetAuthTokenResponse;
-using bosdyn::api::AuthService;
+using grpc::ServerCredentials;
 
-class AuthServiceImpl final : public AuthService::Service {
-  Status GetAuthToken(ServerContext* context, const GetAuthTokenRequest* request,
-                  GetAuthTokenResponse* response) override {
-    std::string token("testToken");
-    std::cout << "Username: " << request->username() << std::endl << "Pasword: " << request->password() << std::endl;
-    response->set_status(GetAuthTokenResponse::STATUS_OK);
-    response->set_token(token);
-    return Status::OK;
+void read(const std::string& filename, std::string& data) {
+  std::ifstream file(filename.c_str(), std::ios::in);
+  if (file.is_open())
+  {
+    std::stringstream ss;
+    ss << file.rdbuf();
+    file.close();
+    data = ss.str();
   }
-};
+  return;
+}
 
 void RunServer() {
-  std::string server_address("127.0.0.1:50051");
+  std::string server_address("localhost:443");
   AuthServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
   ServerBuilder builder;
+
+  std::shared_ptr<ServerCredentials> creds;
+
+  std::string key, cert;
+  /* read("key.pem", key);
+  read("cert.pem", cert);
+
+  grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp ={key, cert};
+  grpc::SslServerCredentialsOptions ssl_opts;
+  ssl_opts.pem_root_certs="";
+  ssl_opts.pem_key_cert_pairs.push_back(pkcp);
+  creds = grpc::SslServerCredentials(ssl_opts); */
+
   // Listen on the given address without any authentication mechanism.
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
   // Register "service" as the instance through which we'll communicate with
