@@ -9,7 +9,7 @@
 
 
 from abc import ABC, abstractmethod 
-from geometry_msgs.msg import Point, PoseWithCovarianceStamped
+from geometry_msgs.msg import Pose2D, PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan, Image
 
@@ -41,7 +41,10 @@ class RobotClient(ABC):
     def set_waypoint(self, point):
         pass
 
-    def set_estop_behavior(self):
+    def set_estop_stop(self):
+        pass
+    
+    def set_estop_start(self):
         pass
 
     def start_robot(self):

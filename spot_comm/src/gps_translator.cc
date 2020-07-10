@@ -39,16 +39,20 @@ using Eigen::Vector2d;
 using sensor_msgs::NavSatFix;
 using std::string;
 
-//DEFINE_string(map, "UT_Campus", "Map name to load");
-//DEFINE_string(gps_topic, "gps/fix", "ROS topic for GPS messages");
-//DEFINE_string(maps_dir, "enml/maps", "Maps directory");
+using namespace math_util;
 
 std::string map;
 std::string maps_dir;
-std::string gps_topic;
+std::string gps_update_topic;
+
+const std::string gps_to_map_input_topic = "/smads/gps_to_map/input";
+const std::string gps_to_map_output_topic = "/smads/gps_to_map/result";
+
+const std::string map_to_gps_input_topic = "/localization";
+const std::string map_to_gps_output_topic = "/smads/gps_localization";
 
 string GetMapFileFromName(const string& map) {
-  return maps_dir + "/" + map + "/" + map + ".vectormap.txt";
+  return maps_dir + "/" + map + "/" + map + ".gpsmap.txt";
 }
 
 struct GPSToMetric {
@@ -66,16 +70,22 @@ struct GPSToMetric {
   }
 
   Vector2d GpsToMetric(const double latitude, const double longitude) {
-    const double theta = math_util::DegToRad(latitude);
+    const double theta = DegToRad(latitude);
     const double c = std::cos(theta);
     const double s = std::sin(theta);
-    const double r = sqrt(math_util::Sq(wgs_84_a * wgs_84_b) / (math_util::Sq(c * wgs_84_b) + math_util::Sq(s * wgs_84_a)));
-    const double dlat = math_util::DegToRad(latitude - gps_origin_latitude);
-    const double dlong = math_util::DegToRad(longitude - gps_origin_longitude);
+    const double r = sqrt(Sq(wgs_84_a * wgs_84_b) / (Sq(c * wgs_84_b) + Sq(s * wgs_84_a)));
+    const double dlat = DegToRad(latitude - gps_origin_latitude);
+    const double dlong = DegToRad(longitude - gps_origin_longitude);
     const double r1 = r * c;
     const double x = r1 * dlong;
     const double y = r * dlat;
     return Rotation2Dd(map_orientation) * Vector2d(x, y);
+  }
+
+  Vector2d MetricToGps(const double x, const double y) { 
+    //const double Rotation2Dd(map_orientation) / Vector2d(x, y);
+    //const double y = r / dlat;
+
   }
 
   double gps_origin_longitude;
@@ -94,7 +104,7 @@ GPSToMetric map_;
 ros::Publisher localization_pub_;
 geometry_msgs::PointStamped localization_msg_;
 
-void GpsCallback(const NavSatFix& msg) {
+void GpsToMapCallback(const NavSatFix& msg) {
   const bool verbose = true;
   if (verbose) {
     printf("Status:%d Service:%d Lat,Long:%12.8lf, %12.8lf Alt:%7.2lf", 
@@ -118,14 +128,14 @@ int main(int argc, char* argv[]) {
   ros::NodeHandle n("~");
   n.getParam("map_name", map);
   n.getParam("maps_dir", maps_dir);
-  n.getParam("gps_topic", gps_topic);
-  ros::Subscriber gps_sub = n.subscribe(gps_topic, 1, &GpsCallback);
+  n.getParam("gps_update_topic", gps_update_topic);
+  ros::Subscriber gps_sub = n.subscribe(gps_to_map_input_topic, 1, &GpsToMapCallback);
   localization_msg_.header.frame_id = "map";
   localization_msg_.header.seq = 0;
   localization_msg_.header.stamp = ros::Time::now();
   
   localization_pub_ = 
-      n.advertise<geometry_msgs::PointStamped>("gps_localization", 1);
+      n.advertise<geometry_msgs::PointStamped>(gps_to_map_output_topic, 1);
   map_.Load(map);
   ros::spin();
   return 0;

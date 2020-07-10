@@ -1,19 +1,19 @@
 <launch>
   <arg name="map_name" default="UT_Campus"/>
   <arg name="maps_dir" default="$(find spot_comm)/maps/amrl_maps"/>
-  <arg name="gps_topic" default="/nav_sat/fix"/>
-  <arg name="output_odom_topic" default="/odom"/>
-  <arg name="output_scan_topic" default="/scan"/>
+  <arg name="gps_update_topic" default="/nav_sat/fix"/>
+  <arg name="output_odom_topic" default="/jackal_velocity_controller/odom"/>
+  <arg name="output_scan_topic" default="/velodyne_2dscan_high_beams"/>
 
   <node pkg="spot_comm" type="smads_endpoints_node.py" name="smads_endpoints_node" output="screen">
 	<param name="platform" value="2"/>
-	<param name="platform_prefix" value="jackal"/>
+	<param name="platform_prefix" value="smads"/>
   </node>
 
   <node pkg="spot_comm" type="gps_translator_node" name="smads_gps_translator_node" output="screen">
 	<param name="map_name" value="$(arg map_name)"/>
 	<param name="maps_dir" value="$(arg maps_dir)"/>
-	<param name="gps_topic" value="$(arg gps_topic)"/>
+	<param name="gps_update_topic" value="$(arg gps_update_topic)"/>
   </node>
 
   <param name="smads_output_odom_topic" value="$(arg output_odom_topic)"/>

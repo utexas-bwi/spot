@@ -18,8 +18,10 @@ class RobotSensorInterface:
 
         self.odom_pub = None
         self.scan_pub = None
-        self.odom_pub = rospy.Publisher(self.robot_prefix + '/odom', Odometry, queue_size=10)
-        self.scan_pub = rospy.Publisher(self.robot_prefix + '/scan', LaserScan, queue_size=10)
+        odom_postfix = rospy.get_param("smads_output_odom_topic")
+        scan_postfix = rospy.get_param("smads_output_scan_topic")
+        self.odom_pub = rospy.Publisher(self.robot_prefix + odom_postfix, Odometry, queue_size=10)
+        self.scan_pub = rospy.Publisher(self.robot_prefix + scan_postfix, LaserScan, queue_size=10)
     
     def poll(self):
         r = rospy.Rate(self.poll_rate)

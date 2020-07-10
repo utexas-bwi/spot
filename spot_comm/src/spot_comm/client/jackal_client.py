@@ -13,20 +13,25 @@ from abc import ABC, abstractmethod
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from spot_comm.client import RobotClient
+from amrl_msgs.msg import Pose2Df
+from geometry_msgs.msg import PoseStamped
 
 class JackalClient(RobotClient):
 
     def __init__(self, init_node=False):
         if init_node:
             rospy.init_node('jackal_ros_client_interface', anonymous=False)
-        self.odom_pub = rospy.Publisher('/odom', Odometry, queue_size=10)
-        self.scan_pub = rospy.Publisher('/scan', LaserScan, queue_size=10)
 
         self.cur_odom = Odometry()
         self.cur_scan = LaserScan()
 
-        rospy.Subscriber("/odom", Odometry, self.odom_callback)
-        rospy.Subscriber("/scan", LaserScan, self.scan_callback)
+        rospy.Subscriber("/jackal_velocity_controller/odom", Odometry, self.odom_callback)
+        rospy.Subscriber("/velodyne_2dscan_high_beams", LaserScan, self.scan_callback)
+        
+        self.movebase_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped)
+
+        # For new navigation, use publisher below
+        #self.movebase_pub = rospy.Publisher("/move_base_simple/goal", Pose2Df)
 
     def odom_callback(self, data):
         self.cur_odom = data
@@ -46,8 +51,23 @@ class JackalClient(RobotClient):
     def get_robot_status(self):
         pass
 
-    def set_waypoint(self):
-        pass
+    def set_waypoint(self, goal_pose):
+        p = PoseStamped()
+        p.pose.position.x = goal_pose.x
+        p.pose.position.y = goal_pose.y
+        p.header.frame_id = "map"
+        self.movebase_pub.publish(p)
+    
+    """
+    For new Navigation use below method instead
+    def set_waypoint(self, goal_pose):
+        p = Pose2Df()
+        p.x = goal_pose.x
+        p.y = goal_pose.y
+        p.theta = goal_pose.theta
+
+        self.movebase_pub.publish(p)
+    """
 
     def set_estop_behavior(self):
         pass
