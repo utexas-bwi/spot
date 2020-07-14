@@ -2,6 +2,11 @@
   <arg name="slam" default="false"/>
   <arg name="gui" default="true"/>
 
+  <!-- Use standard ROS navigation stack through move_base? If not, specify vector maps for graph_navigation -->
+  <arg name="move_base" default="false"/>
+  <arg name="graph_map_location" default="$(find amrl_maps)"/>
+  <arg name="graph_map_name" default="UT_Campus"/>
+
   <include file="$(find spot_gazebo)/launch/spot.launch">
      <arg name="ahg_sim" value="true"/>
   </include>
@@ -9,9 +14,16 @@
   <group if="$(arg slam)">
     <include file="$(find spot_navigation)/launch/gmapping.launch"/>
   </group>
-  <include file="$(find spot_navigation)/launch/move_base.launch">
-    <arg name="slam" value="$(arg slam)"/>
-  </include>
+
+  <group if="$(arg move_base)">
+    <include file="$(find spot_navigation)/launch/move_base.launch">
+      <arg name="slam" value="$(arg slam)"/>
+    </include>
+  </group>
+  <group unless="$(arg move_base)">  
+    <node pkg="graph_navigation" type="navigation" name="graph_navigation" output="screen" args="--map $(arg graph_map_location)/$(arg graph_map_name)/$(arg graph_map_name).vectormap.txt" />
+  </group>  
+
 
   <group if="$(arg gui)">
      <node pkg="rviz" type="rviz" name="rviz" args="-d $(find spot_gazebo)/config/navigation.rviz" output="screen"/>
