@@ -6,6 +6,9 @@
   <arg name="move_base" default="false"/>
   <arg name="graph_map_location" default="$(find amrl_maps)"/>
   <arg name="graph_map_name" default="UT_Campus"/>
+  <arg name="odom_topic" default="/odom"/>
+  <arg name="scan_topic" default="/scan"/>
+  <arg name="localization_topic" default="/amcl_pose"/>
 
   <include file="$(find spot_gazebo)/launch/spot.launch">
      <arg name="ahg_sim" value="true"/>
@@ -21,7 +24,13 @@
     </include>
   </group>
   <group unless="$(arg move_base)">  
-    <node pkg="graph_navigation" type="navigation" name="graph_navigation" output="screen" args="--map $(arg graph_map_location)/$(arg graph_map_name)/$(arg graph_map_name).vectormap.txt" />
+    <node pkg="enml" type="enml" name="non_markov_localization" output="screen" args="--robot_config $(find spot_gazebo)/config/robot.lua" />
+    
+    <node pkg="graph_navigation" type="navigation" name="graph_navigation" output="screen" args="--map $(arg graph_map_location)/$(arg graph_map_name)/$(arg graph_map_name).navigation.txt" >
+       <remap from="/jackal_velocity_controller/odom" to="/odom"/>
+       <remap from="/velodyne_2dscan" to="/scan"/>
+       <remap from="/navigation/cmd_vel" to="/cmd_vel"/>
+    </node>
   </group>  
 
 
