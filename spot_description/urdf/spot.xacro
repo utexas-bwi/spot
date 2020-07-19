@@ -93,6 +93,36 @@
     </joint>
   </xacro:macro>
 
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.064 -0.065 0.154" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <geometry>
+       <mesh filename="$(find spot_description)/meshes/r200.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.003 0.065 0.007" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.012 0.132 0.020"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="$0.005 0.018 0.013" rpy="0 0 0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+
+
   <xacro:caster prefix="front_left" reflectH="1" reflectV="1"/>
   <xacro:caster prefix="front_right" reflectH="-1" reflectV="1"/>
   <xacro:caster prefix="back_left" reflectH="1" reflectV="-1"/>

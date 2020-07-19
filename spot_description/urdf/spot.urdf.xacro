@@ -99,11 +99,42 @@
   <xacro:caster prefix="back_left" reflectH="1" reflectV="-1"/>
   <xacro:caster prefix="back_right" reflectH="-1" reflectV="-1"/>
 
-  <xacro:include filename="$(find spot_description)/urdf/spot.plugins.xacro"/>
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.425 -0.065 0.63" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+     <origin xyz="0 0 0" rpy="1.57 0 1.57"/>
+      <geometry>
+       <mesh filename="package://spot_description/meshes/r200.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.003 0.065 0.007" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.012 0.132 0.020"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin xyz="0.005 0.018 0.013" rpy="0 0 0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+
+
+
+
 
   <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
   <VLP-16 parent="base_footprint" name="velodyne" topic="lidar_points" hz="10" samples="1024" gpu="false" lasers="16" max_range="100">
     <origin xyz="0 0 0.73" rpy="0 0 0" />
   </VLP-16>
 
+  <xacro:include filename="$(find spot_description)/urdf/spot.plugins.xacro"/>
 </robot>
