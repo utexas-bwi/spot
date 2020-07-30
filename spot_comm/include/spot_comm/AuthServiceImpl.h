@@ -11,8 +11,7 @@ using grpc::ServerContext;
 
 class AuthServiceImpl final : public AuthService::Service {
 public:
-  Status GetAuthToken(ServerContext* context, const GetAuthTokenRequest* request,
-                  GetAuthTokenResponse* response) override;
+  Status GetAuthToken(ServerContext* context, const GetAuthTokenRequest* request, GetAuthTokenResponse* response) override;
 };
 
 #endif

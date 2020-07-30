@@ -57,6 +57,8 @@ if(grpc_FOUND)
   add_executable(spotServer
     src/server.cpp
     src/AuthServiceImpl.cpp
+    src/EstopServiceImpl.cpp
+    src/Header.cpp
   )
 
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
