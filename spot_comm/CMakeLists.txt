@@ -58,7 +58,6 @@ if(grpc_FOUND)
     src/server.cpp
     src/AuthServiceImpl.cpp
     src/EstopServiceImpl.cpp
-    src/Header.cpp
   )
 
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)

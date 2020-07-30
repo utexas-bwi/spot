@@ -1,3 +1,0 @@
-ResponseHeader generateResponseHeader(Message message) {
-  
-}
