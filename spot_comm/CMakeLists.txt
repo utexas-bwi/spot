@@ -53,10 +53,10 @@ if(grpc_FOUND)
 	  bosdyn/api/estop.proto
   )
 
- # generate_proto(directory_proto GRPC SRC_BASE "." FILES 
-#	  bosdyn/api/directory_service.proto
-#	  bosdyn/api/directory.proto
- # )
+  generate_proto(directory_proto GRPC SRC_BASE "." FILES 
+	  bosdyn/api/directory_service.proto
+	  bosdyn/api/directory.proto
+  )
 
   generate_proto(image_proto GRPC SRC_BASE "." FILES 
 	  bosdyn/api/image_service.proto
@@ -70,15 +70,13 @@ if(grpc_FOUND)
     src/server.cpp
     src/AuthServiceImpl.cpp
     src/DirectoryServiceImpl.cpp
-  )
-
- # target_link_libraries(directory_client ${catkin_LIBRARIES} directory_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto)
     src/EstopServiceImpl.cpp
     src/ImageServiceImpl.cpp
   )
+
+ # target_link_libraries(directory_client ${catkin_LIBRARIES} directory_proto)
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto image_proto)
+  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto image_proto)
 endif()
 
 catkin_install_python(PROGRAMS scripts/move_client
