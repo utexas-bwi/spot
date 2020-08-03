@@ -8,6 +8,7 @@
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
 #include "bosdyn/api/directory_service.grpc.pb.h"
+#include "bosdyn/api/header.grpc.pb.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
