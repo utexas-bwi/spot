@@ -71,6 +71,7 @@ if(grpc_FOUND)
 
   add_executable(auth_client src/auth_client.cpp)
 #  add_executable(directory_client src/directory_client.cpp)
+#  add_executable(time_sync_client src/time_sync_client.cpp)
   add_executable(spotServer
     src/server.cpp
     src/AuthServiceImpl.cpp
@@ -82,6 +83,7 @@ if(grpc_FOUND)
 
  # target_link_libraries(directory_client ${catkin_LIBRARIES} directory_proto)
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
+#  target_link_libraries(time_sync_client ${catkin_LIBRARIES} time_sync_proto) 
   target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto image_proto time_sync_proto)
 endif()
 

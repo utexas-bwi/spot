@@ -34,6 +34,7 @@ void RunServer() {
   std::string server_address("localhost:50051");
   AuthServiceImpl authService;
   // DirectoryServiceImpl dirService;
+  // TimeSyncServiceImpl timeService;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();

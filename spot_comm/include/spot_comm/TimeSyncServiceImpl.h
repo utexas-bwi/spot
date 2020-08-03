@@ -6,8 +6,6 @@
 
 using bosdyn::api::TimeSyncUpdateRequest;
 using bosdyn::api::TimeSyncUpdateResponse;
-using bosdyn::api::TimeSyncStatusRequest;
-using bosdyn::api::TimeSyncStatusResponse;
 using bosdyn::api::TimeSyncService;
 using bosdyn::api::TimeSyncEstimate;
 using bosdyn::api::TimeSyncRoundTrip;

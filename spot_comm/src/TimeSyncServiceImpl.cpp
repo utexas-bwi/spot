@@ -9,41 +9,31 @@ Status TimeSyncServiceImpl::TimeSyncUpdate(ServerContext* context, const TimeSyn
 
     // TimeSyncEstimate fields
 
-    // Estimated time for one request-response exchange
-    Duration* trip_time;
-    // Client time when the message was sent in secs
-    int64_t c_tx = TimeUtil::TimestampToSeconds(prev_trip.client_tx());
-    // Server time when the message was received in secs
-    int64_t s_rx = TimeUtil::TimestampToSeconds(prev_trip.server_rx());
-    // Server time when the response was sent in secs
-    int64_t s_tx = TimeUtil::TimestampToSeconds(prev_trip.server_tx());
-    // Client time when the response was received in secs
-    int64_t c_rx = TimeUtil::TimestampToSeconds(prev_trip.client_rx());
-    int64_t round_trip_secs = (s_rx - c_tx) + (c_rx - s_tx);
-    trip_time->set_seconds(round_trip_secs);
-    trip_time->set_nanos(round_trip_secs * 1000000000);
+    // Estimated time for one round trip
+    Duration total_time = (prev_trip.client_rx() - prev_trip.client_tx());
+    Duration server_processing = (prev_trip.server_tx() - prev_trip.server_rx());
+    Duration trip_time =  total_time - server_processing;
     
     // Estimate of the difference between the client and server clocks
-    Duration* skew;
-    // skew.set_seconds();
-    // skew.set_nanos();
+    Duration skew;
+    skew = (prev_trip.server_rx() - prev_trip.client_tx()) + (prev_trip.server_tx() - prev_trip.client_rx());
+    skew /= 2;
+    
 
     // Fill in prev_est fields
-    prev_est->set_allocated_round_trip_time(trip_time);
-    prev_est->set_allocated_clock_skew(skew);
+    prev_est->set_allocated_round_trip_time(&trip_time);
+    prev_est->set_allocated_clock_skew(&skew);
 
     // TimeSyncState fields - for now, best estimate is prev one
+    // Should be change best est to prev calculation if better than the curr best estimate
     TimeSyncEstimate* best_est;
     // TimeSyncEstimate fields
-    Duration* best_round = trip_time;
+    Duration* best_round = &trip_time;
     // best_round.set_seconds();
     // best_round.set_nanos();
-    Duration* best_skew = skew;
+    Duration* best_skew = &skew;
     // best_skew.set_seconds();
     // best_skew.set_nanos();
-    // Timestamp best_est_time;
-    // best_est_time.set_seconds();
-    // best_est_time.set_nanos();
     best_est->set_allocated_round_trip_time(best_round);
     best_est->set_allocated_clock_skew(best_skew);
     
