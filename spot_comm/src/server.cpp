@@ -32,7 +32,7 @@ void read(const std::string& filename, std::string& data) {
 
 void RunServer() {
   std::string server_address("localhost:50051");
-  AuthServiceImpl authService;
+   AuthServiceImpl authService;
   // DirectoryServiceImpl dirService;
   // TimeSyncServiceImpl timeService;
 
