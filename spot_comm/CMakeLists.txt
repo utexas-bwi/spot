@@ -64,6 +64,11 @@ if(grpc_FOUND)
     bosdyn/api/geometry.proto
   )
 
+  generate_proto(time_sync_proto GRPC SRC_BASE "." FILES 
+	  bosdyn/api/time_sync_service.proto
+    bosdyn/api/time_sync.proto
+  )
+
   add_executable(auth_client src/auth_client.cpp)
   add_executable(directory_client src/directory_client.cpp)
   add_executable(spotServer
@@ -72,11 +77,12 @@ if(grpc_FOUND)
     src/DirectoryServiceImpl.cpp
     src/EstopServiceImpl.cpp
     src/ImageServiceImpl.cpp
+    src/TimeSyncServiceImpl.cpp
   )
 
   target_link_libraries(directory_client ${catkin_LIBRARIES} directory_proto)
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto image_proto)
+  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto image_proto time_sync_proto)
 endif()
 
 catkin_install_python(PROGRAMS scripts/move_client
