@@ -1,9 +1,9 @@
 #include <spot_comm/EstopServiceImpl.h>
-#include <spot_comm/Header.h>
+//#include <spot_comm/Header.h>
 
 Status EstopServiceImpl::RegisterEstopEndpoint(ServerContext* context, const RegisterEstopEndpointRequest* request, RegisterEstopEndpointResponse* response) {
-  ResponseHeader header = Header::generateResponseHeader(request->header());
-  response->set_allocated_header(&header);
+  /* ResponseHeader header = Header::generateResponseHeader(request->header());
+  response->set_allocated_header(&header); */
   RegisterEstopEndpointRequest request_copy = RegisterEstopEndpointRequest(*request);
   response->set_allocated_request(&request_copy);
   EstopEndpoint new_endpoint_copy = EstopEndpoint(request->new_endpoint());
