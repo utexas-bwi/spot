@@ -62,10 +62,6 @@ if(grpc_FOUND)
 	  bosdyn/api/directory.proto
   )
 
-  generate_proto(header_proto GRPC SRC_BASE "." FILES
-    bosdyn/api/header.proto
-  )
-
   generate_proto(image_proto GRPC SRC_BASE "." FILES 
 	  bosdyn/api/image_service.proto
     bosdyn/api/image.proto
