@@ -11,6 +11,7 @@
 
 #include <spot_comm/AuthServiceImpl.h>
 #include <spot_comm/DirectoryServiceImpl.h>
+#include <spot_comm/TimeSyncServiceImpl.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -32,9 +33,9 @@ void read(const std::string& filename, std::string& data) {
 
 void RunServer() {
   std::string server_address("localhost:50051");
-   AuthServiceImpl authService;
-  // DirectoryServiceImpl dirService;
-  // TimeSyncServiceImpl timeService;
+  AuthServiceImpl authService;
+  DirectoryServiceImpl dirService;
+  TimeSyncServiceImpl timeService;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
@@ -57,7 +58,7 @@ void RunServer() {
   // Register "service" as the instance through which we'll communicate with
   // clients. In this case it corresponds to an *synchronous* service.
   
-  builder.RegisterService(&authService); // change to dirService for directory test
+  builder.RegisterService(&timeService); // change to dirService for directory test
   // Finally assemble the server.
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;

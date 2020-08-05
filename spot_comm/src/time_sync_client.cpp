@@ -28,9 +28,6 @@ class TimeSyncClient {
   TimeSyncClient(std::shared_ptr<Channel> channel)
       : stub_(TimeSyncService::NewStub(channel)) {}
 
-
-    // **** Modify from here down *****
-
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
   TimeSyncUpdateResponse TimeSyncUpdate(TimeSyncRoundTrip* previous_round_trip, const std::string& clock_identifier) {
@@ -46,8 +43,12 @@ class TimeSyncClient {
     // the server and/or tweak certain RPC behaviors.
     ClientContext context;
 
+    std::cout << "Client start got here" << std::endl;
+
     // The actual RPC.
     Status status = stub_->TimeSyncUpdate(&context, request, &reply);
+
+    std::cout << "Client end got here" << std::endl;
 
     // Act upon its status.
     if (status.ok()) {
@@ -93,10 +94,10 @@ int main(int argc, char** argv) {
   }
   
   TimeSyncClient timeClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  TimeSyncRoundTrip prev_trip;
+  TimeSyncRoundTrip* prev_trip = new TimeSyncRoundTrip();
   std::string clock_identifier("spot-time-sync");
 
-  TimeSyncUpdateResponse reply = timeClient.TimeSyncUpdate(&prev_trip, clock_identifier);
+  TimeSyncUpdateResponse reply = timeClient.TimeSyncUpdate(prev_trip, clock_identifier);
   std::cout << "Time sync round completed: " << reply.state().status() << std::endl;
 
   return 0;
