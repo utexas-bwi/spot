@@ -2,13 +2,14 @@
 //#include <spot_comm/Header.h>
 
 Status EstopServiceImpl::RegisterEstopEndpoint(ServerContext* context, const RegisterEstopEndpointRequest* request, RegisterEstopEndpointResponse* response) {
-  /* ResponseHeader header = Header::generateResponseHeader(request->header());
-  response->set_allocated_header(&header); */
-  RegisterEstopEndpointRequest request_copy = RegisterEstopEndpointRequest(*request);
-  response->set_allocated_request(&request_copy);
-  EstopEndpoint new_endpoint_copy = EstopEndpoint(request->new_endpoint());
-  response->set_allocated_new_endpoint(&new_endpoint_copy);
-  response->set_status(RegisterEstopEndpointResponse::STATUS_SUCCESS);
+  //ResponseHeader header = Header::generateResponseHeader(request->header());
+  //response->mutable_header();
+  //RegisterEstopEndpointRequest request_copy = RegisterEstopEndpointRequest(*request);
+  //response->mutable_request()->Swap(&request_copy);
+  //std::cout << "hello" << std::endl;
+  /* EstopEndpoint new_endpoint_copy = EstopEndpoint(request->new_endpoint());
+  *(response->mutable_new_endpoint()) = new_endpoint_copy; */
+  //response->set_status(RegisterEstopEndpointResponse::STATUS_SUCCESS);
 }
 
 Status EstopServiceImpl::DeregisterEstopEndpoint(ServerContext* context, const DeregisterEstopEndpointRequest* request, DeregisterEstopEndpointResponse* response) {
