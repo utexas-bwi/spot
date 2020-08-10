@@ -1,19 +1,20 @@
 #include <spot_comm/DirectoryServiceImpl.h>
 #include <spot_comm/Header.h>
 
+void fillServiceEntry(ServiceEntry* entry) {
+  entry->set_name("testService");
+  entry->set_type("testType");
+  entry->set_authority("testAuthority"); 
+  entry->mutable_last_update()->CopyFrom(TimeUtil::GetCurrentTime());
+  entry->set_user_token_required(false);
+  entry->set_permission_required("");
+}
+
 Status DirectoryServiceImpl::GetServiceEntry(ServerContext* context, const GetServiceEntryRequest* request,
                 GetServiceEntryResponse* response) {
   std::cout << "Service Name: " << request->service_name() << std::endl;
-  ServiceEntry entry;
-  Timestamp timestamp = TimeUtil::GetCurrentTime();
-  entry.set_name("testService");
-  entry.set_type("testType");
-  entry.set_authority("testAuthority"); 
-  entry.set_allocated_last_update(&timestamp);
-  entry.set_user_token_required(false);
-  entry.set_permission_required("");
   response->set_status(GetServiceEntryResponse::STATUS_OK);
-  response->set_allocated_service_entry(&entry);
+  fillServiceEntry(response->mutable_service_entry());
   return Status::OK;
 }
 

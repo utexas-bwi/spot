@@ -57,7 +57,7 @@ void RunServer() {
 
   // Listen on the given address without any authentication mechanism.
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-  // Register "service" as the instance through which we'll communicate with
+  // Register "service" as the instance#include <spot_comm/Header.h> through which we'll communicate with
   // clients. In this case it corresponds to an *synchronous* service.
   
   builder.RegisterService(&authService); // change to dirService for directory test
