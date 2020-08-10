@@ -24,44 +24,45 @@ using bosdyn::api::SetEstopConfigRequest;
 using bosdyn::api::SetEstopConfigResponse;
 using bosdyn::api::GetEstopSystemStatusRequest;
 using bosdyn::api::GetEstopSystemStatusResponse;
+using bosdyn::api::EstopEndpoint;
 using bosdyn::api::EstopService;
+using google::protobuf::Duration;
 
 class EstopClient {
  public:
   EstopClient(std::shared_ptr<Channel> channel)
       : stub_(EstopService::NewStub(channel)) {}
 
-  /*
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  std::string GetAuthToken(const std::string& user, const std::string& pass, const std::string& appToken) {
+  std::string RegisterEstopEndpoint(EstopEndpoint new_endpoint) {
     // Data we are sending to the server.
-    GetAuthTokenRequest request;
-    request.set_username(user);
-    request.set_password(pass);
-    request.set_application_token(appToken);
+    RegisterEstopEndpointRequest request;
+    *(request.mutable_new_endpoint()) = new_endpoint;
+    std::cout << "Endpoint unique ID: " << request.new_endpoint().unique_id();
 
     // Container for the data we expect from the server.
-    GetAuthTokenResponse reply; */
+    RegisterEstopEndpointResponse reply;
 
     // Context for the client. It could be used to convey extra information to
     // the server and/or tweak certain RPC behaviors.
     ClientContext context;
 
-    /*
     // The actual RPC.
-    Status status = stub_->GetAuthToken(&context, request, &reply);
+    Status status = stub_->RegisterEstopEndpoint(&context, request, &reply);
+    
+    std::cout << "Hi again" << std::endl;
 
     // Act upon its status.
     if (status.ok()) {
-      std::cout << "Token Status: " << reply.status() << ", Token: " << reply.token() << std::endl;
-      return reply.token();
+      std::cout << "Status: " << reply.status() << ", Response: " << reply.new_endpoint().unique_id() << std::endl;
+      return reply.new_endpoint().unique_id();
     } else {
       std::cout << status.error_code() << ": " << status.error_message()
                 << std::endl;
       return "RPC failed";
     }
-  } */
+  }
 
  private:
   std::unique_ptr<EstopService::Stub> stub_;
@@ -96,11 +97,21 @@ int main(int argc, char** argv) {
   }
   EstopClient estopClient(grpc::CreateChannel(
       target_str, grpc::InsecureChannelCredentials()));
-  /* std::string user("testUser");
-  std::string pass("testPassword");
-  std::string appToken("testAppToken");
-  std::string reply = estopClient.GetAuthToken(user, pass, appToken);
-  std::cout << "Token received: " << reply << std::endl; */
+  EstopEndpoint new_endpoint;
+  std::string role("testRole");
+  new_endpoint.set_role(role);
+  std::string name("testName");
+  new_endpoint.set_name(name);
+  std::string unique_id("testID");
+  new_endpoint.set_unique_id(unique_id);
+  Duration timeout;
+  timeout.set_seconds(999.0);
+  timeout.set_nanos(1.0);
+  std::cout << "Hello once" << std::endl;
+  *(new_endpoint.mutable_timeout()) = timeout;
+  std::cout << "Hello" << std::endl;
+  std::string reply = estopClient.RegisterEstopEndpoint(new_endpoint);
+  //std::cout << "Message recieved:" << reply << std::endl;
 
   return 0;
 }

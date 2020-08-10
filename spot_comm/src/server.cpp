@@ -10,6 +10,7 @@
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
 #include <spot_comm/AuthServiceImpl.h>
+#include <spot_comm/EstopServiceImpl.h>
 #include <spot_comm/DirectoryServiceImpl.h>
 #include <spot_comm/TimeSyncServiceImpl.h>
 
@@ -34,6 +35,7 @@ void read(const std::string& filename, std::string& data) {
 void RunServer() {
   std::string server_address("localhost:50051");
   AuthServiceImpl authService;
+  EstopServiceImpl estopService;
   DirectoryServiceImpl dirService;
   TimeSyncServiceImpl timeService;
 
