@@ -32,6 +32,7 @@ class TimeSyncClient {
   // from the server.
   TimeSyncUpdateResponse TimeSyncUpdate(TimeSyncRoundTrip* previous_round_trip, const std::string& clock_identifier) {
     // Data we are sending to the server.
+    // TimeSyncRoundTrip p_trip_copy = TimeSyncRoundTrip(*previous_round_trip);
     TimeSyncUpdateRequest request;
     request.set_allocated_previous_round_trip(previous_round_trip);
     request.set_clock_identifier(clock_identifier);
@@ -48,7 +49,16 @@ class TimeSyncClient {
     // The actual RPC.
     Status status = stub_->TimeSyncUpdate(&context, request, &reply);
 
+    reply.mutable_header()->mutable_response_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+
+    std::cout << reply.state().status() << std::endl;
+    std::cout << reply.header().request_received_timestamp() << std::endl;
+    std::cout << reply.header().response_timestamp() << std::endl;
+    // std::cout << reply.previous_estimate().round_trip_time() << std::endl;
+    // std::cout << reply.previous_estimate().clock_skew() << std::endl;
+
     std::cout << "Client end got here" << std::endl;
+
 
     // Act upon its status.
     if (status.ok()) {
@@ -94,11 +104,14 @@ int main(int argc, char** argv) {
   }
   
   TimeSyncClient timeClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  TimeSyncRoundTrip* prev_trip = new TimeSyncRoundTrip();
-  std::string clock_identifier("spot-time-sync");
+  TimeSyncRoundTrip* prev_trip;
+  std::string clock_identifier;
 
   TimeSyncUpdateResponse reply = timeClient.TimeSyncUpdate(prev_trip, clock_identifier);
-  std::cout << "Time sync round completed: " << reply.state().status() << std::endl;
+
+  if(reply.state().status() == 1) {
+    std::cout << "Time sync round completed: " << reply.state().status() << std::endl;
+  }
 
   return 0;
 }
