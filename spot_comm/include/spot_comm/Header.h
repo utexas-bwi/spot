@@ -13,12 +13,9 @@ class Header {
 public:
   static ResponseHeader generateResponseHeader(RequestHeader request_header) {
     ResponseHeader response;
-    Timestamp request_received_timestamp = TimeUtil::GetCurrentTime();
-    response.set_allocated_request_received_timestamp(&request_received_timestamp);
-    RequestHeader request_header_copy = RequestHeader(request_header);
-    response.set_allocated_request_header(&request_header_copy);
-    Timestamp response_timestamp = TimeUtil::GetCurrentTime();
-    response.set_allocated_response_timestamp(&response_timestamp);
+    response.mutable_request_received_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+    response.mutable_request_header()->CopyFrom(request_header);
+    response.mutable_response_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
     return response;
   }
 };

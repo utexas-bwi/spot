@@ -38,8 +38,8 @@ class EstopClient {
   std::string RegisterEstopEndpoint(EstopEndpoint new_endpoint) {
     // Data we are sending to the server.
     RegisterEstopEndpointRequest request;
-    *(request.mutable_new_endpoint()) = new_endpoint;
-    std::cout << "Endpoint unique ID: " << request.new_endpoint().unique_id();
+    request.mutable_new_endpoint()->CopyFrom(new_endpoint);
+    std::cout << "Endpoint unique ID: " << request.new_endpoint().unique_id() << std::endl;
 
     // Container for the data we expect from the server.
     RegisterEstopEndpointResponse reply;
@@ -50,12 +50,11 @@ class EstopClient {
 
     // The actual RPC.
     Status status = stub_->RegisterEstopEndpoint(&context, request, &reply);
-    
-    std::cout << "Hi again" << std::endl;
 
     // Act upon its status.
     if (status.ok()) {
       std::cout << "Status: " << reply.status() << ", Response: " << reply.new_endpoint().unique_id() << std::endl;
+      std::cout << "Header timestamp info: " << reply.header().response_timestamp().seconds() << std::endl;
       return reply.new_endpoint().unique_id();
     } else {
       std::cout << status.error_code() << ": " << status.error_message()
@@ -107,11 +106,7 @@ int main(int argc, char** argv) {
   Duration timeout;
   timeout.set_seconds(999.0);
   timeout.set_nanos(1.0);
-  std::cout << "Hello once" << std::endl;
-  *(new_endpoint.mutable_timeout()) = timeout;
-  std::cout << "Hello" << std::endl;
+  new_endpoint.mutable_timeout()->CopyFrom(timeout);
   std::string reply = estopClient.RegisterEstopEndpoint(new_endpoint);
-  //std::cout << "Message recieved:" << reply << std::endl;
-
   return 0;
 }
