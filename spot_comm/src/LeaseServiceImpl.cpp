@@ -13,14 +13,21 @@
 
   Status LeaseServiceImpl::AcquireLease(ServerContext* context, const AcquireLeaseRequest* request, AcquireLeaseResponse* response) {
       std::cout << "Lease Requested: " << request->resource() << std::endl;
-      response->set_status(AcquireLeaseResponse::STATUS_OK);
+      response->set_status(AcquireLeaseResponse::STATUS_OK); // would set after checking ownership
       if (response->status() == AcquireLeaseResponse::STATUS_OK){
           fillLease(response->mutable_lease());
           fillLeaseOwner(response->mutable_lease_owner());
       }
       return Status::OK;
   }
+
   Status LeaseServiceImpl::TakeLease(ServerContext* context, const TakeLeaseRequest* request, TakeLeaseResponse* response) {
+      std::cout << "Lease Requested: " << request->resource() << std::endl;
+      response->set_status(TakeLeaseResponse::STATUS_OK); // would set after checking ownership
+      if (response->status() == TakeLeaseResponse::STATUS_OK){
+          fillLease(response->mutable_lease());
+          fillLeaseOwner(response->mutable_lease_owner());
+      }
       return Status::OK;
   }
   Status LeaseServiceImpl::ReturnLease(ServerContext* context, const ReturnLeaseRequest* request, ReturnLeaseResponse* response) {
