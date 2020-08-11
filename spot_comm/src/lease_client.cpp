@@ -7,47 +7,54 @@
 #include <grpc++/health_check_service_interface.h>
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
-#include "bosdyn/api/directory_service.grpc.pb.h"
+#include "bosdyn/api/lease_service.grpc.pb.h"
 #include "bosdyn/api/header.grpc.pb.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
-using bosdyn::api::ServiceEntry;
-using bosdyn::api::Endpoint;
-using bosdyn::api::GetServiceEntryRequest;
-using bosdyn::api::GetServiceEntryResponse;
-using bosdyn::api::ListServiceEntriesRequest;
-using bosdyn::api::ListServiceEntriesResponse;
-using bosdyn::api::DirectoryService;
+using bosdyn::api::AcquireLeaseRequest;
+using bosdyn::api::AcquireLeaseResponse;
+using bosdyn::api::Lease;
+using bosdyn::api::LeaseOwner;
+using bosdyn::api::LeaseResource;
+using bosdyn::api::LeaseUseResult;
+using bosdyn::api::ListLeasesRequest;
+using bosdyn::api::ListLeasesResponse;
+using bosdyn::api::RetainLeaseRequest;
+using bosdyn::api::RetainLeaseResponse;
+using bosdyn::api::ReturnLeaseRequest;
+using bosdyn::api::ReturnLeaseResponse;
+using bosdyn::api::TakeLeaseRequest;
+using bosdyn::api::TakeLeaseResponse;
+using bosdyn::api::LeaseService;
 
-class DirectoryClient {
+class LeaseClient {
  public:
-  DirectoryClient(std::shared_ptr<Channel> channel)
-      : stub_(DirectoryService::NewStub(channel)) {}
+  LeaseClient(std::shared_ptr<Channel> channel)
+      : stub_(LeaseService::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  GetServiceEntryResponse GetServiceEntry(const std::string& service_name) {
+  AcquireLeaseResponse AcquireLease(const std::string& resource) {
     // Data we are sending to the server.
-    GetServiceEntryRequest request;
-    request.set_service_name(service_name);
+    AcquireLeaseRequest request;
+    request.set_resource(resource);
 
     // Container for the data we expect from the server.
-    GetServiceEntryResponse reply;
+    AcquireLeaseResponse reply;
 
     // Context for the client. It could be used to convey extra information to
     // the server and/or tweak certain RPC behaviors.
     ClientContext context;
 
     // The actual RPC.
-    Status status = stub_->GetServiceEntry(&context, request, &reply);
+    Status status = stub_->AcquireLease(&context, request, &reply);
 
     // Act upon its status.
     if (status.ok()) {
-      ServiceEntry returned = reply.service_entry();
-      std::cout << "Status: " << reply.status() << std::endl << "Service Name: " << returned.name() << std::endl;
-      std::cout << "Type: " << returned.type() << std::endl;
+      std::cout << "Status: " << reply.status() << ", Lease Acquired: " << reply.lease().resource() <<
+      ", New Owner: " << reply.lease_owner().user_name() << std::endl;
     } else {
       std::cout << status.error_code() << ": " << status.error_message()
                 << std::endl;
@@ -55,9 +62,8 @@ class DirectoryClient {
     return reply;
   }
 
-
  private:
-  std::unique_ptr<DirectoryService::Stub> stub_;
+  std::unique_ptr<LeaseService::Stub> stub_;
 };
 
 int main(int argc, char** argv) {
@@ -87,11 +93,15 @@ int main(int argc, char** argv) {
   } else {
     target_str = "127.0.0.1:50051";
   }
-  DirectoryClient dirClient(grpc::CreateChannel(
+  LeaseClient leaseClient(grpc::CreateChannel(
       target_str, grpc::InsecureChannelCredentials()));
-  std::string serviceName("service_test");
-  GetServiceEntryResponse reply = dirClient.GetServiceEntry(serviceName);
-  std::cout << "Get Service Entry successful: " << reply.status() << std::endl;
+  std::string resource("resource_test");
+
+  AcquireLeaseResponse reply = leaseClient.AcquireLease(resource);
+
+  if(reply.status() == 1) {
+    std::cout << "Acquire lease successful: " << reply.status() << std::endl;
+  }
 
   return 0;
 }

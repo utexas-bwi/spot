@@ -14,7 +14,9 @@ Status DirectoryServiceImpl::GetServiceEntry(ServerContext* context, const GetSe
                 GetServiceEntryResponse* response) {
   std::cout << "Service Name: " << request->service_name() << std::endl;
   response->set_status(GetServiceEntryResponse::STATUS_OK);
-  fillServiceEntry(response->mutable_service_entry());
+  
+  if (response->status() == GetServiceEntryResponse::STATUS_OK)
+    fillServiceEntry(response->mutable_service_entry());
   return Status::OK;
 }
 

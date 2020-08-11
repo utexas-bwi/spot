@@ -73,14 +73,22 @@ if(grpc_FOUND)
     bosdyn/api/time_sync.proto
   )
 
+  generate_proto(lease_proto GRPC SRC_BASE "." FILES 
+	  bosdyn/api/lease_service.proto
+    bosdyn/api/lease.proto
+  )
+
+
   add_executable(auth_client src/auth_client.cpp)
   add_executable(estop_client src/estop_client.cpp)
   add_executable(directory_client src/directory_client.cpp)
   add_executable(time_sync_client src/time_sync_client.cpp)
+  add_executable(lease_client src/lease_client.cpp)
   add_executable(spotServer
     src/server.cpp
     src/AuthServiceImpl.cpp
     src/DirectoryServiceImpl.cpp
+    src/LeaseServiceImpl.cpp
     src/EstopServiceImpl.cpp
     src/ImageServiceImpl.cpp
     src/TimeSyncServiceImpl.cpp
@@ -91,7 +99,8 @@ if(grpc_FOUND)
   target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto image_proto header_proto)
   target_link_libraries(directory_client ${catkin_LIBRARIES} header_proto directory_proto)
   target_link_libraries(time_sync_client ${catkin_LIBRARIES} header_proto time_sync_proto) 
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto time_sync_proto)
+ target_link_libraries(lease_client ${catkin_LIBRARIES} header_proto lease_proto) 
+  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto time_sync_proto lease_proto)
 endif()
 
 catkin_install_python(PROGRAMS scripts/move_client
