@@ -62,6 +62,32 @@ class LeaseClient {
     return reply;
   }
 
+  TakeLeaseResponse TakeLease(const std::string& resource) {
+    // Data we are sending to the server.
+    TakeLeaseRequest request;
+    request.set_resource(resource);
+
+    // Container for the data we expect from the server.
+    TakeLeaseResponse reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->TakeLease(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Status: " << reply.status() << ", Lease Taken: " << reply.lease().resource() <<
+      ", New Owner: " << reply.lease_owner().user_name() << std::endl;
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
+    return reply;
+  }
+
  private:
   std::unique_ptr<LeaseService::Stub> stub_;
 };
@@ -97,10 +123,16 @@ int main(int argc, char** argv) {
       target_str, grpc::InsecureChannelCredentials()));
   std::string resource("resource_test");
 
-  AcquireLeaseResponse reply = leaseClient.AcquireLease(resource);
+  AcquireLeaseResponse acquireReply = leaseClient.AcquireLease(resource);
 
-  if(reply.status() == 1) {
-    std::cout << "Acquire lease successful: " << reply.status() << std::endl;
+  if(acquireReply.status() == 1) {
+    std::cout << "Acquire lease successful: " << acquireReply.status() << std::endl;
+  }
+
+  TakeLeaseResponse takeReply = leaseClient.TakeLease(resource);
+
+  if(takeReply.status() == 1) {
+    std::cout << "Take lease successful: " << takeReply.status() << std::endl;
   }
 
   return 0;
