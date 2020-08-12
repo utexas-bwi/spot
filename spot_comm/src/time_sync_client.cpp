@@ -30,13 +30,7 @@ class TimeSyncClient {
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  TimeSyncUpdateResponse TimeSyncUpdate(TimeSyncRoundTrip* previous_round_trip, const std::string& clock_identifier) {
-    // Data we are sending to the server.
-    // TimeSyncRoundTrip p_trip_copy = TimeSyncRoundTrip(*previous_round_trip);
-    TimeSyncUpdateRequest request;
-    request.set_allocated_previous_round_trip(previous_round_trip);
-    request.set_clock_identifier(clock_identifier);
-
+  TimeSyncUpdateResponse TimeSyncUpdate(TimeSyncUpdateRequest request, const std::string& clock_identifier) {
     // Container for the data we expect from the server.
     TimeSyncUpdateResponse reply;
 
@@ -46,14 +40,14 @@ class TimeSyncClient {
 
     std::cout << "Client start got here" << std::endl;
 
+    request.mutable_header()->mutable_request_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+
     // The actual RPC.
     Status status = stub_->TimeSyncUpdate(&context, request, &reply);
 
-    reply.mutable_header()->mutable_response_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
-
-    std::cout << reply.state().status() << std::endl;
-    std::cout << reply.header().request_received_timestamp() << std::endl;
-    std::cout << reply.header().response_timestamp() << std::endl;
+    // std::cout << reply.state().status() << std::endl;
+    // std::cout << reply.header().request_received_timestamp() << std::endl;
+    // std::cout << reply.header().response_timestamp() << std::endl;
     // std::cout << reply.previous_estimate().round_trip_time() << std::endl;
     // std::cout << reply.previous_estimate().clock_skew() << std::endl;
 
@@ -70,6 +64,51 @@ class TimeSyncClient {
     return reply;
   }
 
+  TimeSyncUpdateResponse EstablishTimeSync(int numRounds) {
+    const std::string clock_identifier("spot_time_sync");
+    TimeSyncUpdateResponse reply;
+    TimeSyncUpdateRequest request;
+    TimeSyncEstimate best;
+    best.mutable_round_trip_time()->set_seconds(10000000); // is this needed?
+
+    for(int i = 0; i <= numRounds && (reply.state().status() == 1 || i == 0); i++) {
+      request.set_clock_identifier(clock_identifier);
+      reply = TimeSyncUpdate(request, clock_identifier);
+
+      request.mutable_previous_round_trip()->mutable_client_rx()->CopyFrom(TimeUtil::GetCurrentTime());
+      request.mutable_previous_round_trip()->mutable_client_tx()->CopyFrom(reply.header().request_header().request_timestamp());
+      request.mutable_previous_round_trip()->mutable_server_tx()->CopyFrom(reply.header().response_timestamp());
+      request.mutable_previous_round_trip()->mutable_server_rx()->CopyFrom(reply.header().request_received_timestamp());
+
+      std::cout << i << std::endl;
+
+      std::cout << reply.clock_identifier() << std::endl;
+      
+      if(i > 0) {
+        if(reply.previous_estimate().round_trip_time() == best.round_trip_time()) {
+          std::cout << "averaging" << std::endl;
+          Duration averageSkew = best.clock_skew() + reply.previous_estimate().clock_skew();
+          averageSkew /= 2; 
+          std::cout << "new skew: " << averageSkew << std::endl;
+          best.mutable_clock_skew()->CopyFrom(averageSkew);
+        }
+        else if(reply.previous_estimate().round_trip_time() < best.round_trip_time()) {
+          std::cout << "copying" << std::endl;
+          best.mutable_round_trip_time()->CopyFrom(reply.previous_estimate().round_trip_time());
+          best.mutable_clock_skew()->CopyFrom(reply.previous_estimate().clock_skew());
+        }
+        else {
+          std::cout << "not copying" << std::endl;
+        }
+      }
+    }
+
+    reply.mutable_state()->mutable_best_estimate()->CopyFrom(best);
+
+    std::cout << "best estimate rt: " << reply.state().best_estimate().round_trip_time() << std::endl;
+    std::cout << "best estimate cs: " << reply.state().best_estimate().clock_skew() << std::endl;
+    return reply;
+  }
 
  private:
   std::unique_ptr<TimeSyncService::Stub> stub_;
@@ -104,13 +143,11 @@ int main(int argc, char** argv) {
   }
   
   TimeSyncClient timeClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  TimeSyncRoundTrip* prev_trip;
-  std::string clock_identifier;
-
-  TimeSyncUpdateResponse reply = timeClient.TimeSyncUpdate(prev_trip, clock_identifier);
+  
+  TimeSyncUpdateResponse reply = timeClient.EstablishTimeSync(25);
 
   if(reply.state().status() == 1) {
-    std::cout << "Time sync round completed: " << reply.state().status() << std::endl;
+    std::cout << "Time sync completed: " << reply.state().status() << std::endl;
   }
 
   return 0;
