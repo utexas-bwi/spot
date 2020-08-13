@@ -14,6 +14,7 @@
 #include <spot_comm/DirectoryServiceImpl.h>
 #include <spot_comm/TimeSyncServiceImpl.h>
 #include <spot_comm/LeaseServiceImpl.h>
+#include <spot_comm/RobotCommandServiceImpl.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -40,6 +41,7 @@ void RunServer() {
   DirectoryServiceImpl dirService;
   TimeSyncServiceImpl timeService;
   LeaseServiceImpl leaseService;
+  // RobotCommandServiceImpl commandService;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
