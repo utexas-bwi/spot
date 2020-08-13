@@ -88,6 +88,55 @@ class LeaseClient {
     return reply;
   }
 
+  ReturnLeaseResponse ReturnLease(Lease* lease) {
+    // Data we are sending to the server.
+    ReturnLeaseRequest request;
+    request.set_allocated_lease(lease);
+
+    // Container for the data we expect from the server.
+    ReturnLeaseResponse reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->ReturnLease(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Status: " << reply.status() << std::endl;
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
+    return reply;
+  }
+
+  ListLeasesResponse ListLeases() {
+    // Data we are sending to the server.
+    ListLeasesRequest request;
+
+    // Container for the data we expect from the server.
+    ListLeasesResponse reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->ListLeases(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Status: " << status.ok() << std::endl << "1st Lease: " << reply.resources(0).resource() << std::endl;
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
+    return reply;
+  }  
+
  private:
   std::unique_ptr<LeaseService::Stub> stub_;
 };
@@ -123,18 +172,25 @@ int main(int argc, char** argv) {
       target_str, grpc::InsecureChannelCredentials()));
   std::string resource("resource_test");
 
+  // test AcquireLease service
   AcquireLeaseResponse acquireReply = leaseClient.AcquireLease(resource);
 
-  if(acquireReply.status() == 1) {
-    std::cout << "Acquire lease successful: " << acquireReply.status() << std::endl;
-  }
+  std::cout << "Acquire lease successful: " << acquireReply.status() << std::endl << std::endl;
 
+  // test TakeLease service
   TakeLeaseResponse takeReply = leaseClient.TakeLease(resource);
 
-  if(takeReply.status() == 1) {
-    std::cout << "Take lease successful: " << takeReply.status() << std::endl;
-  }
+  std::cout << "Take lease successful: " << takeReply.status() << std::endl << std::endl;
+  
+  // test ReturnLease service
+  Lease* toReturn;
+  ReturnLeaseResponse returnReply = leaseClient.ReturnLease(toReturn);
 
+  std::cout << "Return lease successful: " << returnReply.status() << std::endl << std::endl;
+  
+  ListLeasesResponse listReply = leaseClient.ListLeases();
+
+  std::cout << "List lease successful: " << (listReply.resources_size() > 0) << std::endl; 
   return 0;
 }
 

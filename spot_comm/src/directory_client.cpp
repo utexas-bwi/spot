@@ -55,6 +55,30 @@ class DirectoryClient {
     return reply;
   }
 
+  ListServiceEntriesResponse ListServiceEntries() {
+    // Data we are sending to the server.
+    ListServiceEntriesRequest request;
+
+    // Container for the data we expect from the server.
+    ListServiceEntriesResponse reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->ListServiceEntries(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Status: " << status.ok() << std::endl << "1st Service Name: " << reply.service_entries(0).name() << std::endl;
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
+    return reply;
+  }
+
 
  private:
   std::unique_ptr<DirectoryService::Stub> stub_;
@@ -90,8 +114,12 @@ int main(int argc, char** argv) {
   DirectoryClient dirClient(grpc::CreateChannel(
       target_str, grpc::InsecureChannelCredentials()));
   std::string serviceName("service_test");
-  GetServiceEntryResponse reply = dirClient.GetServiceEntry(serviceName);
-  std::cout << "Get Service Entry successful: " << reply.status() << std::endl;
+
+  GetServiceEntryResponse getReply = dirClient.GetServiceEntry(serviceName);
+  std::cout << "Get Service Entry successful: " << getReply.status() << std::endl << std::endl;
+
+  ListServiceEntriesResponse listReply = dirClient.ListServiceEntries();
+  std::cout << "List Service Entries successful: " << (listReply.service_entries_size() > 0) << std::endl;
 
   return 0;
 }
