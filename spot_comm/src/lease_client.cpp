@@ -188,6 +188,7 @@ int main(int argc, char** argv) {
 
   std::cout << "Return lease successful: " << returnReply.status() << std::endl << std::endl;
   
+  // test ListLease service
   ListLeasesResponse listReply = leaseClient.ListLeases();
 
   std::cout << "List lease successful: " << (listReply.resources_size() > 0) << std::endl; 
