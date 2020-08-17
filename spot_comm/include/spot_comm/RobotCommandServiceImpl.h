@@ -2,9 +2,9 @@
 #define ROBOTCOMMAND_SERVICE_IMPL_H
 
 #include "bosdyn/api/robot_command_service.grpc.pb.h"
-#include "bosdyn/api/full_body_command.grpc.pb.h"
-#include "bosdyn/api/mobility_command.grpc.pb.h"
-#include "bosdyn/api/basic_command.grpc.pb.h"
+// #include "bosdyn/api/full_body_command.grpc.pb.h"
+// #include "bosdyn/api/mobility_command.grpc.pb.h"
+// #include "bosdyn/api/basic_command.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 
 using bosdyn::api::RobotCommandService;

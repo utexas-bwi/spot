@@ -7,8 +7,13 @@
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
 #include "bosdyn/api/robot_command_service.grpc.pb.h"
+// #include "bosdyn/api/header.grpc.pb.h"
+// #include "bosdyn/api/lease_service.grpc.pb.h"
+// #include "bosdyn/api/geometry.grpc.pb.h"
+// #include "bosdyn/api/full_body_command.grpc.pb.h"
+// #include "bosdyn/api/mobility_command.grpc.pb.h"
+// #include "bosdyn/api/basic_command.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
-#include "bosdyn/api/header.grpc.pb.h"
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -99,8 +104,8 @@ int main(int argc, char** argv) {
   
   RobotCommandClient commandClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
 
-  RobotCommandResponse reply = commandClient.RobotCommand();
-  std::cout << "Token received: " << reply.status() << std::endl;
+  // RobotCommandResponse reply = commandClient.RobotCommand();
+  // std::cout << "Token received: " << reply.status() << std::endl;
 
   return 0;
 }
