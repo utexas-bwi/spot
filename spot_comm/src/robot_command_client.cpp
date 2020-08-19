@@ -7,12 +7,9 @@
 #include <grpc++/ext/proto_server_reflection_plugin.h>
 
 #include "bosdyn/api/robot_command_service.grpc.pb.h"
-// #include "bosdyn/api/header.grpc.pb.h"
-// #include "bosdyn/api/lease_service.grpc.pb.h"
-// #include "bosdyn/api/geometry.grpc.pb.h"
-// #include "bosdyn/api/full_body_command.grpc.pb.h"
-// #include "bosdyn/api/mobility_command.grpc.pb.h"
-// #include "bosdyn/api/basic_command.grpc.pb.h"
+#include "bosdyn/api/header.grpc.pb.h"
+#include "bosdyn/api/geometry.grpc.pb.h"
+#include "bosdyn/api/lease_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 
 using grpc::Channel;
@@ -28,7 +25,25 @@ using bosdyn::api::ClearBehaviorFaultResponse;
 using bosdyn::api::RobotCommand;
 using bosdyn::api::RobotCommandFeedback;
 using bosdyn::api::FullBodyCommand;
+using bosdyn::api::FullBodyCommand_Feedback;
+using bosdyn::api::StopCommand;
+using bosdyn::api::StopCommand_Feedback;
+using bosdyn::api::FreezeCommand;
+using bosdyn::api::FreezeCommand_Feedback;
+using bosdyn::api::SelfRightCommand;
+using bosdyn::api::SelfRightCommand_Feedback;
+using bosdyn::api::SafePowerOffCommand;
+using bosdyn::api::SafePowerOffCommand_Feedback;
 using bosdyn::api::MobilityCommand;
+using bosdyn::api::MobilityCommand_Feedback;
+using bosdyn::api::SE2TrajectoryCommand;
+using bosdyn::api::SE2TrajectoryCommand_Feedback;
+using bosdyn::api::SE2VelocityCommand;
+using bosdyn::api::SE2VelocityCommand_Feedback;
+using bosdyn::api::SitCommand;
+using bosdyn::api::SitCommand_Feedback;
+using bosdyn::api::StandCommand;
+using bosdyn::api::StandCommand_Feedback;
 using bosdyn::api::Lease;
 using bosdyn::api::LeaseUseResult;
 using google::protobuf::Duration;
@@ -42,9 +57,13 @@ class RobotCommandClient {
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  RobotCommandResponse RobotCommand() {
+  RobotCommandResponse RobotCommand(Lease lease, RobotCommand command) {
     // Data we are sending to the server.
     RobotCommandRequest request;
+    request.mutable_header()->mutable_request_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+    request.mutable_lease()->CopyFrom(lease);
+    request.mutable_command()->CopyFrom(command);
+    request.set_clock_identifier("spot_time_sync");
     
     // Container for the data we expect from the server.
     RobotCommandResponse reply;
@@ -60,6 +79,7 @@ class RobotCommandClient {
     if (status.ok()) {
       // std::cout << "Command status: " << reply.status() << ", Token: " << reply.token() << std::endl;
       std::cout << "Success" << std::endl;
+      std::cout << reply.message() << std::endl;
       // return "reply.token()";
     } else {
       std::cout << status.error_code() << ": " << status.error_message()
@@ -103,8 +123,33 @@ int main(int argc, char** argv) {
   }
   
   RobotCommandClient commandClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
+  Lease lease;
+  lease.set_resource("testResource");
+  lease.set_epoch("testEpoch");
+  lease.add_sequence(100);
 
-  // RobotCommandResponse reply = commandClient.RobotCommand();
+  RobotCommand command;
+  Duration commandDuration;
+  commandDuration.set_seconds(10);
+  Timestamp end = TimeUtil::GetCurrentTime() + commandDuration;
+  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_end_time()->CopyFrom(end);
+  command.mutable_mobility_command()->mutable_se2_velocity_request()->set_se2_frame_name("testFrame");
+  double xVel = 10;
+  double yVel = 10;
+  double angularVel = 0;
+  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_x(xVel);
+  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_y(yVel);
+  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->set_angular(angularVel);
+
+  // slew_rate_limit - how quickly velocity can change relative to se2_frame_name's
+  // double xDiff = 0;
+  // double yDiff = 0;
+  // double angularDiff = 0;
+  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_x(xDiff);
+  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_y(yDiff);
+  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->set_angular(angularDiff);
+
+  RobotCommandResponse reply = commandClient.RobotCommand(lease, command);
   // std::cout << "Token received: " << reply.status() << std::endl;
 
   return 0;

@@ -2,9 +2,9 @@
 #define ROBOTCOMMAND_SERVICE_IMPL_H
 
 #include "bosdyn/api/robot_command_service.grpc.pb.h"
-// #include "bosdyn/api/full_body_command.grpc.pb.h"
-// #include "bosdyn/api/mobility_command.grpc.pb.h"
-// #include "bosdyn/api/basic_command.grpc.pb.h"
+#include "bosdyn/api/header.grpc.pb.h"
+#include "bosdyn/api/geometry.grpc.pb.h"
+#include "bosdyn/api/lease_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 
 using bosdyn::api::RobotCommandService;
@@ -17,7 +17,25 @@ using bosdyn::api::ClearBehaviorFaultResponse;
 using bosdyn::api::RobotCommand;
 using bosdyn::api::RobotCommandFeedback;
 using bosdyn::api::FullBodyCommand;
+using bosdyn::api::FullBodyCommand_Feedback;
+using bosdyn::api::StopCommand;
+using bosdyn::api::StopCommand_Feedback;
+using bosdyn::api::FreezeCommand;
+using bosdyn::api::FreezeCommand_Feedback;
+using bosdyn::api::SelfRightCommand;
+using bosdyn::api::SelfRightCommand_Feedback;
+using bosdyn::api::SafePowerOffCommand;
+using bosdyn::api::SafePowerOffCommand_Feedback;
 using bosdyn::api::MobilityCommand;
+using bosdyn::api::MobilityCommand_Feedback;
+using bosdyn::api::SE2TrajectoryCommand;
+using bosdyn::api::SE2TrajectoryCommand_Feedback;
+using bosdyn::api::SE2VelocityCommand;
+using bosdyn::api::SE2VelocityCommand_Feedback;
+using bosdyn::api::SitCommand;
+using bosdyn::api::SitCommand_Feedback;
+using bosdyn::api::StandCommand;
+using bosdyn::api::StandCommand_Feedback;
 using bosdyn::api::Lease;
 using bosdyn::api::LeaseUseResult;
 using grpc::Status;

@@ -3,7 +3,7 @@
 
 Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const RobotCommandRequest* request, RobotCommandResponse* response) {
     // header
-    response->mutable_header()->CopyFrom(Header::generateResponseHeader(reqeust->header()));
+    response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
     
     // lease_use_result
     response->mutable_lease_use_result()->set_status(LeaseUseResult::STATUS_OK);
@@ -16,10 +16,10 @@ Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const Robot
     response->set_status(RobotCommandResponse::STATUS_OK);
 
     // id
-    response->set_robot_command_id(100);
+    response->set_robot_command_id(10);
 
     // message
-    response->set_message("Id: " + response->robot_command_id());
+    response->set_message("RobotCommandResponse received");
     
     return Status::OK;
 }
@@ -29,13 +29,13 @@ Status RobotCommandServiceImpl::RobotCommandFeedback(ServerContext* context, con
     response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
 
     // status
-    response->set_status(RobotCommandFeedbackResponse::STATUS_OK);
+    response->set_status(RobotCommandFeedbackResponse::STATUS_PROCESSING);
 
     // feedback
-    response->mutable_feedback()->mutable_full_body_feedback()->mutable_safe_power_off_feedback()->set_status(SafePowerOffCommandFeedback::STATUS_POWERED_OFF);
-    response->mutable_feedback()->mutable_mobility_feedback()->mutable_se2_trajectory_feedback()->set_status(SE2TrajectoryCommandFeedback::STATUS_AT_GOAL);
-    response->mutable_feedback()->mutable_mobility_feedback()->mutable_sit_feedback()->set_status(SitCommandFeedback::STATUS_IS_SITTING);
-    response->mutable_feedback()->mutable_mobility_feedback()->mutable_stand_feedback()->set_status(StandCommandFeedback::STATUS_IS_STANDING);
+    response->mutable_feedback()->mutable_full_body_feedback()->mutable_safe_power_off_feedback()->set_status(SafePowerOffCommand_Feedback::STATUS_POWERED_OFF);
+    response->mutable_feedback()->mutable_mobility_feedback()->mutable_se2_trajectory_feedback()->set_status(SE2TrajectoryCommand_Feedback::STATUS_AT_GOAL);
+    response->mutable_feedback()->mutable_mobility_feedback()->mutable_sit_feedback()->set_status(SitCommand_Feedback::STATUS_IS_SITTING);
+    response->mutable_feedback()->mutable_mobility_feedback()->mutable_stand_feedback()->set_status(StandCommand_Feedback::STATUS_IS_STANDING);
     
 
     // message

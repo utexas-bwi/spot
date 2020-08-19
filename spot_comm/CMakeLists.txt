@@ -62,10 +62,17 @@ if(grpc_FOUND)
     bosdyn/api/directory.proto
   )
 
+  # Image and RobotCommand both need geometry.proto
+  # need to figure out how to link this in both implementations
+
+  #generate_proto(geometry_proto GRPC SRC_BASE "." FILES
+  #  bosdyn/api/geometry.proto
+  # )
+
   generate_proto(image_proto GRPC SRC_BASE "." FILES 
     bosdyn/api/image_service.proto
     bosdyn/api/image.proto
-    bosdyn/api/geometry.proto
+    # bosdyn/api/geometry.proto
   )
 
   generate_proto(time_sync_proto GRPC SRC_BASE "." FILES 
@@ -90,16 +97,17 @@ if(grpc_FOUND)
     bosdyn/api/mobility_command.proto
     bosdyn/api/basic_command.proto
     bosdyn/api/trajectory.proto
+    bosdyn/api/geometry.proto
   )
-
 
   add_executable(auth_client src/auth_client.cpp)
   add_executable(estop_client src/estop_client.cpp)
   add_executable(directory_client src/directory_client.cpp)
+  # add_executable(image_client src/image_client.cpp)
   add_executable(time_sync_client src/time_sync_client.cpp)
   add_executable(lease_client src/lease_client.cpp)
   add_executable(log_annotation_client src/log_annotation_client.cpp)
-  # add_executable(robot_command_client src/robot_command_client.cpp)
+  add_executable(robot_command_client src/robot_command_client.cpp)
   add_executable(spotServer
     src/server.cpp
     src/AuthServiceImpl.cpp
@@ -107,19 +115,20 @@ if(grpc_FOUND)
     src/LeaseServiceImpl.cpp
     src/LogAnnotationServiceImpl.cpp
     src/EstopServiceImpl.cpp
-    src/ImageServiceImpl.cpp
+    # src/ImageServiceImpl.cpp
     src/TimeSyncServiceImpl.cpp
-    # src/RobotCommandServiceImpl.cpp
+    src/RobotCommandServiceImpl.cpp
   )
 
   target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto header_proto)
   target_link_libraries(estop_client ${catkin_LIBRARIES} estop_proto header_proto)
   target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto image_proto header_proto)
   target_link_libraries(directory_client ${catkin_LIBRARIES} header_proto directory_proto)
+  # target_link_libraries(image_client ${catkin_LIBRARIES} header_proto image_proto)
   target_link_libraries(time_sync_client ${catkin_LIBRARIES} header_proto time_sync_proto)
   target_link_libraries(lease_client ${catkin_LIBRARIES} header_proto lease_proto)
   target_link_libraries(log_annotation_client ${catkin_LIBRARIES} header_proto log_annotation_proto)
-  # target_link_libraries(robot_command_client ${catkin_LIBRARIES} header_proto image_proto lease_proto robot_command_proto)
+  target_link_libraries(robot_command_client ${catkin_LIBRARIES} header_proto lease_proto robot_command_proto)
   target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto robot_command_proto time_sync_proto lease_proto log_annotation_proto)
 endif()
 
