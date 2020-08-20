@@ -16,6 +16,7 @@
 #include <spot_comm/LeaseServiceImpl.h>
 #include <spot_comm/LogAnnotationServiceImpl.h>
 #include <spot_comm/RobotCommandServiceImpl.h>
+#include <spot_comm/RobotStateServiceImpl.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -44,6 +45,7 @@ void RunServer() {
   LeaseServiceImpl leaseService;
   LogAnnotationServiceImpl logService;
   RobotCommandServiceImpl commandService;
+  //  RobotStateServiceImpl stateService;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
