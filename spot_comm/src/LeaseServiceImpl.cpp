@@ -44,6 +44,13 @@
       return Status::OK;
   }
   Status LeaseServiceImpl::RetainLease(ServerContext* context, const RetainLeaseRequest* request, RetainLeaseResponse* response) {
+      LeaseUseResult result;
+      result.set_status(LeaseUseResult::STATUS_OK);
+      fillLeaseOwner(result.mutable_owner(), "testClient", "testUser");
+      fillLease(result.mutable_attempted_lease(), "testResource", "testEpoch", 0);
+      fillLease(result.mutable_previous_lease(), "testResource", "testEpoch", 0);
+      response->mutable_lease_use_result()->CopyFrom(result);
       return Status::OK;
+
   }
 

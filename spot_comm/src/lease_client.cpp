@@ -135,7 +135,31 @@ class LeaseClient {
                 << std::endl;
     }
     return reply;
-  }  
+  }
+
+  RetainLeaseResponse RetainLease() {
+    // Data we are sending to the server.
+    RetainLeaseRequest request;
+
+    // Container for the data we expect from the server.
+    RetainLeaseResponse reply;
+
+    // Context for the client. It could be used to convey extra information to
+    // the server and/or tweak certain RPC behaviors.
+    ClientContext context;
+
+    // The actual RPC.
+    Status status = stub_->RetainLease(&context, request, &reply);
+
+    // Act upon its status.
+    if (status.ok()) {
+      std::cout << "Status: " << status.ok() << " Lease Retained: " << reply.lease_use_result().attempted_lease().resource() << std::endl;
+    } else {
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
+    return reply;
+  }    
 
  private:
   std::unique_ptr<LeaseService::Stub> stub_;
@@ -191,7 +215,11 @@ int main(int argc, char** argv) {
   // test ListLease service
   ListLeasesResponse listReply = leaseClient.ListLeases();
 
-  std::cout << "List lease successful: " << (listReply.resources_size() > 0) << std::endl; 
+  std::cout << "List lease successful: " << (listReply.resources_size() > 0) << std::endl << std::endl; 
+
+  RetainLeaseResponse retainReply = leaseClient.RetainLease();
+
+  std::cout << "Retain lease successful: " << retainReply.lease_use_result().status() << std::endl; 
   return 0;
 }
 
