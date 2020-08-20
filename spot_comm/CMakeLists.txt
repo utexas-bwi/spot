@@ -85,9 +85,19 @@ if(grpc_FOUND)
     bosdyn/api/lease.proto
   )
 
+  generate_proto(license_proto GRPC SRC_BASE "." FILES 
+    bosdyn/api/license_service.proto
+    bosdyn/api/license.proto
+  )
+
   generate_proto(log_annotation_proto GRPC SRC_BASE "." FILES 
     bosdyn/api/log_annotation_service.proto
     bosdyn/api/log_annotation.proto
+  )
+
+  generate_proto(power_proto GRPC SRC_BASE "." FILES 
+    bosdyn/api/power_service.proto
+    bosdyn/api/power.proto
   )
 
   generate_proto(robot_command_proto GRPC SRC_BASE "." FILES
@@ -124,6 +134,7 @@ if(grpc_FOUND)
     src/EstopServiceImpl.cpp
     # src/ImageServiceImpl.cpp
     src/TimeSyncServiceImpl.cpp
+    src/PowerServiceImpl.cpp
     src/RobotCommandServiceImpl.cpp
     # src/RobotStateServiceImpl.cpp
   )
@@ -138,7 +149,7 @@ if(grpc_FOUND)
   target_link_libraries(log_annotation_client ${catkin_LIBRARIES} header_proto log_annotation_proto)
   target_link_libraries(robot_command_client ${catkin_LIBRARIES} header_proto lease_proto robot_command_proto)
   # target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto robot_state_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto robot_command_proto robot_state_proto time_sync_proto lease_proto log_annotation_proto)
+  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto power_proto robot_command_proto robot_state_proto time_sync_proto lease_proto license_proto log_annotation_proto)
 endif()
 
 catkin_install_python(PROGRAMS scripts/move_client
