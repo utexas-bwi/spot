@@ -123,7 +123,7 @@ if(grpc_FOUND)
   add_executable(time_sync_client src/time_sync_client.cpp)
   add_executable(lease_client src/lease_client.cpp)
   add_executable(log_annotation_client src/log_annotation_client.cpp)
-  add_executable(robot_command_client src/robot_command_client.cpp)
+  add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp)
   # add_executable(robot_state_client src/robot_state_client.cpp)
   add_executable(spotServer
     src/server.cpp

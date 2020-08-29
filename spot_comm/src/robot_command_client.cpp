@@ -12,6 +12,10 @@
 #include "bosdyn/api/lease_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include "spot_comm/VelocityCommand.h"
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
@@ -53,11 +57,14 @@ using google::protobuf::util::TimeUtil;
 class RobotCommandClient {
  public:
   RobotCommandClient(std::shared_ptr<Channel> channel)
-      : stub_(RobotCommandService::NewStub(channel)) {}
+      : stub_(RobotCommandService::NewStub(channel)) {
+        response = RobotCommandResponse();
+        response.set_status(RobotCommandResponse::STATUS_OK);
+  }
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  RobotCommandResponse RobotCommand(Lease lease, RobotCommand command) {
+  RobotCommandResponse StartRobotCommand(Lease lease, RobotCommand command) {
     // Data we are sending to the server.
     RobotCommandRequest request;
     request.mutable_header()->mutable_request_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
@@ -79,7 +86,7 @@ class RobotCommandClient {
     if (status.ok()) {
       // std::cout << "Command status: " << reply.status() << ", Token: " << reply.token() << std::endl;
       std::cout << "Success" << std::endl;
-      std::cout << reply.message() << std::endl;
+      // std::cout << reply.message() << std::endl;
       // return "reply.token()";
     } else {
       std::cout << status.error_code() << ": " << status.error_message()
@@ -90,8 +97,40 @@ class RobotCommandClient {
     return reply;
   }
 
+  void twist_callback(const geometry_msgs::Twist::ConstPtr& msg) {
+    Lease lease;
+    lease.set_resource("testResource");
+    lease.set_epoch("testEpoch");
+    lease.add_sequence(100);
+
+    RobotCommand command;
+    Duration commandDuration;
+    commandDuration.set_seconds(10);
+    Timestamp end = TimeUtil::GetCurrentTime() + commandDuration;
+    command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_end_time()->CopyFrom(end);
+    command.mutable_mobility_command()->mutable_se2_velocity_request()->set_se2_frame_name("testFrame");
+    command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_x(msg->linear.x);
+    command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_y(msg->linear.y);
+    command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->set_angular(msg->angular.z);
+
+    // slew_rate_limit - how quickly velocity can change relative to se2_frame_name's
+    // double xDiff = 0;
+    // double yDiff = 0;
+    // double angularDiff = 0;
+    // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_x(xDiff);
+    // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_y(yDiff);
+    // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->set_angular(angularDiff);
+
+    response = this->StartRobotCommand(lease, command);
+  }
+
+  RobotCommandResponse getResponse() {
+    return response;
+  }
+
  private:
   std::unique_ptr<RobotCommandService::Stub> stub_;
+  RobotCommandResponse response;
 };
 
 int main(int argc, char** argv) {
@@ -121,36 +160,41 @@ int main(int argc, char** argv) {
   } else {
     target_str = "127.0.0.1:50051";
   }
-  
+
   RobotCommandClient commandClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  Lease lease;
-  lease.set_resource("testResource");
-  lease.set_epoch("testEpoch");
-  lease.add_sequence(100);
+  ros::init(argc, argv, "twist_node");
+  ros::NodeHandle n;
 
-  RobotCommand command;
-  Duration commandDuration;
-  commandDuration.set_seconds(10);
-  Timestamp end = TimeUtil::GetCurrentTime() + commandDuration;
-  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_end_time()->CopyFrom(end);
-  command.mutable_mobility_command()->mutable_se2_velocity_request()->set_se2_frame_name("testFrame");
-  double xVel = 10;
-  double yVel = 10;
-  double angularVel = 0;
-  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_x(xVel);
-  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_y(yVel);
-  command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->set_angular(angularVel);
+  VelocityCommand vel(n);
 
-  // slew_rate_limit - how quickly velocity can change relative to se2_frame_name's
-  // double xDiff = 0;
-  // double yDiff = 0;
-  // double angularDiff = 0;
-  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_x(xDiff);
-  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->mutable_linear()->set_y(yDiff);
-  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_slew_rate_limit()->set_angular(angularDiff);
+  ros::Subscriber twist_sub = n.subscribe("/cmd_vel", 1, &RobotCommandClient::twist_callback, &commandClient);
+  
+  double xVel;
+  double yVel;
+  double angularVel;
 
-  RobotCommandResponse reply = commandClient.RobotCommand(lease, command);
-  // std::cout << "Token received: " << reply.status() << std::endl;
+  int counter = 0;
+
+  ros::Rate r(1000);
+
+  while(ros::ok() && commandClient.getResponse().status() == RobotCommandResponse::STATUS_OK && counter < 2000) {
+    xVel = 1;
+    yVel = 1;
+    angularVel = 0;
+
+    vel.executeCommand(xVel, yVel, angularVel);
+
+    // ROS_INFO("Status: %d", commandClient.getResponse().status());
+
+    counter++;
+    
+    if(counter == 2000) {
+      vel.executeCommand(0, 0, 0);
+    }
+    
+    r.sleep();
+    ros::spinOnce();
+  }
 
   return 0;
 }
