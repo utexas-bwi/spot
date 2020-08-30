@@ -156,6 +156,9 @@ catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+add_executable(vel_cmd src/vel_cmd_node.cpp src/VelocityCommand.cpp)
+target_link_libraries(vel_cmd ${catkin_LIBRARIES})
+
 add_executable(gps_translator_node src/gps_translator.cc)
 target_link_libraries(gps_translator_node ${catkin_LIBRARIES})
 add_dependencies(gps_translator_node spot_comm_generate_messages_cpp)
