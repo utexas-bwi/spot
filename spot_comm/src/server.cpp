@@ -12,6 +12,7 @@
 #include <spot_comm/AuthServiceImpl.h>
 #include <spot_comm/EstopServiceImpl.h>
 #include <spot_comm/DirectoryServiceImpl.h>
+#include <spot_comm/ImageServiceImpl.h>
 #include <spot_comm/TimeSyncServiceImpl.h>
 #include <spot_comm/LeaseServiceImpl.h>
 #include <spot_comm/LogAnnotationServiceImpl.h>
@@ -41,11 +42,12 @@ void RunServer() {
   AuthServiceImpl authService;
   EstopServiceImpl estopService;
   DirectoryServiceImpl dirService;
+  ImageServiceImpl imService;
   TimeSyncServiceImpl timeService;
   LeaseServiceImpl leaseService;
   LogAnnotationServiceImpl logService;
   RobotCommandServiceImpl commandService;
-  //  RobotStateServiceImpl stateService;
+  // RobotStateServiceImpl stateService;
 
   grpc::EnableDefaultHealthCheckService(true);
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
@@ -68,7 +70,7 @@ void RunServer() {
   // Register "service" as the instance#include <spot_comm/Header.h> through which we'll communicate with
   // clients. In this case it corresponds to an *synchronous* service.
   
-  builder.RegisterService(&leaseService); // change to dirService for directory test
+  builder.RegisterService(&imService); // change to dirService for directory test
   // Finally assemble the server.
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;

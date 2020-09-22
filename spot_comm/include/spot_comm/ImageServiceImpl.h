@@ -24,10 +24,8 @@ using bosdyn::api::ImageRequest;
 using bosdyn::api::ImageResponse;
 using bosdyn::api::ImageCapture;
 using bosdyn::api::ImageSource;
+using bosdyn::api::Image_Format;
 
-
-namespace bosdyn {
-namespace api {
 class ImageServiceImpl final : public ImageService::Service {
 public:
   Status ListImageSources(ServerContext* context, const ListImageSourcesRequest* request,
@@ -36,7 +34,5 @@ public:
   Status GetImage(ServerContext* context, const GetImageRequest* request,
                   GetImageResponse* response);
 };
-}//api
-}//bosdyn
 
 #endif
