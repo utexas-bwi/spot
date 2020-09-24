@@ -9,13 +9,10 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nav_msgs
-  grpc
   message_generation
-  grpc
 )
 
 message("-- Searching for grpc C++")
-find_package(grpc QUIET)
 find_package(Eigen3 REQUIRED)
 
 catkin_python_setup()
@@ -39,7 +36,7 @@ include_directories(
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
-generate_proto(header_proto GRPC SRC_BASE "." FILES 
+#[[generate_proto(header_proto GRPC SRC_BASE "." FILES 
   bosdyn/api/header.proto
 )
 
@@ -106,7 +103,7 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
   bosdyn/api/robot_state.proto
   bosdyn/api/robot_state_service.proto
   bosdyn/api/parameter.proto
-)
+)]]
 
 add_executable(auth_client src/auth_client.cpp)
 add_executable(estop_client src/estop_client.cpp)
