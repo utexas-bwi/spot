@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-message("-- Searching for grpc C++")
 find_package(Eigen3 REQUIRED)
 
 catkin_python_setup()
@@ -101,8 +100,8 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
   bosdyn/api/parameter.proto
 )]]
 
-add_executable(auth_client src/auth_client.cpp)
-add_executable(estop_client src/estop_client.cpp)
+add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc)
+#[[add_executable(estop_client src/estop_client.cpp)
 add_executable(directory_client src/directory_client.cpp)
 add_executable(image_client src/image_client.cpp)
 add_executable(time_sync_client src/time_sync_client.cpp)
@@ -122,10 +121,10 @@ add_executable(spotServer
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
   src/RobotStateServiceImpl.cpp
-)
+)]]
 
   target_link_libraries(auth_client ${catkin_LIBRARIES})
-  target_link_libraries(estop_client ${catkin_LIBRARIES})
+ #[[ target_link_libraries(estop_client ${catkin_LIBRARIES})
   target_link_libraries(spotServer ${catkin_LIBRARIES} )
   target_link_libraries(directory_client ${catkin_LIBRARIES})
   target_link_libraries(image_client ${catkin_LIBRARIES})
@@ -134,7 +133,7 @@ add_executable(spotServer
   target_link_libraries(log_annotation_client ${catkin_LIBRARIES})
   target_link_libraries(robot_command_client ${catkin_LIBRARIES})
   # target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto robot_state_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES})
+  target_link_libraries(spotServer ${catkin_LIBRARIES}) ]]
 
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
