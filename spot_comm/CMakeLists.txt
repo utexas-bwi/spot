@@ -55,10 +55,6 @@ generate_proto(directory_proto GRPC SRC_BASE "." FILES
   bosdyn/api/directory.proto
 )
 
-#generate_proto(geometry_proto GRPC SRC_BASE "." FILES
-  #bosdyn/api/geometry.proto
-#)
-
 generate_proto(image_proto GRPC SRC_BASE "." FILES 
   bosdyn/api/image_service.proto
   bosdyn/api/image.proto
@@ -113,7 +109,7 @@ add_executable(time_sync_client src/time_sync_client.cpp)
 add_executable(lease_client src/lease_client.cpp)
 add_executable(log_annotation_client src/log_annotation_client.cpp)
 add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp)
-# add_executable(robot_state_client src/robot_state_client.cpp)
+add_executable(robot_state_client src/robot_state_client.cpp)
 add_executable(spotServer
   src/server.cpp
   src/AuthServiceImpl.cpp
@@ -125,7 +121,7 @@ add_executable(spotServer
   src/TimeSyncServiceImpl.cpp
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
-  # src/RobotStateServiceImpl.cpp
+  src/RobotStateServiceImpl.cpp
 )
 
   target_link_libraries(auth_client ${catkin_LIBRARIES})
@@ -150,3 +146,4 @@ target_link_libraries(vel_cmd ${catkin_LIBRARIES})
 add_executable(gps_translator_node src/gps_translator.cc)
 target_link_libraries(gps_translator_node ${catkin_LIBRARIES})
 add_dependencies(gps_translator_node spot_comm_generate_messages_cpp)
+

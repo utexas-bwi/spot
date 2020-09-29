@@ -58,13 +58,15 @@ class ImageClient {
     return reply;
   }
 
-  GetImageResponse GetImage(const std::string& image_source_name, double quality_percent) {
+  GetImageResponse GetImage(const std::string image_source_names[], int numIms, double quality_percent) {
     // Data we are sending to the server.
     GetImageRequest request;
-    ImageRequest* img = request.add_image_requests();
-    img->set_image_source_name(image_source_name);
-    img->set_quality_percent(quality_percent);
-    img->set_image_format(Image_Format_FORMAT_JPEG); //Specify JPEG ect.
+    for(int i = 0; i < numIms; i++) {
+      ImageRequest* img = request.add_image_requests();
+      img->set_image_source_name(image_source_names[i]);
+      img->set_quality_percent(quality_percent);
+      img->set_image_format(Image_Format_FORMAT_JPEG); //Specify JPEG ect.
+    }
 
     // Container for the data we expect from the server.
     GetImageResponse reply;
@@ -123,11 +125,25 @@ int main(int argc, char** argv) {
   }
   ImageClient imageClient(grpc::CreateChannel(
       target_str, grpc::InsecureChannelCredentials()));
-  std::string name("testImage");
+  // std::string name("testImage");
+  std::string names[3];
+  names[0] = "image 1";
+  names[1] = "image 2";
+  names[2] = "image 3";
   double quality = 75;
-  GetImageResponse reply = imageClient.GetImage(name, quality);
+
+  GetImageResponse reply = imageClient.GetImage(names, 3, quality);
+  std::cout << "Images received: " << std::endl;
+  for(int i = 0; i < 3; i++) {
+    std::cout << "Name: " << reply.image_responses(i).source().name() << std::endl;
+    std::cout << "Rows: " << reply.image_responses(i).source().rows() << std::endl;
+    std::cout << "Cols: " << reply.image_responses(i).source().cols() << std::endl;
+    std::cout << "Depth scale: " << reply.image_responses(i).source().depth_scale() << std::endl;
+    std::cout << "Type: " << reply.image_responses(i).source().image_type() << std::endl;
+    std::cout << " " << std::endl;
+  }
+
   ListImageSourcesResponse response = imageClient.ListImageSources();
-  std::cout << "Token received: " << reply.image_responses(0).source().name() << std::endl;
 
   return 0;
 }
