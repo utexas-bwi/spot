@@ -33,19 +33,21 @@
   Status ImageServiceImpl::GetImage(ServerContext* context, const GetImageRequest* request,
                   GetImageResponse* response) {
 
-      ImageResponse* img = response->add_image_responses();
-      ImageCapture* shot;
-      ImageSource* imgsrc;
-      img->set_allocated_shot(shot);
+      for(int i = 0; i < request->image_requests_size(); i++) {
+        ImageResponse* img = response->add_image_responses();
+        ImageCapture* shot;
+        ImageSource* imgsrc;
+        img->set_allocated_shot(shot);
 
-      img->set_allocated_source(imgsrc);
-      img->mutable_source()->set_name(request->image_requests(0).image_source_name());
-      img->mutable_source()->set_rows(480);
-      img->mutable_source()->set_cols(640);
-      img->mutable_source()->set_depth_scale(1000);
-      img->mutable_source()->set_image_type(ImageSource::IMAGE_TYPE_VISUAL);
+        img->set_allocated_source(imgsrc);
+        img->mutable_source()->set_name(request->image_requests(i).image_source_name());
+        img->mutable_source()->set_rows(480 - i * 10);
+        img->mutable_source()->set_cols(640 - i * 10);
+        img->mutable_source()->set_depth_scale(1000);
+        img->mutable_source()->set_image_type(ImageSource::IMAGE_TYPE_VISUAL);
 
-      img->set_status(ImageResponse::STATUS_OK);
+        img->set_status(ImageResponse::STATUS_OK);
+      }
 
       return Status::OK;
       
