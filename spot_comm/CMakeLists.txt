@@ -110,7 +110,9 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
   bosdyn/api/parameter.proto
 )]]
 
-add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc)
+
+
+add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc include/bosdyn/api/header.pb.cc include/bosdyn/api/header.grpc.pb.cc)
 #[[add_executable(estop_client src/estop_client.cpp)
 add_executable(directory_client src/directory_client.cpp)
 add_executable(image_client src/image_client.cpp)
