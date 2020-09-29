@@ -128,17 +128,17 @@ add_executable(spotServer
   # src/RobotStateServiceImpl.cpp
 )
 
-#[[target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto header_proto)
-  target_link_libraries(estop_client ${catkin_LIBRARIES} estop_proto header_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto estop_proto image_proto header_proto)
-  target_link_libraries(directory_client ${catkin_LIBRARIES} header_proto directory_proto)
-  target_link_libraries(image_client ${catkin_LIBRARIES} header_proto image_proto)
-  target_link_libraries(time_sync_client ${catkin_LIBRARIES} header_proto time_sync_proto)
-  target_link_libraries(lease_client ${catkin_LIBRARIES} header_proto lease_proto)
-  target_link_libraries(log_annotation_client ${catkin_LIBRARIES} header_proto log_annotation_proto)
-  target_link_libraries(robot_command_client ${catkin_LIBRARIES} header_proto image_proto lease_proto robot_command_proto)
+  target_link_libraries(auth_client ${catkin_LIBRARIES})
+  target_link_libraries(estop_client ${catkin_LIBRARIES})
+  target_link_libraries(spotServer ${catkin_LIBRARIES} )
+  target_link_libraries(directory_client ${catkin_LIBRARIES})
+  target_link_libraries(image_client ${catkin_LIBRARIES})
+  target_link_libraries(time_sync_client ${catkin_LIBRARIES})
+  target_link_libraries(lease_client ${catkin_LIBRARIES})
+  target_link_libraries(log_annotation_client ${catkin_LIBRARIES})
+  target_link_libraries(robot_command_client ${catkin_LIBRARIES})
   # target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto robot_state_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto power_proto robot_command_proto robot_state_proto time_sync_proto lease_proto license_proto log_annotation_proto) ]]
+  target_link_libraries(spotServer ${catkin_LIBRARIES})
 
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
