@@ -3,7 +3,7 @@ project(spot_comm)
 
 add_compile_options(-std=c++11)
 
-set(Protobuf_MODULE_COMPATIBLE TRUE)
+set(protobuf_MODULE_COMPATIBLE TRUE)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -12,10 +12,14 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nav_msgs
   message_generation
-  Protobuf CONFIG REQUIRED
 )
 
 find_package(Eigen3 REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
+set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
+find_package(gRPC CONFIG REQUIRED)
+#set(_REFLECTION gRPC::grpc++_reflection)
+set(_GRPC_GRPCPP gRPC::grpc++)
 
 catkin_python_setup()
 
@@ -34,9 +38,9 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
-)
+  ${Protobuf_INCLUDE_DIRS})
 
-include_directories(${Protobuf_INCLUDE_DIRS})
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #Note : auth.proto imports header.proto, so need to include
@@ -106,7 +110,7 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
   bosdyn/api/parameter.proto
 )]]
 
-add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc protobuf::libprotobuf ${PROTO_SRCS} ${PROTO_HDRS})
+add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc)
 #[[add_executable(estop_client src/estop_client.cpp)
 add_executable(directory_client src/directory_client.cpp)
 add_executable(image_client src/image_client.cpp)
@@ -129,7 +133,9 @@ add_executable(spotServer
   src/RobotStateServiceImpl.cpp
 )]]
 
-  target_link_libraries(auth_client ${catkin_LIBRARIES})
+  target_link_libraries(auth_client ${catkin_LIBRARIES}${Protobuf_LIBRARIES}#${_REFLECTION}
+    ${_GRPC_GRPCPP}
+    ${_PROTOBUF_LIBPROTOBUF})
  #[[ target_link_libraries(estop_client ${catkin_LIBRARIES})
   target_link_libraries(spotServer ${catkin_LIBRARIES} )
   target_link_libraries(directory_client ${catkin_LIBRARIES})
@@ -145,10 +151,10 @@ catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-add_executable(vel_cmd src/vel_cmd_node.cpp src/VelocityCommand.cpp)
+#[[add_executable(vel_cmd src/vel_cmd_node.cpp src/VelocityCommand.cpp)
 target_link_libraries(vel_cmd ${catkin_LIBRARIES})
 
 add_executable(gps_translator_node src/gps_translator.cc)
 target_link_libraries(gps_translator_node ${catkin_LIBRARIES})
-add_dependencies(gps_translator_node spot_comm_generate_messages_cpp)
+add_dependencies(gps_translator_node spot_comm_generate_messages_cpp)]]
 
