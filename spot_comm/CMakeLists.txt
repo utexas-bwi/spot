@@ -3,6 +3,8 @@ project(spot_comm)
 
 add_compile_options(-std=c++11)
 
+set(Protobuf_MODULE_COMPATIBLE TRUE)
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -10,9 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nav_msgs
   message_generation
+  Protobuf CONFIG REQUIRED
 )
 
-message("-- Searching for grpc C++")
 find_package(Eigen3 REQUIRED)
 
 catkin_python_setup()
@@ -33,6 +35,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
 )
+
+include_directories(${Protobuf_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
@@ -101,8 +106,8 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
   bosdyn/api/parameter.proto
 )]]
 
-add_executable(auth_client src/auth_client.cpp)
-add_executable(estop_client src/estop_client.cpp)
+add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc protobuf::libprotobuf ${PROTO_SRCS} ${PROTO_HDRS})
+#[[add_executable(estop_client src/estop_client.cpp)
 add_executable(directory_client src/directory_client.cpp)
 add_executable(image_client src/image_client.cpp)
 add_executable(time_sync_client src/time_sync_client.cpp)
@@ -122,19 +127,19 @@ add_executable(spotServer
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
   src/RobotStateServiceImpl.cpp
-)
+)]]
 
-target_link_libraries(auth_client ${catkin_LIBRARIES})
-  target_link_libraries(estop_client ${catkin_LIBRARIES})
-  target_link_libraries(spotServer ${catkin_LIBRARIES})
+  target_link_libraries(auth_client ${catkin_LIBRARIES})
+ #[[ target_link_libraries(estop_client ${catkin_LIBRARIES})
+  target_link_libraries(spotServer ${catkin_LIBRARIES} )
   target_link_libraries(directory_client ${catkin_LIBRARIES})
   target_link_libraries(image_client ${catkin_LIBRARIES})
   target_link_libraries(time_sync_client ${catkin_LIBRARIES})
   target_link_libraries(lease_client ${catkin_LIBRARIES})
   target_link_libraries(log_annotation_client ${catkin_LIBRARIES})
   target_link_libraries(robot_command_client ${catkin_LIBRARIES})
-  target_link_libraries(robot_state_client ${catkin_LIBRARIES})
-  target_link_libraries(spotServer ${catkin_LIBRARIES})
+  # target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto robot_state_proto)
+  target_link_libraries(spotServer ${catkin_LIBRARIES}) ]]
 
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
