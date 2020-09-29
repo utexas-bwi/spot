@@ -55,10 +55,6 @@ generate_proto(directory_proto GRPC SRC_BASE "." FILES
   bosdyn/api/directory.proto
 )
 
-#generate_proto(geometry_proto GRPC SRC_BASE "." FILES
-  #bosdyn/api/geometry.proto
-#)
-
 generate_proto(image_proto GRPC SRC_BASE "." FILES 
   bosdyn/api/image_service.proto
   bosdyn/api/image.proto
@@ -113,7 +109,7 @@ add_executable(time_sync_client src/time_sync_client.cpp)
 add_executable(lease_client src/lease_client.cpp)
 add_executable(log_annotation_client src/log_annotation_client.cpp)
 add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp)
-# add_executable(robot_state_client src/robot_state_client.cpp)
+add_executable(robot_state_client src/robot_state_client.cpp)
 add_executable(spotServer
   src/server.cpp
   src/AuthServiceImpl.cpp
@@ -125,7 +121,7 @@ add_executable(spotServer
   src/TimeSyncServiceImpl.cpp
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
-  # src/RobotStateServiceImpl.cpp
+  src/RobotStateServiceImpl.cpp
 )
 
 #[[target_link_libraries(auth_client ${catkin_LIBRARIES} auth_proto header_proto)
@@ -137,8 +133,8 @@ add_executable(spotServer
   target_link_libraries(lease_client ${catkin_LIBRARIES} header_proto lease_proto)
   target_link_libraries(log_annotation_client ${catkin_LIBRARIES} header_proto log_annotation_proto)
   target_link_libraries(robot_command_client ${catkin_LIBRARIES} header_proto image_proto lease_proto robot_command_proto)
-  # target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto robot_state_proto)
-  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto power_proto robot_command_proto robot_state_proto time_sync_proto lease_proto license_proto log_annotation_proto) ]]
+  target_link_libraries(robot_state_client ${catkin_LIBRARIES} header_proto image_proto robot_state_proto)
+  target_link_libraries(spotServer ${catkin_LIBRARIES} auth_proto directory_proto estop_proto header_proto image_proto power_proto robot_command_proto robot_state_proto time_sync_proto lease_proto license_proto log_annotation_proto)]]
 
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
