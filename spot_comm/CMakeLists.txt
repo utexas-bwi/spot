@@ -41,13 +41,19 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
-  ${Protobuf_INCLUDE_DIRS})
-
+  ${Protobuf_INCLUDE_DIRS}
+)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-SET (HEADER include/bosdyn/api/header.pb.cc include/bosdyn/api/header.grpc.pb.cc)
-SET (AUTH src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc)
+function(include_files name)
+    string(TOUPPER ${name} upperName)
+    set (${upperName} include/bosdyn/api/${name}.pb.cc include/bosdyn/api/${name}.grpc.pb.cc PARENT_SCOPE)
+endfunction()
+
+include_files(header)
+include_files(auth)
+include_files(auth_service)
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
@@ -118,7 +124,7 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
 
 
 
-add_executable(auth_client ${HEADER} ${AUTH})
+add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH} ${AUTH_SERVICE})
 
 #add_executable(estop_client src/estop_client.cpp)
 #[[add_executable(directory_client src/directory_client.cpp)
