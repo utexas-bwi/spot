@@ -49,9 +49,14 @@ function(include_files name)
     set (${upperName} include/bosdyn/api/${name}.pb.cc include/bosdyn/api/${name}.grpc.pb.cc PARENT_SCOPE)
 endfunction()
 
+function(include_files_service name)
+    string(TOUPPER ${name} upperName)
+    set (${upperName} include/bosdyn/api/${name}.pb.cc include/bosdyn/api/${name}.grpc.pb.cc include/bosdyn/api/${name}_service.pb.cc include/bosdyn/api/${name}_service.grpc.pb.cc PARENT_SCOPE)
+endfunction()
+
+
 include_files(header)
-include_files(auth)
-include_files(auth_service)
+include_files_service(auth)
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
@@ -122,7 +127,7 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
 
 
 
-add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH} ${AUTH_SERVICE})
+add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH})
 
 #add_executable(estop_client src/estop_client.cpp)
 #[[add_executable(directory_client src/directory_client.cpp)
