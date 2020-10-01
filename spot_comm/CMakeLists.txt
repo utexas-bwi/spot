@@ -16,10 +16,13 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3 REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
+message(STATUS "Using protobuf ${protobuf_VERSION}")
+
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
 find_package(gRPC CONFIG REQUIRED)
 #set(_REFLECTION gRPC::grpc++_reflection)
 set(_GRPC_GRPCPP gRPC::grpc++)
+message(STATUS "Using gRPC ${gRPC_VERSION}")
 
 catkin_python_setup()
 
@@ -42,6 +45,9 @@ include_directories(
 
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+SET (HEADER include/bosdyn/api/header.pb.cc include/bosdyn/api/header.grpc.pb.cc)
+SET (AUTH src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc)
 
 #Note : auth.proto imports header.proto, so need to include
 #here as well to generate the auth proto
@@ -112,9 +118,10 @@ generate_proto(robot_state_proto GRPC SRC_BASE "." FILES
 
 
 
-add_executable(auth_client src/auth_client.cpp include/bosdyn/api/auth.pb.cc include/bosdyn/api/auth.grpc.pb.cc include/bosdyn/api/auth_service.pb.cc include/bosdyn/api/auth_service.grpc.pb.cc include/bosdyn/api/header.pb.cc include/bosdyn/api/header.grpc.pb.cc)
-#[[add_executable(estop_client src/estop_client.cpp)
-add_executable(directory_client src/directory_client.cpp)
+add_executable(auth_client ${HEADER} ${AUTH})
+
+#add_executable(estop_client src/estop_client.cpp)
+#[[add_executable(directory_client src/directory_client.cpp)
 add_executable(image_client src/image_client.cpp)
 add_executable(time_sync_client src/time_sync_client.cpp)
 add_executable(lease_client src/lease_client.cpp)
