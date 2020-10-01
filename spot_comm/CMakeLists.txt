@@ -18,7 +18,7 @@ message(STATUS "Using protobuf ${protobuf_VERSION}")
 
 set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
 find_package(gRPC CONFIG REQUIRED)
-#set(_REFLECTION gRPC::grpc++_reflection)
+set(_REFLECTION gRPC::grpc++_reflection)
 set(_GRPC_GRPCPP gRPC::grpc++)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
@@ -81,9 +81,9 @@ add_executable(image_client src/image_client.cpp ${HEADER} ${IMAGE} ${GEOMETRY})
 add_executable(time_sync_client src/time_sync_client.cpp ${HEADER} ${TIME_SYNC})
 add_executable(lease_client src/lease_client.cpp ${HEADER} ${LEASE})
 add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${LOG_ANNOTATION})
-#add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY})
-#add_executable(robot_state_client src/robot_state_client.cpp ${HEADER} ${ROBOT_STATE} ${PARAMETER})
-#[[add_executable(spotServer
+add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
+add_executable(robot_state_client src/robot_state_client.cpp ${HEADER} ${ROBOT_STATE} ${PARAMETER} ${GEOMETRY})
+add_executable(spotServer
   src/server.cpp
   src/AuthServiceImpl.cpp
   src/DirectoryServiceImpl.cpp
@@ -112,11 +112,15 @@ add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${L
   ${TRAJECTORY}
   ${ROBOT_STATE}
   ${PARAMETER}
-)]]
+  ${LICENSE}
+)
 
-  set(LINK_LIBRARIES ${catkin_LIBRARIES}${Protobuf_LIBRARIES}#${_REFLECTION}
+  set(LINK_LIBRARIES 
+    ${catkin_LIBRARIES}
+    ${Protobuf_LIBRARIES}
     ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF})
+    ${_PROTOBUF_LIBPROTOBUF}
+  )
   target_link_libraries(auth_client ${LINK_LIBRARIES})
   target_link_libraries(estop_client ${LINK_LIBRARIES})
   target_link_libraries(directory_client ${LINK_LIBRARIES})
@@ -124,9 +128,9 @@ add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${L
   target_link_libraries(time_sync_client ${LINK_LIBRARIES})
   target_link_libraries(lease_client ${LINK_LIBRARIES})
   target_link_libraries(log_annotation_client ${LINK_LIBRARIES})
-#  target_link_libraries(robot_command_client ${LINK_LIBRARIES})
-#  target_link_libraries(robot_state_client ${LINK_LIBRARIES})
-#  target_link_libraries(spotServer ${LINK_LIBRARIES})
+  target_link_libraries(robot_command_client ${LINK_LIBRARIES})
+  target_link_libraries(robot_state_client ${LINK_LIBRARIES})
+  target_link_libraries(spotServer ${LINK_LIBRARIES} ${_REFLECTION})
 
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
