@@ -3,8 +3,6 @@ project(spot_comm)
 
 add_compile_options(-std=c++11)
 
-set(protobuf_MODULE_COMPATIBLE TRUE)
-
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
