@@ -55,20 +55,21 @@ void RunServer() {
   grpc::reflection::InitProtoReflectionServerBuilderPlugin();
   ServerBuilder builder;
 
-  /* std::shared_ptr<ServerCredentials> creds;
+  std::shared_ptr<ServerCredentials> creds;
 
-  std::string key, cert;
-  read("key.pem", key);
-  read("cert.pem", cert);
+  std::string key, cert, root;
+  read("server.key", key);
+  read("server.crt", cert);
+  read ( "ca.crt", root );
 
-  grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp ={key, cert};
+  grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};
   grpc::SslServerCredentialsOptions ssl_opts;
-  ssl_opts.pem_root_certs="";
+  ssl_opts.pem_root_certs = root;
   ssl_opts.pem_key_cert_pairs.push_back(pkcp);
-  creds = grpc::SslServerCredentials(ssl_opts); */
+  creds = grpc::SslServerCredentials(ssl_opts);
 
   // Listen on the given address without any authentication mechanism.
-  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+  builder.AddListeningPort(server_address, creds);
   // Register "service" as the instance#include <spot_comm/Header.h> through which we'll communicate with
   // clients. In this case it corresponds to an *synchronous* service.
   
