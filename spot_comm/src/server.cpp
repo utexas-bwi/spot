@@ -60,7 +60,7 @@ void RunServer() {
   std::string key, cert, root;
   read("server.key", key);
   read("server.crt", cert);
-  read ( "ca.crt", root );
+  read("ca.crt", root);
 
   grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};
   grpc::SslServerCredentialsOptions ssl_opts;
