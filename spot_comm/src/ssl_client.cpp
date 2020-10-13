@@ -19,9 +19,8 @@ using bosdyn::api::AuthService;
 class AuthClient {
 public:
   AuthClient(const std::string& cert, const std::string& key, const std::string& root, const std::string& server) {
-    grpc::SslCredentialsOptions opts = { root, key, cert };
-
-		stub_ = AuthService::NewStub ( grpc::CreateChannel (server, grpc::SslCredentials ( opts ) ) );
+    grpc::SslCredentialsOptions opts = {root, key, cert};
+    stub_ = AuthService::NewStub(grpc::CreateChannel(server, grpc::SslCredentials(opts)));
 	}
 
   std::string GetAuthToken(const std::string& user, const std::string& pass, const std::string& appToken) {
@@ -56,35 +55,28 @@ public:
   std::unique_ptr<AuthService::Stub> stub_;
 };
 
-void read ( const std::string& filename, std::string& data )
-{
-	std::ifstream file ( filename.c_str (), std::ios::in );
-
-	if ( file.is_open () )
-	{
-		std::stringstream ss;
-		ss << file.rdbuf ();
-
-		file.close ();
-
-		data = ss.str ();
+void read(const std::string& filename, std::string& data) {
+	std::ifstream file(filename.c_str(), std::ios::in);
+	if (file.is_open()) {
+	  std::stringstream ss;
+	  ss << file.rdbuf();
+		file.close();
+		data = ss.str();
 	}
-
 	return;
 }
 
-int main ( int argc, char** argv )
-{
+int main (int argc, char** argv) {
 	std::string cert;
 	std::string key;
 	std::string root;
-	std::string server { "localhost:50051" };
+	std::string server {"localhost:50051"};
 
-	read ( "client.crt", cert );
-	read ( "client.key", key );
-	read ( "ca.crt", root );
+	read ("client.crt", cert);
+	read ("client.key", key);
+	read ("ca.crt", root);
 
-  AuthClient authClient ( cert, key, root, server );
+  AuthClient authClient (cert, key, root, server);
 
   std::string user("testUser");
   std::string pass("testPassword");
