@@ -75,6 +75,7 @@ include_files_service(robot_state)
 include_files(parameter)
 
 add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH})
+add_executable(ssl_client src/ssl_client.cpp ${HEADER} ${AUTH})
 add_executable(estop_client src/estop_client.cpp ${HEADER} ${ESTOP})
 add_executable(directory_client src/directory_client.cpp ${HEADER} ${DIRECTORY})
 add_executable(image_client src/image_client.cpp ${HEADER} ${IMAGE} ${GEOMETRY})
@@ -121,6 +122,7 @@ add_executable(spotServer
     ${_GRPC_GRPCPP}
     ${_PROTOBUF_LIBPROTOBUF}
   )
+  target_link_libraries(ssl_client ${LINK_LIBRARIES})
   target_link_libraries(auth_client ${LINK_LIBRARIES})
   target_link_libraries(estop_client ${LINK_LIBRARIES})
   target_link_libraries(directory_client ${LINK_LIBRARIES})
