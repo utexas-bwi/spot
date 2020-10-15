@@ -16,9 +16,10 @@
 #include <spot_comm/TimeSyncServiceImpl.h>
 #include <spot_comm/LeaseServiceImpl.h>
 #include <spot_comm/LogAnnotationServiceImpl.h>
-//#include <spot_comm/RobotCommandServiceImpl.h>
+#include <spot_comm/RobotCommandServiceImpl.h>
 //#include <spot_comm/RobotStateServiceImpl.h>
 #include <spot_comm/PowerServiceImpl.h>
+#include <ros/ros.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -38,7 +39,7 @@ void read(const std::string& filename, std::string& data) {
   return;
 }
 
-void RunServer() {
+void RunServer(ros::NodeHandle& n) {
   std::string server_address("localhost:50051");
   AuthServiceImpl authService;
   EstopServiceImpl estopService;
@@ -47,7 +48,7 @@ void RunServer() {
   TimeSyncServiceImpl timeService;
   LeaseServiceImpl leaseService;
   LogAnnotationServiceImpl logService;
-  //RobotCommandServiceImpl commandService;
+  RobotCommandServiceImpl commandService(n);
   //RobotStateServiceImpl stateService;
   PowerServiceImpl powerService;
 
@@ -84,8 +85,10 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
+  ros::init(argc, argv, "spot_node");
+  ros::NodeHandle n;
   grpc_init();
-  RunServer();
+  RunServer(n);
   return 0;
 }
 
