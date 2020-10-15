@@ -23,7 +23,7 @@
   </group>
  
   <!--Robot Description from URDF-->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_description)/urdf/spot.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find spot_description)/urdf/spot.urdf.xacro"/>
   <!-- <param name="use_gui" value="true"/> -->
 
   <!--Nodes-->
@@ -33,6 +33,6 @@
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
 
-  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>
+  <!--<include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>-->
 
 </launch>
