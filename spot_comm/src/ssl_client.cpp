@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <grpc++/grpc++.h>
+#include <ros/package.h>
 
 #include "bosdyn/api/auth_service.grpc.pb.h"
 #include "bosdyn/api/header.grpc.pb.h"
@@ -21,7 +22,7 @@ public:
   AuthClient(const std::string& cert, const std::string& key, const std::string& root, const std::string& server) {
     grpc::SslCredentialsOptions opts = {root, key, cert};
     stub_ = AuthService::NewStub(grpc::CreateChannel(server, grpc::SslCredentials(opts)));
-	}
+  }
 
   std::string GetAuthToken(const std::string& user, const std::string& pass, const std::string& appToken) {
     // Data we are sending to the server.
@@ -67,14 +68,13 @@ void read(const std::string& filename, std::string& data) {
 }
 
 int main (int argc, char** argv) {
-	std::string cert;
-	std::string key;
-	std::string root;
 	std::string server {"localhost:50051"};
-
-	read ("client.crt", cert);
-	read ("client.key", key);
-	read ("ca.crt", root);
+	
+	std::string pathToPackage = ros::package::getPath("spot_comm");
+  std::string key, cert, root;
+  read(pathToPackage + "/include/certs/client.key", key);
+  read(pathToPackage + "/include/certs/client.crt", cert);
+  read(pathToPackage + "/include/certs/ca.crt", root);
 
   AuthClient authClient (cert, key, root, server);
 

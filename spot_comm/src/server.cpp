@@ -20,6 +20,7 @@
 //#include <spot_comm/RobotStateServiceImpl.h>
 #include <spot_comm/PowerServiceImpl.h>
 #include <ros/ros.h>
+#include <ros/package.h>
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -29,6 +30,7 @@ using grpc::ServerCredentials;
 
 void read(const std::string& filename, std::string& data) {
   std::ifstream file(filename.c_str(), std::ios::in);
+  std::cout << filename.c_str() << "\n" << std::endl;
   if (file.is_open())
   {
     std::stringstream ss;
@@ -57,11 +59,11 @@ void RunServer(ros::NodeHandle& n) {
   ServerBuilder builder;
 
   std::shared_ptr<ServerCredentials> creds;
-
+  std::string pathToPackage = ros::package::getPath("spot_comm");
   std::string key, cert, root;
-  read("server.key", key);
-  read("server.crt", cert);
-  read("ca.crt", root);
+  read(pathToPackage + "/include/certs/server.key", key);
+  read(pathToPackage + "/include/certs/server.crt", cert);
+  read(pathToPackage + "/include/certs/ca.crt", root);
 
   grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};
   grpc::SslServerCredentialsOptions ssl_opts;
