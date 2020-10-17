@@ -14,6 +14,7 @@
 #include <google/protobuf/util/time_util.h>
 
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <geometry_msgs/Twist.h>
 #include "spot_comm/VelocityCommand.h"
 
@@ -113,14 +114,13 @@ void read(const std::string& filename, std::string& data) {
 }
 
 int main (int argc, char** argv) {
-	std::string cert;
-	std::string key;
-	std::string root;
-	std::string server {"localhost:50051"};
+  std::string server {"localhost:50051"};
 
-	read ("client.crt", cert);
-	read ("client.key", key);
-	read ("ca.crt", root);
+  std::string pathToPackage = ros::package::getPath("spot_comm");
+  std::string key, cert, root;
+  read(pathToPackage + "/include/certs/client.key", key);
+  read(pathToPackage + "/include/certs/client.crt", cert);
+  read(pathToPackage + "/include/certs/ca.crt", root);
 
   RobotCommandClient robotClient(cert, key, root, server);
 
