@@ -1,6 +1,20 @@
 #include <spot_comm/RobotCommandServiceImpl.h>
 #include <spot_comm/Header.h>
 
+double getXVel(const RobotCommandRequest* request) {
+    return request->command().mobility_command().se2_velocity_request().velocity().linear().x();
+}
+
+double getYVel(const RobotCommandRequest* request) {
+    return request->command().mobility_command().se2_velocity_request().velocity().linear().y();
+}
+
+double getAngularVel(const RobotCommandRequest* request) {
+    return request->command().mobility_command().se2_velocity_request().velocity().angular();
+}
+
+RobotCommandServiceImpl::RobotCommandServiceImpl(ros::NodeHandle &n): nh(n) {}
+
 Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const RobotCommandRequest* request, RobotCommandResponse* response) {
     // header
     response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
@@ -20,6 +34,10 @@ Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const Robot
 
     // message
     response->set_message("RobotCommandResponse received");
+
+    // Publish twist message
+    VelocityCommand vel(nh);
+    vel.executeCommand(getXVel(request), getYVel(request), getAngularVel(request));
     
     return Status::OK;
 }

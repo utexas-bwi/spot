@@ -6,6 +6,9 @@
 #include "bosdyn/api/geometry.grpc.pb.h"
 #include "bosdyn/api/lease_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <spot_comm/VelocityCommand.h>
 
 using bosdyn::api::RobotCommandService;
 using bosdyn::api::RobotCommandRequest;
@@ -46,9 +49,13 @@ using google::protobuf::util::TimeUtil;
 
 class RobotCommandServiceImpl final : public RobotCommandService::Service {
   public:
+    RobotCommandServiceImpl(ros::NodeHandle &n);
     Status RobotCommand(ServerContext* context, const RobotCommandRequest* request, RobotCommandResponse* response) override;
     Status RobotCommandFeedback(ServerContext* context, const RobotCommandFeedbackRequest* request, RobotCommandFeedbackResponse* response) override;
     Status ClearBehaviorFault(ServerContext* context, const ClearBehaviorFaultRequest* request, ClearBehaviorFaultResponse* response) override;
+
+  private:
+    ros::NodeHandle &nh;
 
 };
 

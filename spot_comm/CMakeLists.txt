@@ -97,6 +97,7 @@ add_executable(spotServer
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
   src/RobotStateServiceImpl.cpp
+  src/VelocityCommand.cpp
   ${HEADER}
   ${AUTH}
   ${ESTOP}
