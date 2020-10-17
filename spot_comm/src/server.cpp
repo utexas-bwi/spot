@@ -30,7 +30,6 @@ using grpc::ServerCredentials;
 
 void read(const std::string& filename, std::string& data) {
   std::ifstream file(filename.c_str(), std::ios::in);
-  std::cout << filename.c_str() << "\n" << std::endl;
   if (file.is_open())
   {
     std::stringstream ss;
@@ -82,6 +81,7 @@ void RunServer(ros::NodeHandle& n) {
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
 
+  //ros::spin();
   // Wait for the server to shutdown. Note that some other thread must be
   // responsible for shutting down the server for this call to ever return.
   server->Wait();

@@ -56,7 +56,7 @@ class RobotCommandServiceImpl final : public RobotCommandService::Service {
 
   private:
     ros::NodeHandle &nh;
-
+    VelocityCommand vel;
 };
 
 #endif
