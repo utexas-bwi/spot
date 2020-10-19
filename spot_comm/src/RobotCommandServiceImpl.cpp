@@ -13,7 +13,7 @@ double getAngularVel(const RobotCommandRequest* request) {
     return request->command().mobility_command().se2_velocity_request().velocity().angular();
 }
 
-RobotCommandServiceImpl::RobotCommandServiceImpl(ros::NodeHandle &n): nh(n) {}
+RobotCommandServiceImpl::RobotCommandServiceImpl(ros::NodeHandle &n): nh(n), vel(nh) {}
 
 Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const RobotCommandRequest* request, RobotCommandResponse* response) {
     // header
@@ -36,7 +36,6 @@ Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const Robot
     response->set_message("RobotCommandResponse received");
 
     // Publish twist message
-    VelocityCommand vel(nh);
     vel.executeCommand(getXVel(request), getYVel(request), getAngularVel(request));
     
     return Status::OK;
