@@ -1,6 +1,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 
 #include <grpc++/grpc++.h>
 #include <grpc++/health_check_service_interface.h>
@@ -10,6 +13,8 @@
 #include "bosdyn/api/geometry.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 #include "bosdyn/api/header.grpc.pb.h"
+#include <ros/ros.h>
+#include <ros/package.h>
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -37,8 +42,10 @@ using google::protobuf::util::TimeUtil;
 
 class RobotStateClient {
  public:
-  RobotStateClient(std::shared_ptr<Channel> channel)
-      : stub_(RobotStateService::NewStub(channel)) {}
+  RobotStateClient(const std::string& cert, const std::string& key, const std::string& root, const std::string& server) {
+    grpc::SslCredentialsOptions opts = {root, key, cert};
+    stub_ = RobotStateService::NewStub(grpc::CreateChannel(server, grpc::SslCredentials(opts)));
+  } 
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
@@ -77,37 +84,34 @@ class RobotStateClient {
   std::unique_ptr<RobotStateService::Stub> stub_;
 };
 
+void read(const std::string& filename, std::string& data) {
+	std::ifstream file(filename.c_str(), std::ios::in);
+	if (file.is_open()) {
+	  std::stringstream ss;
+	  ss << file.rdbuf();
+		file.close();
+		data = ss.str();
+	}
+	return;
+}
+
+
 int main(int argc, char** argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
   // are created. This channel models a connection to an endpoint specified by
   // the argument "--target=" which is the only expected argument.
   // We indicate that the channel isn't authenticated (use of
   // InsecureChannelCredentials()).
-  grpc_init();
-  std::string target_str;
-  std::string arg_str("--target");
-  if (argc > 1) {
-    std::string arg_val = argv[1];
-    size_t start_pos = arg_val.find(arg_str);
-    if (start_pos != std::string::npos) {
-      start_pos += arg_str.size();
-      if (arg_val[start_pos] == '=') {
-        target_str = arg_val.substr(start_pos + 1);
-      } else {
-        std::cout << "The only correct argument syntax is --target=" << std::endl;
-        return 0;
-      }
-    } else {
-      std::cout << "The only acceptable argument is --target=" << std::endl;
-      return 0;
-    }
-  } else {
-    target_str = "127.0.0.1:50051";
-  }
-  
-  RobotStateClient stateClient(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-  
-  RobotStateResponse reply = stateClient.GetRobotState();
+  std::string server {"localhost:50051"};
+
+  std::string pathToPackage = ros::package::getPath("spot_comm");
+  std::string key, cert, root;
+  read(pathToPackage + "/include/certs/client.key", key);
+  read(pathToPackage + "/include/certs/client.crt", cert);
+  read(pathToPackage + "/include/certs/ca.crt", root);
+
+  RobotStateClient robotClient(cert, key, root, server);  
+  RobotStateResponse reply = robotClient.GetRobotState();
   std::cout << "Kinematic state timestamp: " << reply.robot_state().kinematic_state().acquisition_timestamp() << std::endl;
   std::cout << "Linear velocity vision x: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().linear().x() << std::endl;
   std::cout << "Angular velocity vision z: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().angular().z() << std::endl;

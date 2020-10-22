@@ -4,6 +4,9 @@
 #include "bosdyn/api/robot_state_service.grpc.pb.h"
 #include "bosdyn/api/geometry.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <spot_comm/GetStateCommand.h>
 
 using bosdyn::api::RobotStateService;
 using bosdyn::api::RobotStateRequest;
@@ -30,10 +33,15 @@ using google::protobuf::util::TimeUtil;
 
 class RobotStateServiceImpl final : public RobotStateService::Service {
   public:
+    RobotStateServiceImpl(ros::NodeHandle &n);
     Status GetRobotState(ServerContext* context, const RobotStateRequest* request, RobotStateResponse* response) override;
     Status GetRobotMetrics(ServerContext* context, const RobotMetricsRequest* request, RobotMetricsResponse* response) override;
     Status GetRobotHardwareConfiguration(ServerContext* context, const RobotHardwareConfigurationRequest* request, RobotHardwareConfigurationResponse* response) override;
     Status GetRobotLinkModel(ServerContext* context, const RobotLinkModelRequest* request, RobotLinkModelResponse* response) override;
+  private: 
+    ros::NodeHandle &nh;
+    // GetStateCommand state;
+
 };
 
 #endif
