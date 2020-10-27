@@ -90,21 +90,23 @@ void RunServer(ros::NodeHandle& n) {
   //ros::spin();
   // Wait for the server to shutdown. Note that some other thread must be
   // responsible for shutting down the server for this call to ever return.
-  server->Wait();
+  // server->Wait();
+  while (ros::ok()){
+    ros::spinOnce();
+  }
 }
 
-void modelStateCallback(const gazebo_msgs::ModelStates::ConstPtr &msg) {
-    auto twist = msg->twist;
-    auto index = sizeof(twist)/sizeof(twist[0]) - 1;
-    ROS_INFO("Linear: %f, %f, %f Angular: %f %f %f\n", twist[index].linear.x, twist[index].linear.y, twist[index].linear.z, twist[index].angular.x,
-         twist[index].angular.y, twist[index].angular.z);
-    ros::spinOnce();
-}
+// void modelStateCallback(const gazebo_msgs::ModelStates::ConstPtr &msg) {
+//     auto twist = msg->twist;
+//     auto index = sizeof(twist)/sizeof(twist[0]) - 1;
+//     ROS_INFO("Linear: %f, %f, %f Angular: %f %f %f\n", twist[1].linear.x, twist[1].linear.y, twist[1].linear.z, twist[1].angular.x,
+//          twist[1].angular.y, twist[1].angular.z);
+//     ros::spinOnce();
+// }
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "spot_node");
   ros::NodeHandle n;
-  ros::Subscriber sub = n.subscribe("/gazebo/model_states", 10, &modelStateCallback);
   grpc_init();
   RunServer(n);
   return 0;

@@ -40,6 +40,7 @@ class RobotStateServiceImpl final : public RobotStateService::Service {
     Status GetRobotLinkModel(ServerContext* context, const RobotLinkModelRequest* request, RobotLinkModelResponse* response) override;
   private: 
     ros::NodeHandle &nh;
+    ros::Subscriber sub;
     // GetStateCommand state;
 
 };
