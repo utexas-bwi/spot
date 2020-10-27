@@ -114,9 +114,13 @@ int main(int argc, char** argv) {
   RobotStateResponse reply = robotClient.GetRobotState();
   std::cout << "Kinematic state timestamp: " << reply.robot_state().kinematic_state().acquisition_timestamp() << std::endl;
   std::cout << "Linear velocity vision x: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().linear().x() << std::endl;
+  std::cout << "Linear velocity vision y: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().linear().y() << std::endl;
+  std::cout << "Linear velocity vision z: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().linear().z() << std::endl;
+  std::cout << "Angular velocity vision x: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().angular().x() << std::endl;
+  std::cout << "Angular velocity vision y: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().angular().y() << std::endl; 
   std::cout << "Angular velocity vision z: " << reply.robot_state().kinematic_state().velocity_of_body_in_vision().angular().z() << std::endl;
-  std::cout << "Linear velocity odom x: " << reply.robot_state().kinematic_state().velocity_of_body_in_odom().linear().x() << std::endl;
-  std::cout << "Angular velocity odom z: " << reply.robot_state().kinematic_state().velocity_of_body_in_odom().angular().z() << std::endl;
+  // std::cout << "Linear velocity odom x: " << reply.robot_state().kinematic_state().velocity_of_body_in_odom().linear().x() << std::endl;
+  // std::cout << "Angular velocity odom z: " << reply.robot_state().kinematic_state().velocity_of_body_in_odom().angular().z() << std::endl;
 
   return 0;
 }

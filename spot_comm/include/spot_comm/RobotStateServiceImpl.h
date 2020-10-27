@@ -6,7 +6,6 @@
 #include <google/protobuf/util/time_util.h>
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <spot_comm/GetStateCommand.h>
 
 using bosdyn::api::RobotStateService;
 using bosdyn::api::RobotStateRequest;
@@ -40,8 +39,6 @@ class RobotStateServiceImpl final : public RobotStateService::Service {
     Status GetRobotLinkModel(ServerContext* context, const RobotLinkModelRequest* request, RobotLinkModelResponse* response) override;
   private: 
     ros::NodeHandle &nh;
-    ros::Subscriber sub;
-    // GetStateCommand state;
 
 };
 
