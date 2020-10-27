@@ -17,6 +17,6 @@ void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel
 
     pub.publish(msg);
     ROS_INFO("published message x: %f, y: %f, z: %f", msg.linear.x, msg.linear.y, msg.angular.z);
-        
+    
     ros::spinOnce();
 }

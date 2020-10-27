@@ -17,8 +17,8 @@ static void modelStateCallback(const gazebo_msgs::ModelStates::ConstPtr &msg) {
 }
 
 Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotStateRequest* request, RobotStateResponse* response) {
-    ros::Subscriber sub = nh.subscribe("/gazebo/model_states", 10, &modelStateCallback);
-    ros::spinOnce();
+    // ros::Subscriber sub = nh.subscribe("/gazebo/model_states", 10, &modelStateCallback);
+    // ros::spinOnce();
     // header
     response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
 

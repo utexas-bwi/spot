@@ -22,6 +22,10 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 
+#include <gazebo_msgs/ModelStates.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Twist.h> 
+
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
@@ -89,9 +93,18 @@ void RunServer(ros::NodeHandle& n) {
   server->Wait();
 }
 
+void modelStateCallback(const gazebo_msgs::ModelStates::ConstPtr &msg) {
+    auto twist = msg->twist;
+    auto index = sizeof(twist)/sizeof(twist[0]) - 1;
+    ROS_INFO("Linear: %f, %f, %f Angular: %f %f %f\n", twist[index].linear.x, twist[index].linear.y, twist[index].linear.z, twist[index].angular.x,
+         twist[index].angular.y, twist[index].angular.z);
+    ros::spinOnce();
+}
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "spot_node");
   ros::NodeHandle n;
+  ros::Subscriber sub = n.subscribe("/gazebo/model_states", 10, &modelStateCallback);
   grpc_init();
   RunServer(n);
   return 0;
