@@ -41,20 +41,14 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>bwi_gazebo_entities</build_depend>
-  <build_depend>bwi_planning_common</build_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>map_server</build_depend>
-  <build_export_depend>bwi_gazebo_entities</build_export_depend>
-  <build_export_depend>bwi_planning_common</build_export_depend>
   <build_export_depend>gazebo_ros</build_export_depend>
   <build_export_depend>map_server</build_export_depend>
-  <exec_depend>bwi_gazebo_entities</exec_depend>
-  <exec_depend>bwi_planning_common</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
-  <exec_depend>velodyne_description</exec_depend>
+  <!-- <exec_depend>velodyne_description</exec_depend> -->
   
   <export>
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
