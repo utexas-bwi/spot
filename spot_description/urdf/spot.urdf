@@ -6,7 +6,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/base.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/base.dae"/>
       </geometry>
       <material name="base">
         <color rgba="1 0.8431 0 1"/>
@@ -15,7 +15,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/base.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/base.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -31,7 +31,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.hip.dae"/>
       </geometry>
       <material name="fl.hip">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -40,7 +40,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.hip.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -63,7 +63,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.uleg.dae"/>
       </geometry>
       <material name="fl.uleg">
         <color rgba="1 0.8431 0 1"/>
@@ -72,7 +72,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.uleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -95,7 +95,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.lleg.dae"/>
       </geometry>
       <material name="fl.lleg">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -104,7 +104,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fl.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fl.lleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -127,7 +127,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.hip.dae"/>
       </geometry>
       <material name="fr.hip">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -136,7 +136,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.hip.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -159,7 +159,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.uleg.dae"/>
       </geometry>
       <material name="fr.uleg">
         <color rgba="1 0.8431 0 1"/>
@@ -168,7 +168,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.uleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -191,7 +191,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.lleg.dae"/>
       </geometry>
       <material name="fr.lleg">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -200,7 +200,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/fr.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/fr.lleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -223,7 +223,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.hip.dae"/>
       </geometry>
       <material name="hl.hip">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -232,7 +232,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.hip.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -255,7 +255,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.uleg.dae"/>
       </geometry>
       <material name="hl.uleg">
         <color rgba="1 0.8431 0 1"/>
@@ -264,7 +264,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.uleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -287,7 +287,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.lleg.dae"/>
       </geometry>
       <material name="hl.lleg">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -296,7 +296,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hl.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hl.lleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -319,7 +319,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.hip.dae"/>
       </geometry>
       <material name="hr.hip">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -328,7 +328,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.hip.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.hip.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -351,7 +351,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.uleg.dae"/>
       </geometry>
       <material name="hr.uleg">
         <color rgba="1 0.8431 0 1"/>
@@ -360,7 +360,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.uleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.uleg.dae"/>
       </geometry>
     </collision>
     <inertial>
@@ -383,7 +383,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.lleg.dae"/>
       </geometry>
       <material name="hr.lleg">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -392,7 +392,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://spot_description/meshes/hr.lleg.dae"/>
+        <mesh filename="package://spot_sim_description/meshes/hr.lleg.dae"/>
       </geometry>
     </collision>
     <inertial>

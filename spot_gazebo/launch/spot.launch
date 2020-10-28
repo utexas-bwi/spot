@@ -23,7 +23,7 @@
   </group>
  
   <!--Robot Description from URDF-->
-  <param name="robot_description" command="$(find xacro)/xacro $(find spot_description)/urdf/spot.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find spot_sim_description)/urdf/spot.urdf.xacro"/>
   <!-- <param name="use_gui" value="true"/> -->
 
   <!--Nodes-->

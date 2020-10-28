@@ -41,13 +41,13 @@
     <visual name="visual">
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find spot_description)/meshes/spot_whole_body.dae" />     
+        <mesh filename="$(find spot_sim_description)/meshes/spot_whole_body.dae" />     
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find spot_description)/meshes/spot_whole_body.dae" />
+        <mesh filename="$(find spot_sim_description)/meshes/spot_whole_body.dae" />
       </geometry>
     </collision>
   </link>
@@ -98,5 +98,5 @@
   <xacro:caster prefix="back_left" reflectH="1" reflectV="-1"/>
   <xacro:caster prefix="back_right" reflectH="-1" reflectV="-1"/>
 
-  <xacro:include filename="$(find spot_description)/urdf/spot.plugins.xacro"/>
+  <xacro:include filename="$(find spot_sim_description)/urdf/spot.plugins.xacro"/>
 </robot>

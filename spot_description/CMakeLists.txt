@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(spot_description)
+project(spot_sim_description)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -105,7 +105,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES spot_description
+#  LIBRARIES spot_sim_description
 #  CATKIN_DEPENDS bwi_gazebo_entities bwi_planning_common gazebo_ros map_server
 #  DEPENDS system_lib
 )
@@ -123,7 +123,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/spot_description.cpp
+#   src/${PROJECT_NAME}/spot_sim_description.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -134,7 +134,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/spot_description_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/spot_sim_description_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -198,7 +198,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_spot_description.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_spot_sim_description.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

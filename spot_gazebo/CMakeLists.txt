@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_plugins
   gazebo_ros
   rviz
-  spot_description
+  spot_sim_description
 )
 
 ## System dependencies are found with CMake's conventions
@@ -115,7 +115,7 @@ endif ()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES spot_gazebo
-#  CATKIN_DEPENDS gazebo_plugins gazebo_ros rviz spot_description
+#  CATKIN_DEPENDS gazebo_plugins gazebo_ros rviz spot_sim_description
 #  DEPENDS system_lib
 )
 

@@ -42,13 +42,13 @@
     <visual name="visual">
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-	      <mesh filename="package://spot_description/meshes/spot_whole_body.dae" />     
+	      <mesh filename="package://spot_sim_description/meshes/spot_whole_body.dae" />     
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 .655" rpy="0 0 0" />
       <geometry>
-	      <mesh filename="package://spot_description/meshes/spot_whole_body.dae" />
+	      <mesh filename="package://spot_sim_description/meshes/spot_whole_body.dae" />
       </geometry>
     </collision>
   </link>
@@ -99,7 +99,7 @@
   <xacro:caster prefix="back_left" reflectH="1" reflectV="-1"/>
   <xacro:caster prefix="back_right" reflectH="-1" reflectV="-1"/>
 
-  <xacro:include filename="$(find spot_description)/urdf/spot.plugins.xacro"/>
+  <xacro:include filename="$(find spot_sim_description)/urdf/spot.plugins.xacro"/>
 
   <!--<xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
   <VLP-16 parent="base_footprint" name="velodyne" topic="lidar_points" hz="10" samples="1024" gpu="false" lasers="16" max_range="100">
