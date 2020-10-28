@@ -123,7 +123,6 @@ int main (int argc, char** argv) {
   read(pathToPackage + "/include/certs/ca.crt", root);
 
   RobotCommandClient robotClient(cert, key, root, server);
-
   Lease lease;
   lease.set_resource("testResource");
   lease.set_epoch("testEpoch");
@@ -136,6 +135,7 @@ int main (int argc, char** argv) {
   command.mutable_mobility_command()->mutable_se2_velocity_request()->set_se2_frame_name("testFrame");
   command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_x(1);
   command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_y(0);
+  // command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->mutable_linear()->set_z(0);
   command.mutable_mobility_command()->mutable_se2_velocity_request()->mutable_velocity()->set_angular(1);
   RobotCommandResponse response = robotClient.startRobotCommand(lease, command);
   std::cout << "Response received: " << response.DebugString() << std::endl;

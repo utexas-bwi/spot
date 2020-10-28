@@ -17,11 +17,15 @@
 #include <spot_comm/LeaseServiceImpl.h>
 #include <spot_comm/LogAnnotationServiceImpl.h>
 #include <spot_comm/RobotCommandServiceImpl.h>
-//#include <spot_comm/RobotStateServiceImpl.h>
 #include <spot_comm/RobotIdServiceImpl.h>
+#include <spot_comm/RobotStateServiceImpl.h>
 #include <spot_comm/PowerServiceImpl.h>
 #include <ros/ros.h>
 #include <ros/package.h>
+
+#include <gazebo_msgs/ModelStates.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Twist.h> 
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -51,8 +55,8 @@ void RunServer(ros::NodeHandle& n) {
   LeaseServiceImpl leaseService;
   LogAnnotationServiceImpl logService;
   RobotCommandServiceImpl commandService(n);
-  //RobotStateServiceImpl stateService;
   RobotIdServiceImpl idService;
+  RobotStateServiceImpl stateService(n);
   PowerServiceImpl powerService;
 
   grpc::EnableDefaultHealthCheckService(true);
@@ -80,15 +84,29 @@ void RunServer(ros::NodeHandle& n) {
   builder.RegisterService(&authService); // change to dirService for directory test
   builder.RegisterService(&commandService); // change to dirService for directory test
   builder.RegisterService(&idService); // change to dirService for directory test
+  builder.RegisterService(&stateService);
+
   // Finally assemble the server.
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
-
+  // ros::init(argc, argv, "spot_node");
+  // ros::NodeHandle n;
   //ros::spin();
   // Wait for the server to shutdown. Note that some other thread must be
   // responsible for shutting down the server for this call to ever return.
-  server->Wait();
+  // server->Wait();
+  while (ros::ok()){
+    ros::spinOnce();
+  }
 }
+
+// void modelStateCallback(const gazebo_msgs::ModelStates::ConstPtr &msg) {
+//     auto twist = msg->twist;
+//     auto index = sizeof(twist)/sizeof(twist[0]) - 1;
+//     ROS_INFO("Linear: %f, %f, %f Angular: %f %f %f\n", twist[1].linear.x, twist[1].linear.y, twist[1].linear.z, twist[1].angular.x,
+//          twist[1].angular.y, twist[1].angular.z);
+//     ros::spinOnce();
+// }
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "spot_node");
