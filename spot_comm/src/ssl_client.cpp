@@ -57,20 +57,20 @@ public:
 };
 
 void read(const std::string& filename, std::string& data) {
-	std::ifstream file(filename.c_str(), std::ios::in);
-	if (file.is_open()) {
-	  std::stringstream ss;
-	  ss << file.rdbuf();
-		file.close();
-		data = ss.str();
-	}
-	return;
+  std::ifstream file(filename.c_str(), std::ios::in);
+  if (file.is_open()) {
+    std::stringstream ss;
+    ss << file.rdbuf();
+    file.close();
+    data = ss.str();
+  }
+  return;
 }
 
 int main (int argc, char** argv) {
-	std::string server {"localhost:50051"};
-	
-	std::string pathToPackage = ros::package::getPath("spot_comm");
+  std::string server {"localhost:50051"};
+  
+  std::string pathToPackage = ros::package::getPath("spot_comm");
   std::string key, cert, root;
   read(pathToPackage + "/include/certs/client.key", key);
   read(pathToPackage + "/include/certs/client.crt", cert);

@@ -73,6 +73,7 @@ include_files(mobility_command)
 include_files(basic_command)
 include_files(trajectory)
 include_files_service(robot_state)
+include_files_service(robot_id)
 include_files(parameter)
 
 add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH})
@@ -98,6 +99,7 @@ add_executable(spotServer
   src/PowerServiceImpl.cpp
   src/RobotCommandServiceImpl.cpp
   src/RobotStateServiceImpl.cpp
+  src/RobotIdServiceImpl.cpp
   src/VelocityCommand.cpp
   ${HEADER}
   ${AUTH}
@@ -117,6 +119,7 @@ add_executable(spotServer
   ${ROBOT_STATE}
   ${PARAMETER}
   ${LICENSE}
+  ${ROBOT_ID}
 )
 
   set(LINK_LIBRARIES 

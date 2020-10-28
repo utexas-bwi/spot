@@ -18,6 +18,7 @@
 #include <spot_comm/LogAnnotationServiceImpl.h>
 #include <spot_comm/RobotCommandServiceImpl.h>
 //#include <spot_comm/RobotStateServiceImpl.h>
+#include <spot_comm/RobotIdServiceImpl.h>
 #include <spot_comm/PowerServiceImpl.h>
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -51,6 +52,7 @@ void RunServer(ros::NodeHandle& n) {
   LogAnnotationServiceImpl logService;
   RobotCommandServiceImpl commandService(n);
   //RobotStateServiceImpl stateService;
+  RobotIdServiceImpl idService;
   PowerServiceImpl powerService;
 
   grpc::EnableDefaultHealthCheckService(true);
@@ -66,7 +68,7 @@ void RunServer(ros::NodeHandle& n) {
 
   grpc::SslServerCredentialsOptions::PemKeyCertPair pkcp = {key, cert};
   grpc::SslServerCredentialsOptions ssl_opts;
-  ssl_opts.pem_root_certs = root;
+  //ssl_opts.pem_root_certs = root;
   ssl_opts.pem_key_cert_pairs.push_back(pkcp);
   creds = grpc::SslServerCredentials(ssl_opts);
 
@@ -77,6 +79,7 @@ void RunServer(ros::NodeHandle& n) {
   
   builder.RegisterService(&authService); // change to dirService for directory test
   builder.RegisterService(&commandService); // change to dirService for directory test
+  builder.RegisterService(&idService); // change to dirService for directory test
   // Finally assemble the server.
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
