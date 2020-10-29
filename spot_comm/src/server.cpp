@@ -85,7 +85,14 @@ void RunServer(ros::NodeHandle& n) {
   builder.RegisterService(&commandService); // change to dirService for directory test
   builder.RegisterService(&idService); // change to dirService for directory test
   builder.RegisterService(&stateService);
-
+  builder.RegisterService(&estopService);
+  builder.RegisterService(&dirService);
+  builder.RegisterService(&imService);
+  builder.RegisterService(&timeService);
+  builder.RegisterService(&leaseService);
+  builder.RegisterService(&logService);
+  builder.RegisterService(&powerService);
+  
   // Finally assemble the server.
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
