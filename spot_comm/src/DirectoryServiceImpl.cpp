@@ -10,8 +10,8 @@ void fillServiceEntry(ServiceEntry* entry) {
   entry->set_permission_required("");
 }
 
-Status DirectoryServiceImpl::GetServiceEntry(ServerContext* context, const GetServiceEntryRequest* request,
-                GetServiceEntryResponse* response) {
+Status DirectoryServiceImpl::GetServiceEntry(ServerContext* context, const GetServiceEntryRequest* request, GetServiceEntryResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));  
   std::cout << "Service Name: " << request->service_name() << std::endl;
   response->set_status(GetServiceEntryResponse::STATUS_OK);
   if (response->status() == GetServiceEntryResponse::STATUS_OK)
@@ -19,8 +19,8 @@ Status DirectoryServiceImpl::GetServiceEntry(ServerContext* context, const GetSe
   return Status::OK;
 }
 
-Status DirectoryServiceImpl::ListServiceEntries(ServerContext* context, const ListServiceEntriesRequest* request,
-                ListServiceEntriesResponse* response) {
+Status DirectoryServiceImpl::ListServiceEntries(ServerContext* context, const ListServiceEntriesRequest* request, ListServiceEntriesResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   ServiceEntry entry;
   fillServiceEntry(&entry);
   response -> add_service_entries()->CopyFrom(entry);

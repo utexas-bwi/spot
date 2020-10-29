@@ -10,12 +10,14 @@ Status EstopServiceImpl::RegisterEstopEndpoint(ServerContext* context, const Reg
 }
 
 Status EstopServiceImpl::DeregisterEstopEndpoint(ServerContext* context, const DeregisterEstopEndpointRequest* request, DeregisterEstopEndpointResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   response->mutable_request()->CopyFrom(*request);
   response->set_status(DeregisterEstopEndpointResponse::STATUS_SUCCESS);
   return Status::OK;
 }
 
 Status EstopServiceImpl::EstopCheckIn(ServerContext* context, const EstopCheckInRequest* request, EstopCheckInResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   response->mutable_request()->CopyFrom(*request);
   response->set_challenge(0);
   response->set_status(EstopCheckInResponse::STATUS_OK);
@@ -23,6 +25,7 @@ Status EstopServiceImpl::EstopCheckIn(ServerContext* context, const EstopCheckIn
 }
 
 Status EstopServiceImpl::GetEstopConfig(ServerContext* context, const GetEstopConfigRequest* request, GetEstopConfigResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   response->mutable_request()->CopyFrom(*request);
   std::string unique_id("testID");
   EstopConfig active_config;
@@ -43,6 +46,7 @@ Status EstopServiceImpl::GetEstopConfig(ServerContext* context, const GetEstopCo
 }
 
 Status EstopServiceImpl::SetEstopConfig(ServerContext* context, const SetEstopConfigRequest* request, SetEstopConfigResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   response->mutable_request()->CopyFrom(*request);
   response->mutable_active_config()->CopyFrom(request->config());
   response->set_status(SetEstopConfigResponse::STATUS_SUCCESS);
@@ -50,6 +54,7 @@ Status EstopServiceImpl::SetEstopConfig(ServerContext* context, const SetEstopCo
 }
 
 Status EstopServiceImpl::GetEstopSystemStatus(ServerContext* context, const GetEstopSystemStatusRequest* request, GetEstopSystemStatusResponse* response) {
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   EstopSystemStatus status;
   status.set_stop_level(EstopStopLevel::ESTOP_LEVEL_NONE);
   EstopEndpointWithStatus endpoints;
