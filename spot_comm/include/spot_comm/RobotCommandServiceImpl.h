@@ -5,6 +5,7 @@
 #include "bosdyn/api/header.grpc.pb.h"
 #include "bosdyn/api/geometry.grpc.pb.h"
 #include "bosdyn/api/lease_service.grpc.pb.h"
+#include "bosdyn/api/robot_state_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
@@ -28,6 +29,8 @@ using bosdyn::api::FreezeCommand_Feedback;
 using bosdyn::api::SelfRightCommand;
 using bosdyn::api::SelfRightCommand_Feedback;
 using bosdyn::api::SafePowerOffCommand;
+using bosdyn::api::PowerState;
+using bosdyn::api::PowerState_MotorPowerState;
 using bosdyn::api::SafePowerOffCommand_Feedback;
 using bosdyn::api::MobilityCommand;
 using bosdyn::api::MobilityCommand_Feedback;
