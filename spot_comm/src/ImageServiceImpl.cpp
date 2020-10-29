@@ -34,11 +34,6 @@ Status ImageServiceImpl::GetImage(ServerContext* context, const GetImageRequest*
   response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   for(int i = 0; i < request->image_requests_size(); i++) {
     ImageResponse* img = response->add_image_responses();
-    ImageCapture* shot;
-    ImageSource* imgsrc;
-    img->set_allocated_shot(shot);
-
-    img->set_allocated_source(imgsrc);
     img->mutable_source()->set_name(request->image_requests(i).image_source_name());
     img->mutable_source()->set_rows(480 - i * 10);
     img->mutable_source()->set_cols(640 - i * 10);

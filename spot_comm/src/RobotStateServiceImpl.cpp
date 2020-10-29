@@ -5,7 +5,9 @@
 #include <gazebo_msgs/GetModelState.h>
 #include <gazebo_msgs/ModelStates.h>
 #include <geometry_msgs/Pose.h>
-#include <geometry_msgs/Twist.h> 
+#include <geometry_msgs/Twist.h>
+
+extern PowerState_MotorPowerState currentPowerState;
 
 RobotStateServiceImpl::RobotStateServiceImpl(ros::NodeHandle &n): nh(n) {}
 
@@ -31,15 +33,14 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
     // response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_z(0.0);
   }
   else {
-    ROS_INFO("Not able to receive model state.");
+    ROS_INFO("Not able to receive model state, current power state %d", currentPowerState);
   }
 
 
   // power state
   PowerState powerState;
   powerState.mutable_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
-  extern PowerState_MotorPowerState currentState;
-  powerState.set_motor_power_state(currentState);
+  powerState.set_motor_power_state(currentPowerState);
   powerState.set_shore_power_state(PowerState::STATE_OFF_SHORE_POWER);
   DoubleValue locomotionChargePercentage;
   locomotionChargePercentage.set_value(100.0);

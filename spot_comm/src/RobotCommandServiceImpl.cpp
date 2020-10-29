@@ -1,6 +1,8 @@
 #include <spot_comm/RobotCommandServiceImpl.h>
 #include <spot_comm/Header.h>
 
+extern PowerState_MotorPowerState currentPowerState;
+
 double getXVel(const RobotCommandRequest* request) {
   return request->command().mobility_command().se2_velocity_request().velocity().linear().x();
 }
@@ -33,10 +35,14 @@ Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const Robot
   response->set_robot_command_id(10);
 
   // message
-  response->set_message("RobotCommandResponse received");
+  response->set_message("RobotCommandRequest received");
 
   // Publish twist message
-  vel.executeCommand(getXVel(request), getYVel(request), getAngularVel(request));
+  if (request->command().has_mobility_command() && request->command().mobility_command().has_se2_velocity_request()) {
+    vel.executeCommand(getXVel(request), getYVel(request), getAngularVel(request));
+  } else if (request->command().has_full_body_command() && request->command().full_body_command().has_safe_power_off_request()) {
+    currentPowerState = PowerState::STATE_OFF;
+  }
     
   return Status::OK;
 }

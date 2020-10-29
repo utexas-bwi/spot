@@ -1,7 +1,7 @@
 #include <spot_comm/PowerServiceImpl.h>
 #include <spot_comm/Header.h>
 
-PowerState_MotorPowerState currentState = PowerState::STATE_OFF;
+PowerState_MotorPowerState currentPowerState = PowerState::STATE_OFF;
 
 Status PowerServiceImpl::PowerCommand(ServerContext* context, const PowerCommandRequest* request, PowerCommandResponse* response) {
   response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
@@ -12,10 +12,11 @@ Status PowerServiceImpl::PowerCommand(ServerContext* context, const PowerCommand
   response->mutable_lease_use_result()->mutable_owner()->set_user_name("testUserName");
   response->mutable_lease_use_result()->set_status(LeaseUseResult::STATUS_OK);
   response->set_license_status(LicenseInfo::STATUS_VALID);
+  std::cout << "Power Request " << request->request() << std::endl;
   if (request->request() == PowerCommandRequest::REQUEST_OFF) {
-    currentState = PowerState::STATE_OFF;
+    currentPowerState = PowerState::STATE_OFF;
   } else if (request->request() == PowerCommandRequest::REQUEST_ON) {
-    currentState = PowerState::STATE_ON;  
+    currentPowerState = PowerState::STATE_ON;  
   }
 
   return Status::OK;
