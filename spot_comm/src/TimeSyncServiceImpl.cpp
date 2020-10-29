@@ -14,14 +14,8 @@ void fillPrevEst(TimeSyncEstimate* prev, const TimeSyncRoundTrip prev_trip) {
   prev->mutable_clock_skew()->CopyFrom(skew);
 }
 
-void fillHeader(ResponseHeader* header, const RequestHeader reqHeader) {
-  header->mutable_request_received_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
-  header->mutable_request_header()->CopyFrom(reqHeader);
-}
-
 Status TimeSyncServiceImpl::TimeSyncUpdate(ServerContext* context, const TimeSyncUpdateRequest* request, TimeSyncUpdateResponse* response) {
-  // Mark when request was received and copy over request header  
-  fillHeader(response->mutable_header(), request->header());
+  response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   
   // Calculate round trip time and clock skew from previous exchange
   fillPrevEst(response->mutable_previous_estimate(), request->previous_round_trip());

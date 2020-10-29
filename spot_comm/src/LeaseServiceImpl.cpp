@@ -18,7 +18,7 @@ Status LeaseServiceImpl::AcquireLease(ServerContext* context, const AcquireLease
   std::cout << "Lease Requested: " << request->resource() << std::endl;
   response->set_status(AcquireLeaseResponse::STATUS_OK); // would set after checking ownership
   if (response->status() == AcquireLeaseResponse::STATUS_OK) {
-    fillLease(response->mutable_lease(), "testResource", "testEpoch", 0);
+    fillLease(response->mutable_lease(), request->resource(), "testEpoch", 0);
     fillLeaseOwner(response->mutable_lease_owner(), "testClient", "testUser");
   }
   return Status::OK;
@@ -29,7 +29,7 @@ Status LeaseServiceImpl::TakeLease(ServerContext* context, const TakeLeaseReques
   std::cout << "Lease Requested: " << request->resource() << std::endl;
   response->set_status(TakeLeaseResponse::STATUS_OK); // would set after checking ownership
   if (response->status() == TakeLeaseResponse::STATUS_OK) {
-    fillLease(response->mutable_lease(), "testResource", "testEpoch", 0);
+    fillLease(response->mutable_lease(), request->resource(), "testEpoch", 0);
     fillLeaseOwner(response->mutable_lease_owner(), "testClient", "testUser");
   }
   return Status::OK;

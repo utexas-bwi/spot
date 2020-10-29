@@ -36,6 +36,15 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
 
 
   // power state
+  PowerState powerState;
+  powerState.mutable_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+  extern PowerState_MotorPowerState currentState;
+  powerState.set_motor_power_state(currentState);
+  powerState.set_shore_power_state(PowerState::STATE_OFF_SHORE_POWER);
+  DoubleValue locomotionChargePercentage;
+  locomotionChargePercentage.set_value(100.0);
+  powerState.mutable_locomotion_charge_percentage()->CopyFrom(locomotionChargePercentage);
+  response->mutable_robot_state()->mutable_power_state()->CopyFrom(powerState);
 
   // battery state
 

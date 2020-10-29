@@ -2,7 +2,6 @@
 #include <spot_comm/Header.h>
 
 Status RobotIdServiceImpl::GetRobotId(ServerContext* context, const RobotIdRequest* request, RobotIdResponse* response) {
-  std::cout << "GetRobotId called" << std::endl;
   response->mutable_header()->CopyFrom(Header::generateResponseHeader(request->header()));
   RobotId robotId;
   std::string serialNumber("testSerialNumber");
@@ -33,6 +32,5 @@ Status RobotIdServiceImpl::GetRobotId(ServerContext* context, const RobotIdReque
   robotId.mutable_software_release()->CopyFrom(softwareRelease);
   robotId.set_computer_serial_number(computerSerialNumber);
   response->mutable_robot_id()->CopyFrom(robotId);
-  std::cout << "Sending RobotId" << robotId.DebugString() << std::endl;
   return Status::OK;
 }
