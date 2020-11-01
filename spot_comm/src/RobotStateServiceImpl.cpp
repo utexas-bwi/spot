@@ -48,7 +48,20 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
   response->mutable_robot_state()->mutable_power_state()->CopyFrom(powerState);
 
   // battery state
-
+  BatteryState batteryState;
+  batteryState.mutable_timestamp()->CopyFrom(TimeUtil::GetCurrentTime());
+  std::string identifier("Spot");
+  batteryState.set_identifier(identifier);
+  DoubleValue voltage;
+  voltage.set_value(58.8);
+  batteryState.mutable_voltage()->CopyFrom(voltage);
+  DoubleValue current;
+  current.set_value(-1.0);
+  batteryState.mutable_current()->CopyFrom(current);
+  batteryState.mutable_charge_percentage()->CopyFrom(locomotionChargePercentage);
+  batteryState.set_status(BatteryState::STATUS_DISCHARGING);
+  response->mutable_robot_state()->add_battery_states()->CopyFrom(batteryState);
+  
   // comms state
 
   // system fault state

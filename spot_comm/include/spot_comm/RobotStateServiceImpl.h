@@ -13,6 +13,7 @@ using bosdyn::api::RobotStateRequest;
 using bosdyn::api::RobotStateResponse;
 using bosdyn::api::RobotState;
 using bosdyn::api::PowerState;
+using bosdyn::api::BatteryState;
 using bosdyn::api::CommsState;
 using bosdyn::api::SystemFaultState;
 using bosdyn::api::EStopState;
