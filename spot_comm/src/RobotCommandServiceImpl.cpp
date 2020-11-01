@@ -41,6 +41,7 @@ Status RobotCommandServiceImpl::RobotCommand(ServerContext* context, const Robot
   if (request->command().has_mobility_command() && request->command().mobility_command().has_se2_velocity_request()) {
     vel.executeCommand(getXVel(request), getYVel(request), getAngularVel(request));
   } else if (request->command().has_full_body_command() && request->command().full_body_command().has_safe_power_off_request()) {
+    vel.executeCommand(0, 0, 0);
     currentPowerState = PowerState::STATE_OFF;
   }
     

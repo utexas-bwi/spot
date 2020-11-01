@@ -33,6 +33,6 @@
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
 
-  <!--<include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>-->
+  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>
 
 </launch>
