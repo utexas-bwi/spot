@@ -1,6 +1,9 @@
-[submodule "catkin_grpc"]
-	path = catkin_grpc
-	url = https://github.com/CogRob/catkin_grpc.git
 [submodule "spot-sdk"]
 	path = spot-sdk
 	url = https://github.com/boston-dynamics/spot-sdk.git
+[submodule "velodyne_simulator"]
+	path = velodyne_simulator
+	url = https://bitbucket.org/DataspeedInc/velodyne_simulator.git
+[submodule "pointcloud_to_laserscan"]
+	path = pointcloud_to_laserscan
+	url = https://github.com/ros-perception/pointcloud_to_laserscan.git
