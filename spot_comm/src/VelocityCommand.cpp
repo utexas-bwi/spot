@@ -4,7 +4,7 @@ VelocityCommand::VelocityCommand(ros::NodeHandle &n) : nh(n) {
     pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
 }
 
-void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel) {
+void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel, Timestamp end) {
     geometry_msgs::Twist msg;
 
     msg.linear.x = xVel;
@@ -17,4 +17,14 @@ void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel
 
     pub.publish(msg);
     ROS_INFO("published message x: %f, y: %f, z: %f", msg.linear.x, msg.linear.y, msg.angular.z);
+    
+    Duration duration = end - TimeUtil::GetCurrentTime();
+    ros::Duration(duration.seconds(), duration.nanos()).sleep();
+
+    msg.linear.x = 0;
+    msg.linear.y = 0;
+    msg.angular.z = 0;
+
+    pub.publish(msg);
+    ROS_INFO("stopped");
 }

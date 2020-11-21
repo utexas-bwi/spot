@@ -182,14 +182,14 @@ int main(int argc, char** argv) {
     yVel = 1;
     angularVel = 0;
 
-    vel.executeCommand(xVel, yVel, angularVel);
+    // vel.executeCommand(xVel, yVel, angularVel);
 
     // ROS_INFO("Status: %d", commandClient.getResponse().status());
 
     counter++;
     
     if(counter == 2000) {
-      vel.executeCommand(0, 0, 0);
+      // vel.executeCommand(0, 0, 0);
     }
     
     r.sleep();
