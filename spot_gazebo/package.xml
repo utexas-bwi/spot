@@ -63,6 +63,7 @@
   <exec_depend>spot_sim_description</exec_depend>
   <exec_depend>velodyne_description</exec_depend>
   <exec_depend>velodyne_gazebo_plugins</exec_depend>
+  <exec_depend>velodyne_pointcloud</exec_depend>
   <exec_depend>pointcloud_to_laserscan</exec_depend>
 
 
