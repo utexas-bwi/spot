@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -205,8 +205,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.65885329246521
-        Min Value: -0.0072286128997802734
+        Max Value: 1.9688856601715088
+        Min Value: -0.6943411231040955
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -236,7 +236,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: odom
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -260,7 +260,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 33.071712493896484
+      Distance: 0.0013981093652546406
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -276,9 +276,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6497964859008789
+      Pitch: 0.9547967910766602
       Target Frame: <Fixed Frame>
-      Yaw: 4.615402698516846
+      Yaw: 4.088583469390869
     Saved: ~
 Window Geometry:
   Displays:
