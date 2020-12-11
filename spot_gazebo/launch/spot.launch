@@ -37,7 +37,7 @@
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot -x $(arg spot_x) -y $(arg spot_y)" output="screen"/>
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
-  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>
+  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch">
     <arg name="out_topic" value="velodyne_2dscan_highbeams" />
   </include>
 
