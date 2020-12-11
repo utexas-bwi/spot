@@ -37,24 +37,24 @@
     </inertial>
   </xacro:macro>
   
-  <link name="base_footprint" />
+  <!-- <link name="base_footprint" />
   
   <joint name="footprint" type="fixed" >
     <parent link="base_footprint" />
-    <child link="base_link" />
+    <child link="base_footprint" />
     <origin xyz="0 0 0.655" rpy="0 0 0" />
-  </joint>
+  </joint> -->
 
-  <link name="base_link">
+  <link name="base_footprint">
     <xacro:default_inertial mass="32.5"/>
     <visual name="visual">
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.655" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://spot_sim_description/meshes/spot_whole_body.dae" />     
       </geometry>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.655" rpy="0 0 0" />
       <geometry>
         <mesh filename="package://spot_sim_description/meshes/spot_whole_body.dae" />
       </geometry>
@@ -74,7 +74,7 @@
 
     <joint name="${prefix}_wheel_joint" type="continuous">
       <axis xyz="0 1 0" rpy="0 0 0" />
-      <parent link="base_link"/>
+      <parent link="base_footprint"/>
       <child link="${prefix}_wheel"/>
       <origin xyz="${wheel_offset} ${(wheel_separation/2)*reflect} -0.005" rpy="0 0 0"/>
     </joint>
@@ -96,7 +96,7 @@
 
     <joint name="${prefix}_caster_wheel_joint" type="continuous">
       <axis xyz="0 1 0" rpy="0 0 0" />
-      <parent link="base_link"/>
+      <parent link="base_footprint"/>
       <child link="${prefix}_caster_wheel"/>
       <origin xyz="${wheel_offset + caster_wheel_joint_offset*reflectV} ${wheel_separation/2*reflectH} -${caster_wheel_radius+0.005}" rpy="0 0 0"/>
     </joint>
@@ -110,7 +110,7 @@
   <xacro:include filename="$(find spot_sim_description)/urdf/spot.plugins.xacro"/>
 
   <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
-  <xacro:VLP-16 parent="base_link" name="velodyne" topic="/lidar_points" hz="10" samples="1024" gpu="false" lasers="16" max_range="100">
+  <xacro:VLP-16 parent="base_footprint" name="velodyne" topic="/lidar_points" hz="10" samples="1024" gpu="false" lasers="16" max_range="100">
     <origin xyz="0 0 0.73" rpy="0 0 0" />
   </xacro:VLP-16>
 

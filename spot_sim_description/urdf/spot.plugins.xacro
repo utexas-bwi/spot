@@ -3,7 +3,7 @@
   <!--Gazebo Differential Drive Plugin-->
   <gazebo>
     <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
-      <publishWheelTF>true</publishWheelTF>
+      <publishWheelTF>false</publishWheelTF>
       <publishOdomTF>true</publishOdomTF>
       <alwaysOn>true</alwaysOn>
       <legacyMode>false</legacyMode>

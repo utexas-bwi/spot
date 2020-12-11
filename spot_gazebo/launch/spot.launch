@@ -28,14 +28,17 @@
   <!-- <param name="use_gui" value="true"/> -->
 
   <!--Nodes-->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
     <param name="use_tf_static" value="$(arg use_tf_static)"/>
   </node>
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot -x $(arg spot_x) -y $(arg spot_y)" output="screen"/>
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
-
   <include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>
+    <arg name="out_topic" value="velodyne_2dscan_highbeams" />
+  </include>
 
 </launch>
