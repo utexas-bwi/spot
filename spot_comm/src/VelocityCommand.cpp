@@ -1,7 +1,7 @@
 #include "spot_comm/VelocityCommand.h"
 
 VelocityCommand::VelocityCommand(ros::NodeHandle &n) : nh(n) {
-    pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
+    pub = nh.advertise<geometry_msgs::Twist>("spot_sim/cmd_vel", 1000);
 }
 
 void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel, Timestamp end) {

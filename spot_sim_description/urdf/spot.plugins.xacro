@@ -13,7 +13,7 @@
       <wheelSeparation>${wheel_separation}</wheelSeparation>
       <wheelDiameter>${wheel_radius * 2}</wheelDiameter>
       <torque>20</torque>
-      <commandTopic>cmd_vel</commandTopic>
+      <commandTopic>spot_sim/cmd_vel</commandTopic>
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <robotBaseFrame>base_footprint</robotBaseFrame>
