@@ -32,7 +32,7 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
     response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_z(twist.angular.z);
     auto entry = response->mutable_robot_state()->mutable_kinematic_state()->mutable_transforms_snapshot()->mutable_child_to_parent_edge_map();
     FrameTreeSnapshot_ParentEdge edge;
-    edge.set_parent_frame_name("odom");
+    edge.set_parent_frame_name("vision");
     edge.mutable_parent_tform_child()->mutable_position()->set_x(pose.position.x);
     edge.mutable_parent_tform_child()->mutable_position()->set_y(pose.position.y);
     edge.mutable_parent_tform_child()->mutable_position()->set_z(pose.position.z);
@@ -40,7 +40,7 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
     edge.mutable_parent_tform_child()->mutable_rotation()->set_y(pose.orientation.y);
     edge.mutable_parent_tform_child()->mutable_rotation()->set_z(pose.orientation.z);
     edge.mutable_parent_tform_child()->mutable_rotation()->set_w(pose.orientation.w);
-    std::string name("base_footprint");
+    std::string name("body");
     (*entry)[name] = edge;
 
     // response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_x();

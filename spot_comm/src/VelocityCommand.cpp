@@ -18,13 +18,13 @@ void VelocityCommand::executeCommand(double xVel, double yVel, double angularVel
     pub.publish(msg);
     ROS_INFO("published message x: %f, y: %f, z: %f", msg.linear.x, msg.linear.y, msg.angular.z);
     
-    Duration duration = end - TimeUtil::GetCurrentTime();
-    ros::Duration(duration.seconds(), duration.nanos()).sleep();
+    // Duration duration = end - TimeUtil::GetCurrentTime();
+    // ros::Duration(duration.seconds(), duration.nanos()).sleep();
 
-    msg.linear.x = 0;
-    msg.linear.y = 0;
-    msg.angular.z = 0;
+    // msg.linear.x = 0;
+    // msg.linear.y = 0;
+    // msg.angular.z = 0;
 
-    pub.publish(msg);
-    ROS_INFO("stopped");
+    // pub.publish(msg);
+    // ROS_INFO("stopped");
 }
