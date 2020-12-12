@@ -20,14 +20,29 @@ Status RobotStateServiceImpl::GetRobotState(ServerContext* context, const RobotS
   gazebo_msgs::GetModelState getmodelstate;
   getmodelstate.request.model_name = "spot";
   geometry_msgs::Twist twist;
+  geometry_msgs::Pose pose;
   if (client.call(getmodelstate)) {
     twist = getmodelstate.response.twist;
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_linear()->set_x(twist.linear.x);
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_linear()->set_y(twist.linear.y);
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_linear()->set_z(twist.linear.z);
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_angular()->set_x(twist.angular.x);
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_angular()->set_y(twist.angular.y);    
-    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_vision()->mutable_angular()->set_z(twist.angular.z);
+    pose = getmodelstate.response.pose;
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_x(twist.linear.x);
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_y(twist.linear.y);
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_z(twist.linear.z);
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_x(twist.angular.x);
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_y(twist.angular.y);    
+    response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_z(twist.angular.z);
+    auto entry = response->mutable_robot_state()->mutable_kinematic_state()->mutable_transforms_snapshot()->mutable_child_to_parent_edge_map();
+    FrameTreeSnapshot_ParentEdge edge;
+    edge.set_parent_frame_name("odom");
+    edge.mutable_parent_tform_child()->mutable_position()->set_x(pose.position.x);
+    edge.mutable_parent_tform_child()->mutable_position()->set_y(pose.position.y);
+    edge.mutable_parent_tform_child()->mutable_position()->set_z(pose.position.z);
+    edge.mutable_parent_tform_child()->mutable_rotation()->set_x(pose.orientation.x);
+    edge.mutable_parent_tform_child()->mutable_rotation()->set_y(pose.orientation.y);
+    edge.mutable_parent_tform_child()->mutable_rotation()->set_z(pose.orientation.z);
+    edge.mutable_parent_tform_child()->mutable_rotation()->set_w(pose.orientation.w);
+    std::string name("base_footprint");
+    (*entry)[name] = edge;
+
     // response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_x();
     // response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_linear()->set_y(0.0); 
     // response->mutable_robot_state()->mutable_kinematic_state()->mutable_velocity_of_body_in_odom()->mutable_angular()->set_z(0.0);

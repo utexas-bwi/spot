@@ -26,6 +26,7 @@ using bosdyn::api::RobotHardwareConfigurationRequest;
 using bosdyn::api::RobotHardwareConfigurationResponse;
 using bosdyn::api::RobotLinkModelRequest;
 using bosdyn::api::RobotLinkModelResponse;
+using bosdyn::api::FrameTreeSnapshot_ParentEdge;
 using grpc::Status;
 using grpc::ServerContext;
 using google::protobuf::Duration;
