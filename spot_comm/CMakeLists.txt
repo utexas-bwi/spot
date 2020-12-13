@@ -84,9 +84,9 @@ add_executable(image_client src/image_client.cpp ${HEADER} ${IMAGE} ${GEOMETRY})
 add_executable(time_sync_client src/time_sync_client.cpp ${HEADER} ${TIME_SYNC})
 add_executable(lease_client src/lease_client.cpp ${HEADER} ${LEASE})
 add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${LOG_ANNOTATION})
-add_executable(robot_command_client src/robot_command_client.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
+add_executable(robot_command_client src/robot_command_client.cpp src/Timer.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
 add_executable(robot_state_client src/robot_state_client.cpp ${HEADER} ${ROBOT_STATE} ${PARAMETER} ${GEOMETRY})
-add_executable(ssl_velocity_client src/ssl_velocity_client.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
+add_executable(ssl_velocity_client src/ssl_velocity_client.cpp src/Timer.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
 
 add_executable(spotServer
   src/server.cpp
@@ -101,6 +101,7 @@ add_executable(spotServer
   src/RobotCommandServiceImpl.cpp
   src/RobotStateServiceImpl.cpp
   src/RobotIdServiceImpl.cpp
+  src/Timer.cpp
   src/VelocityCommand.cpp
   ${HEADER}
   ${AUTH}
