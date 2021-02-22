@@ -20,12 +20,12 @@ int main(int argc, char** argv) {
     yVel = 1;
     angularVel = 0;
 
-    vel.executeCommand(xVel, yVel, angularVel);
+    vel.executeCommand(xVel, yVel, angularVel, TimeUtil::GetCurrentTime());
 
     counter++;
     
     if(counter == 2000) {
-      vel.executeCommand(0, 0, 0);
+      vel.executeCommand(0, 0, 0, TimeUtil::GetCurrentTime());
     }
     
     r.sleep();
