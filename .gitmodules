@@ -1,6 +1,3 @@
-[submodule "spot-sdk"]
-	path = spot-sdk
-	url = https://github.com/boston-dynamics/spot-sdk.git
 [submodule "ahg_common"]
 	path = ahg_common
 	url = git@github.com:utexas-bwi/ahg_common.git
