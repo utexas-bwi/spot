@@ -13,8 +13,8 @@
   <author email="maxwell@cs.utexas.edu">Max Svetlik</author>
 
   <exec_depend>amcl</exec_depend>
-  <exec_depend>movebase</exec_depend>
-  <exec_depend>movebase-msgs</exec_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>move_base_msgs</exec_depend>
   <buildtool_depend>catkin</buildtool_depend>
 
 

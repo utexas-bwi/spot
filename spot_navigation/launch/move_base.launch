@@ -4,20 +4,20 @@
    <arg name="slam" default="false"/>
 
    <group unless="$(arg slam)">
- <!-- Run the map server --> 
+   <!-- Run the map server --> 
     <node name="map_server" pkg="map_server" type="map_server" args="$(find spot_navigation)/maps/ahg_map.pgm 0.05"/>
    </group>
 
 
- <!--- Run AMCL --> 
-    <include file="$(find spot_navigation)/launch/amcl_diff.launch" />
-
+   <!--- Run AMCL --> 
+   <include file="$(find spot_navigation)/launch/amcl_diff.launch" />
+   
    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find spot_navigation)/config/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
     <rosparam file="$(find spot_navigation)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find spot_navigation)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find spot_navigation)/config/global_costmap_params.yaml" command="load" /> 
     <rosparam file="$(find spot_navigation)/config/base_local_planner_params.yaml" command="load" />
- </node>
+   </node>
 
 </launch> 

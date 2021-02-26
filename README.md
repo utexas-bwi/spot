@@ -24,10 +24,15 @@ Clone this repository into a catkinized workspace:
 
 	$ git clone --recurse-submodules https://github.com/utexas-bwi/spot.git
 
-note that we do utilize other repositories as submodules, so ensure those have been correctly fetched : 
+note that we do utilize other repositories as submodules, so ensure those have been correctly fetched: 
 
-	$ cd spot/grpc && ls
+	$ cd spot/spot-sdk && ls
+	
+While in a virtual environment, install the Spot-SDK by running:
 
+	$ pip install spot-sdk/prebuilt/*.whl
+	
+See the [Spot-SDK Quickstart](https://github.com/utexas-bwi/spot-sdk/blob/master/docs/python/quickstart.md#manage-multiple-python-environments-with-virtualenv) on setting up a virtual environment with the correct version of Python.
 
 ## Compiling
 Compile with the standard catkin-tools build system:

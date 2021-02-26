@@ -1,6 +1,6 @@
-[submodule "catkin_grpc"]
-	path = catkin_grpc
-	url = https://github.com/CogRob/catkin_grpc.git
+[submodule "ahg_common"]
+	path = ahg_common
+	url = git@github.com:utexas-bwi/ahg_common.git
 [submodule "spot-sdk"]
 	path = spot-sdk
-	url = https://github.com/boston-dynamics/spot-sdk.git
+	url = https://github.com/utexas-bwi/spot-sdk

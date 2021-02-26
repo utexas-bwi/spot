@@ -1,6 +1,7 @@
 <launch>
+
   <arg name="slam" default="false"/>
-  <arg name="gui" default="true"/>
+  <arg name="gui" default="false"/>
 
   <include file="$(find spot_gazebo)/launch/spot.launch">
      <arg name="ahg_sim" value="true"/>
@@ -8,14 +9,13 @@
 
   <group if="$(arg slam)">
     <include file="$(find spot_navigation)/launch/gmapping.launch"/>
+    <include file="$(find spot_navigation)/launch/move_base.launch">
+      <arg name="slam" value="$(arg slam)"/>
+    </include>
   </group>
-  <include file="$(find spot_navigation)/launch/move_base.launch">
-    <arg name="slam" value="$(arg slam)"/>
-  </include>
 
   <group if="$(arg gui)">
      <node pkg="rviz" type="rviz" name="rviz" args="-d $(find spot_gazebo)/config/navigation.rviz" output="screen"/>
   </group>
-
 
 </launch>

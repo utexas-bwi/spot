@@ -3,36 +3,42 @@
   <arg name="ahg_sim" default="false"/>
   <arg name="spot_x" default="-8.5"/>
   <arg name="spot_y" default ="0.3"/> 
-
+  <arg name="use_tf_static" default="false"/> 
+  
   <group unless="$(arg ahg_sim)">
-	  <!--Gazebo empty world launch file-->
-	  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-		<arg name="debug" value="false" />
-		<arg name="gui" value="true" />
-		<arg name="paused" value="false"/>
-		<arg name="use_sim_time" value="false"/>
-		<arg name="headless" value="false"/>
-		<arg name="verbose" value="true"/>
-	  </include>
+    <!--Gazebo empty world launch file-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="debug" value="false" />
+      <arg name="gui" value="true" />
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="false"/>
+      <arg name="headless" value="false"/>
+      <arg name="verbose" value="true"/>
+    </include>
   </group>
   <group if="$(arg ahg_sim)">
-	<include file="$(find ahg_gazebo_simulation)/launch/ahg_apartment.launch">
-		<arg name="gui" value="true" />
-		<arg name="use_sim_time" value="true"/>
-	  </include>
+  <include file="$(find ahg_gazebo_simulation)/launch/ahg_apartment.launch">
+    <arg name="gui" value="true" />
+    <arg name="use_sim_time" value="true"/>
+  </include>
   </group>
  
   <!--Robot Description from URDF-->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find spot_description)/urdf/spot.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find spot_sim_description)/urdf/spot.urdf.xacro"/>
   <!-- <param name="use_gui" value="true"/> -->
 
   <!--Nodes-->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="use_tf_static" value="$(arg use_tf_static)"/>
+  </node>
+  
   <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model spot -x $(arg spot_x) -y $(arg spot_y)" output="screen"/>
   <!--node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/-->
 
-
-  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch"/>
+  <include file="$(find spot_gazebo)/launch/velodyne_2d.launch">
+    <arg name="out_topic" value="velodyne_2dscan_highbeams" />
+  </include>
 
 </launch>
