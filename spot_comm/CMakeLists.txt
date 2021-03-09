@@ -77,7 +77,6 @@ include_files_service(robot_id)
 include_files(parameter)
 
 add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH})
-add_executable(ssl_client src/ssl_client.cpp ${HEADER} ${AUTH})
 add_executable(estop_client src/estop_client.cpp ${HEADER} ${ESTOP})
 add_executable(directory_client src/directory_client.cpp ${HEADER} ${DIRECTORY})
 add_executable(image_client src/image_client.cpp ${HEADER} ${IMAGE} ${GEOMETRY})
@@ -86,7 +85,7 @@ add_executable(lease_client src/lease_client.cpp ${HEADER} ${LEASE})
 add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${LOG_ANNOTATION})
 add_executable(robot_command_client src/robot_command_client.cpp src/Timer.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
 add_executable(robot_state_client src/robot_state_client.cpp ${HEADER} ${ROBOT_STATE} ${PARAMETER} ${GEOMETRY})
-add_executable(ssl_velocity_client src/ssl_velocity_client.cpp src/Timer.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
+
 
 add_executable(spotServer
   src/server.cpp
@@ -124,14 +123,31 @@ add_executable(spotServer
   ${ROBOT_ID}
 )
 
+add_executable(spotDriver
+  src/spot_driver.cpp
+  src/spot_client.cpp
+  src/ssl_auth_client.cpp
+  src/ssl_robot_command_client.cpp
+  src/Timer.cpp
+  src/VelocityCommand.cpp
+  ${HEADER}
+  ${AUTH}
+  ${ROBOT_COMMAND}
+  ${FULL_BODY_COMMAND}
+  ${MOBILITY_COMMAND}
+  ${BASIC_COMMAND}
+  ${TRAJECTORY}
+  ${LEASE}
+  ${GEOMETRY}
+)
+
   set(LINK_LIBRARIES 
     ${catkin_LIBRARIES}
     ${Protobuf_LIBRARIES}
     ${_GRPC_GRPCPP}
     ${_PROTOBUF_LIBPROTOBUF}
   )
-  target_link_libraries(ssl_client ${LINK_LIBRARIES})
-  target_link_libraries(ssl_velocity_client ${LINK_LIBRARIES})
+
   target_link_libraries(auth_client ${LINK_LIBRARIES})
   target_link_libraries(estop_client ${LINK_LIBRARIES})
   target_link_libraries(directory_client ${LINK_LIBRARIES})
@@ -142,7 +158,8 @@ add_executable(spotServer
   target_link_libraries(robot_command_client ${LINK_LIBRARIES})
   target_link_libraries(robot_state_client ${LINK_LIBRARIES})
   target_link_libraries(spotServer ${LINK_LIBRARIES} ${_REFLECTION})
-
+  target_link_libraries(spotDriver ${LINK_LIBRARIES})
+  
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
