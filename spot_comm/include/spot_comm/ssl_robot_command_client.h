@@ -1,3 +1,6 @@
+#ifndef SSL_ROBOT_COMMAND_CLIENT_H
+#define SSL_ROBOT_COMMAND_CLIENT_H
+
 #include <memory>
 #include <string>
 #include <sstream>
@@ -13,7 +16,6 @@
 #include "bosdyn/api/lease_service.grpc.pb.h"
 #include <google/protobuf/util/time_util.h>
 
-#include <ros/package.h>
 #include <geometry_msgs/Twist.h>
 #include <spot_comm/VelocityCommand.h>
 
@@ -64,3 +66,5 @@ public:
  private:
   std::unique_ptr<RobotCommandService::Stub> stub_;
 };
+
+#endif

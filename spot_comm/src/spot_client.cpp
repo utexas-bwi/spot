@@ -27,3 +27,7 @@ bool SpotClient::sendVelocityCommand(const std::string& frame_name, const double
 bool SpotClient::sendVelocityCommand(const double& velX, const double& velY, const double& angular) {
     return SpotClient::sendVelocityCommand("odom", velX, velY, angular, 10);
 }
+
+std::string SpotClient::getAuthToken(const std::string& username, const std::string& password) {
+    return auth_client.GetAuthToken(username, password);
+}

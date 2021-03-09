@@ -5,7 +5,7 @@ AuthClient::AuthClient(const std::string& cert, const std::string& key, const st
   stub_ = AuthService::NewStub(grpc::CreateChannel(server, grpc::SslCredentials(opts)));
 }
 
-std::string AuthClient::GetAuthToken(const std::string& user, const std::string& pass, const std::string& appToken) {
+std::string AuthClient::GetAuthToken(const std::string& user, const std::string& pass) {
   // Data we are sending to the server.
   GetAuthTokenRequest request;
   request.set_username(user);
