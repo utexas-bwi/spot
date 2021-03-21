@@ -128,6 +128,7 @@ add_executable(spotDriver
   src/spot_client.cpp
   src/ssl_auth_client.cpp
   src/ssl_robot_command_client.cpp
+  src/ssl_time_sync_client.cpp
   src/Timer.cpp
   src/VelocityCommand.cpp
   ${HEADER}
@@ -139,6 +140,7 @@ add_executable(spotDriver
   ${TRAJECTORY}
   ${LEASE}
   ${GEOMETRY}
+  ${TIME_SYNC}
 )
 
   set(LINK_LIBRARIES 

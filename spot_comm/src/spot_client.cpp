@@ -1,7 +1,8 @@
 #include <spot_comm/spot_client.h>
 
 SpotClient::SpotClient(const std::string& cert, const std::string& key, const std::string& root, const std::string& server) : 
-    auth_client(cert, key, root, server), robot_command_client(cert, key, root, server) {}
+    auth_client(cert, key, root, server), robot_command_client(cert, key, root, server), 
+    time_sync_client(cert, key, root, server) {}
 
 bool SpotClient::sendVelocityCommand(const std::string& frame_name, const double& velX, const double& velY, const double& angular, const int& max_secs) {
     // test lease, must get using LeaseClient to actually work
@@ -30,4 +31,9 @@ bool SpotClient::sendVelocityCommand(const double& velX, const double& velY, con
 
 std::string SpotClient::getAuthToken(const std::string& username, const std::string& password) {
     return auth_client.GetAuthToken(username, password);
+}
+
+bool SpotClient::startTimeSync(int rounds) {
+    TimeSyncUpdateResponse response = time_sync_client.EstablishTimeSync(rounds);
+    return response.state().status() == TimeSyncState::STATUS_OK;
 }
