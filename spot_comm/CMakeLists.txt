@@ -129,6 +129,7 @@ add_executable(spotDriver
   src/ssl_auth_client.cpp
   src/ssl_estop_client.cpp
   src/ssl_lease_client.cpp
+  src/ssl_power_client.cpp
   src/ssl_robot_command_client.cpp
   src/ssl_robot_state_client.cpp
   src/ssl_time_sync_client.cpp
@@ -142,11 +143,13 @@ add_executable(spotDriver
   ${FULL_BODY_COMMAND}
   ${MOBILITY_COMMAND}
   ${BASIC_COMMAND}
+  ${POWER}
   ${TRAJECTORY}
   ${LEASE}
   ${PARAMETER}
   ${GEOMETRY}
   ${TIME_SYNC}
+  ${LICENSE}
 )
 
   set(LINK_LIBRARIES 

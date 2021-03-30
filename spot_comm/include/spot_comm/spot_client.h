@@ -5,6 +5,7 @@
 #include <spot_comm/ssl_robot_state_client.h>
 #include <spot_comm/ssl_auth_client.h>
 #include <spot_comm/ssl_estop_client.h>
+#include <spot_comm/ssl_power_client.h>
 #include <spot_comm/ssl_lease_client.h>
 #include <spot_comm/ssl_time_sync_client.h>
 // .. add more here
