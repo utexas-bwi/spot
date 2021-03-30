@@ -127,18 +127,24 @@ add_executable(spotDriver
   src/spot_driver.cpp
   src/spot_client.cpp
   src/ssl_auth_client.cpp
+  src/ssl_estop_client.cpp
+  src/ssl_lease_client.cpp
   src/ssl_robot_command_client.cpp
+  src/ssl_robot_state_client.cpp
   src/ssl_time_sync_client.cpp
   src/Timer.cpp
   src/VelocityCommand.cpp
   ${HEADER}
   ${AUTH}
+  ${ESTOP}
   ${ROBOT_COMMAND}
+  ${ROBOT_STATE}
   ${FULL_BODY_COMMAND}
   ${MOBILITY_COMMAND}
   ${BASIC_COMMAND}
   ${TRAJECTORY}
   ${LEASE}
+  ${PARAMETER}
   ${GEOMETRY}
   ${TIME_SYNC}
 )
