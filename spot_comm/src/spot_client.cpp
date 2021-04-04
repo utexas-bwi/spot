@@ -33,7 +33,7 @@ std::string SpotClient::getAuthToken(const std::string& username, const std::str
     return auth_client.GetAuthToken(username, password);
 }
 
-bool SpotClient::startTimeSync(int rounds) {
+bool SpotClient::startTimeSync(const int& rounds) {
     TimeSyncUpdateResponse response = time_sync_client.EstablishTimeSync(rounds);
     return response.state().status() == TimeSyncState::STATUS_OK;
 }

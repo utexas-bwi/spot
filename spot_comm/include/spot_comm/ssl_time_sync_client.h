@@ -29,7 +29,7 @@ class TimeSyncClient {
     public: 
         TimeSyncClient(const std::string& cert, const std::string& key, const std::string& root, const std::string& server);
         TimeSyncUpdateResponse TimeSyncUpdate(TimeSyncUpdateRequest request, const std::string& clock_identifier);
-        TimeSyncUpdateResponse EstablishTimeSync(int numRounds);
+        TimeSyncUpdateResponse EstablishTimeSync(const int& numRounds);
 
     private:
         std::unique_ptr<TimeSyncService::Stub> stub_;

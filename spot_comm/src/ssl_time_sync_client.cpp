@@ -29,7 +29,7 @@ TimeSyncUpdateResponse TimeSyncClient::TimeSyncUpdate(TimeSyncUpdateRequest requ
     return reply;
 }
         
-TimeSyncUpdateResponse TimeSyncClient::EstablishTimeSync(int numRounds) {
+TimeSyncUpdateResponse TimeSyncClient::EstablishTimeSync(const int& numRounds) {
     const std::string clock_identifier("spot_time_sync");
     TimeSyncUpdateResponse reply;
     TimeSyncUpdateRequest request;
