@@ -1,6 +1,8 @@
 [submodule "ahg_common"]
 	path = ahg_common
 	url = git@github.com:utexas-bwi/ahg_common.git
+	ignore = dirty
+
 [submodule "spot-sdk"]
 	path = spot-sdk
 	url = https://github.com/utexas-bwi/spot-sdk
