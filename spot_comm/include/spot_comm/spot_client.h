@@ -16,7 +16,7 @@ public:
   bool sendVelocityCommand(const std::string& frame_name , const double& velX, const double& velY, const double& angular, const int& max_secs);
   bool sendVelocityCommand(const double& velX, const double& velY, const double& angular);
   std::string getAuthToken(const std::string& username, const std::string& password);
-  bool startTimeSync(int rounds);
+  bool startTimeSync(const int& rounds);
 
  private:
   AuthClient auth_client;
