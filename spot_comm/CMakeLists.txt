@@ -67,14 +67,20 @@ include_files_service(lease)
 include_files_service(license)
 include_files_service(log_annotation)
 include_files_service(power)
+include_files(trajectory)
 include_files_service(robot_command)
+include_files(arm_command)
 include_files(full_body_command)
 include_files(mobility_command)
 include_files(basic_command)
-include_files(trajectory)
+include_files(gripper_command)
+include_files(synchronized_command)
 include_files_service(robot_state)
 include_files_service(robot_id)
 include_files(parameter)
+include_files(service_fault)
+include_files(payload)
+include_files(payload_estimation)
 
 add_executable(auth_client src/auth_client.cpp ${HEADER} ${AUTH})
 add_executable(estop_client src/estop_client.cpp ${HEADER} ${ESTOP})
@@ -83,8 +89,42 @@ add_executable(image_client src/image_client.cpp ${HEADER} ${IMAGE} ${GEOMETRY})
 add_executable(time_sync_client src/time_sync_client.cpp ${HEADER} ${TIME_SYNC})
 add_executable(lease_client src/lease_client.cpp ${HEADER} ${LEASE})
 add_executable(log_annotation_client src/log_annotation_client.cpp ${HEADER} ${LOG_ANNOTATION})
-add_executable(robot_command_client src/robot_command_client.cpp src/Timer.cpp src/VelocityCommand.cpp ${HEADER} ${ROBOT_COMMAND} ${FULL_BODY_COMMAND} ${MOBILITY_COMMAND} ${BASIC_COMMAND} ${TRAJECTORY} ${LEASE} ${GEOMETRY})
-add_executable(robot_state_client src/robot_state_client.cpp ${HEADER} ${ROBOT_STATE} ${PARAMETER} ${GEOMETRY})
+
+add_executable(robot_command_client 
+  src/robot_command_client.cpp 
+  src/Timer.cpp 
+  src/VelocityCommand.cpp 
+  ${HEADER} 
+  ${ROBOT_COMMAND} 
+  ${FULL_BODY_COMMAND} 
+  ${MOBILITY_COMMAND} 
+  ${BASIC_COMMAND} 
+  ${GRIPPER_COMMAND} 
+  ${ARM_COMMAND} 
+  ${SYNCHRONIZED_COMMAND} 
+  ${TRAJECTORY} 
+  ${LEASE} 
+  ${GEOMETRY} 
+  ${PAYLOAD_ESTIMATION} 
+  ${PAYLOAD} 
+  ${ROBOT_ID} 
+  ${PARAMETER}
+)
+
+add_executable(robot_state_client 
+  src/robot_state_client.cpp 
+  ${HEADER} 
+  ${ROBOT_STATE} 
+  ${PARAMETER} 
+  ${GEOMETRY} 
+  ${BASIC_COMMAND}
+  ${MOBILITY_COMMAND} 
+  ${ARM_COMMAND} 
+  ${GRIPPER_COMMAND} 
+  ${SYNCHRONIZED_COMMAND} 
+  ${SERVICE_FAULT} 
+  ${TRAJECTORY} 
+)
 
 
 add_executable(spotServer
@@ -115,12 +155,18 @@ add_executable(spotServer
   ${ROBOT_COMMAND}
   ${FULL_BODY_COMMAND}
   ${MOBILITY_COMMAND}
+  ${ARM_COMMAND}
+  ${GRIPPER_COMMAND}
   ${BASIC_COMMAND}
+  ${SYNCHRONIZED_COMMAND}
   ${TRAJECTORY}
   ${ROBOT_STATE}
   ${PARAMETER}
   ${LICENSE}
   ${ROBOT_ID}
+  ${SERVICE_FAULT}
+  ${PAYLOAD}
+  ${PAYLOAD_ESTIMATION}
 )
 
 add_executable(spotDriver
@@ -138,11 +184,14 @@ add_executable(spotDriver
   ${HEADER}
   ${AUTH}
   ${ESTOP}
-  ${ROBOT_COMMAND}
   ${ROBOT_STATE}
+  ${ROBOT_COMMAND}
   ${FULL_BODY_COMMAND}
   ${MOBILITY_COMMAND}
   ${BASIC_COMMAND}
+  ${ARM_COMMAND}
+  ${GRIPPER_COMMAND}
+  ${SYNCHRONIZED_COMMAND}
   ${POWER}
   ${TRAJECTORY}
   ${LEASE}
@@ -150,6 +199,10 @@ add_executable(spotDriver
   ${GEOMETRY}
   ${TIME_SYNC}
   ${LICENSE}
+  ${SERVICE_FAULT}
+  ${PAYLOAD}
+  ${PAYLOAD_ESTIMATION}
+  ${ROBOT_ID}
 )
 
   set(LINK_LIBRARIES 
