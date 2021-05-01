@@ -23,6 +23,8 @@ set(_REFLECTION gRPC::grpc++_reflection)
 set(_GRPC_GRPCPP gRPC::grpc++)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
+find_package(Threads REQUIRED)
+
 catkin_python_setup()
 
 # Message generation
