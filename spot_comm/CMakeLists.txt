@@ -67,6 +67,7 @@ include_files(geometry)
 include_files_service(time_sync)
 include_files_service(lease)
 include_files_service(license)
+include_files_service(local_grid)
 include_files_service(log_annotation)
 include_files_service(power)
 include_files(trajectory)
@@ -134,6 +135,7 @@ add_executable(spotServer
   src/AuthServiceImpl.cpp
   src/DirectoryServiceImpl.cpp
   src/LeaseServiceImpl.cpp
+  src/LocalGridServiceImpl.cpp
   src/LogAnnotationServiceImpl.cpp
   src/EstopServiceImpl.cpp
   src/ImageServiceImpl.cpp
@@ -149,6 +151,7 @@ add_executable(spotServer
   ${ESTOP}
   ${DIRECTORY}
   ${LEASE}
+  ${LOCAL_GRID}
   ${LOG_ANNOTATION}
   ${IMAGE}
   ${GEOMETRY}
@@ -207,24 +210,24 @@ add_executable(spotDriver
   ${ROBOT_ID}
 )
 
-  set(LINK_LIBRARIES 
-    ${catkin_LIBRARIES}
-    ${Protobuf_LIBRARIES}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
-  )
+set(LINK_LIBRARIES 
+  ${catkin_LIBRARIES}
+  ${Protobuf_LIBRARIES}
+  ${_GRPC_GRPCPP}
+  ${_PROTOBUF_LIBPROTOBUF}
+)
 
-  target_link_libraries(auth_client ${LINK_LIBRARIES})
-  target_link_libraries(estop_client ${LINK_LIBRARIES})
-  target_link_libraries(directory_client ${LINK_LIBRARIES})
-  target_link_libraries(image_client ${LINK_LIBRARIES})
-  target_link_libraries(time_sync_client ${LINK_LIBRARIES})
-  target_link_libraries(lease_client ${LINK_LIBRARIES})
-  target_link_libraries(log_annotation_client ${LINK_LIBRARIES})
-  target_link_libraries(robot_command_client ${LINK_LIBRARIES})
-  target_link_libraries(robot_state_client ${LINK_LIBRARIES})
-  target_link_libraries(spotServer ${LINK_LIBRARIES} ${_REFLECTION})
-  target_link_libraries(spotDriver ${LINK_LIBRARIES})
+target_link_libraries(auth_client ${LINK_LIBRARIES})
+target_link_libraries(estop_client ${LINK_LIBRARIES})
+target_link_libraries(directory_client ${LINK_LIBRARIES})
+target_link_libraries(image_client ${LINK_LIBRARIES})
+target_link_libraries(time_sync_client ${LINK_LIBRARIES})
+target_link_libraries(lease_client ${LINK_LIBRARIES})
+target_link_libraries(log_annotation_client ${LINK_LIBRARIES})
+target_link_libraries(robot_command_client ${LINK_LIBRARIES})
+target_link_libraries(robot_state_client ${LINK_LIBRARIES})
+target_link_libraries(spotServer ${LINK_LIBRARIES} ${_REFLECTION})
+target_link_libraries(spotDriver ${LINK_LIBRARIES})
   
 catkin_install_python(PROGRAMS scripts/move_client
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
