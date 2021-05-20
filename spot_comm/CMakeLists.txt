@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nav_msgs
   message_generation
+  tf2_ros
 )
 
 find_package(Eigen3 REQUIRED)

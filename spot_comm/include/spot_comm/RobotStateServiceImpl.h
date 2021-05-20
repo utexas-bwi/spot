@@ -7,6 +7,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <spot_comm/PowerServiceImpl.h>
+#include <tf2_ros/transform_listener.h>
 
 using bosdyn::api::RobotStateService;
 using bosdyn::api::RobotStateRequest;
@@ -43,6 +44,8 @@ class RobotStateServiceImpl final : public RobotStateService::Service {
     Status GetRobotLinkModel(ServerContext* context, const RobotLinkModelRequest* request, RobotLinkModelResponse* response) override;
   private:
     ros::NodeHandle &nh;
+    tf2_ros::Buffer tfBuffer;
+    tf2_ros::TransformListener tfListener;
 
 };
 
