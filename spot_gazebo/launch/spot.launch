@@ -3,7 +3,9 @@
   <arg name="ahg_sim" default="false"/>
   <arg name="spot_x" default="-8.5"/>
   <arg name="spot_y" default ="0.3"/> 
-  <arg name="use_tf_static" default="false"/> 
+  <arg name="use_tf_static" default="false"/>
+   <!-- File path to the Gazebo world file to launch  -->
+  <arg name="world_name" default="worlds/empty.world" />
   
   <group unless="$(arg ahg_sim)">
     <!--Gazebo empty world launch file-->
@@ -14,6 +16,7 @@
       <arg name="use_sim_time" value="false"/>
       <arg name="headless" value="false"/>
       <arg name="verbose" value="true"/>
+      <arg name="world_name" value="$(arg world_name)" />
     </include>
   </group>
   <group if="$(arg ahg_sim)">
