@@ -1,9 +1,9 @@
 #include <spot_comm/DirectoryServiceImpl.h>
 #include <spot_comm/Header.h>
 
-#define SERVICE_COUNT 12
-std::string serviceNames[SERVICE_COUNT] = {"auth", "estop", "directory", "image", "time-sync", "lease", "license", "log-annotation", "power", "robot-command", "robot-state", "robot-id"};
-std::string serviceTypes[SERVICE_COUNT] = {"AuthService", "EstopService", "DirectoryService", "ImageService", "TimeSyncService", "LeaseService", "LicenseService", "LogAnnotationService", "PowerService", "RobotCommandService", "RobotStateService", "RobotIdService"};
+#define SERVICE_COUNT 13
+std::string serviceNames[SERVICE_COUNT] = {"auth", "estop", "directory", "image", "time-sync", "lease", "license", "local-grid-service", "log-annotation", "power", "robot-command", "robot-state", "robot-id"};
+std::string serviceTypes[SERVICE_COUNT] = {"AuthService", "EstopService", "DirectoryService", "ImageService", "TimeSyncService", "LeaseService", "LicenseService", "LocalGridService", "LogAnnotationService", "PowerService", "RobotCommandService", "RobotStateService", "RobotIdService"};
 
 ServiceEntry fillServiceEntry(std::string serviceName, std::string serviceType) {
   ServiceEntry entry;

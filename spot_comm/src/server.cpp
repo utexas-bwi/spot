@@ -16,6 +16,7 @@
 #include <spot_comm/TimeSyncServiceImpl.h>
 #include <spot_comm/LeaseServiceImpl.h>
 #include <spot_comm/LogAnnotationServiceImpl.h>
+#include <spot_comm/LocalGridServiceImpl.h>
 #include <spot_comm/RobotCommandServiceImpl.h>
 #include <spot_comm/RobotIdServiceImpl.h>
 #include <spot_comm/RobotStateServiceImpl.h>
@@ -54,6 +55,7 @@ void RunServer(ros::NodeHandle& n) {
   TimeSyncServiceImpl timeService;
   LeaseServiceImpl leaseService;
   LogAnnotationServiceImpl logService;
+  LocalGridServiceImpl localGridService;
   RobotCommandServiceImpl commandService(n);
   RobotIdServiceImpl idService;
   RobotStateServiceImpl stateService(n);
@@ -81,9 +83,9 @@ void RunServer(ros::NodeHandle& n) {
   // Register "service" as the instance#include <spot_comm/Header.h> through which we'll communicate with
   // clients. In this case it corresponds to an *synchronous* service.
   
-  builder.RegisterService(&authService); // change to dirService for directory test
-  builder.RegisterService(&commandService); // change to dirService for directory test
-  builder.RegisterService(&idService); // change to dirService for directory test
+  builder.RegisterService(&authService);
+  builder.RegisterService(&commandService);
+  builder.RegisterService(&idService);
   builder.RegisterService(&stateService);
   builder.RegisterService(&estopService);
   builder.RegisterService(&dirService);
@@ -91,6 +93,7 @@ void RunServer(ros::NodeHandle& n) {
   builder.RegisterService(&timeService);
   builder.RegisterService(&leaseService);
   builder.RegisterService(&logService);
+  builder.RegisterService(&localGridService);
   builder.RegisterService(&powerService);
   
   // Finally assemble the server.
